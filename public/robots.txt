@@ -1,0 +1,20 @@
+# robots.txt для pusk.agency
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api
+Disallow: /private
+Disallow: /*.json$
+Disallow: /temp
+Crawl-delay: 1
+
+User-agent: Yandex
+Allow: /
+Crawl-delay: 1
+
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+Sitemap: https://pusk.agency/sitemap.xml
+Host: https://pusk.agency
