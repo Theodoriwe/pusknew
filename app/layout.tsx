@@ -18,7 +18,6 @@ const unbounded = Unbounded({
   variable: "--font-unbounded",
   display: "swap",
   weight: ["400", "500", "600", "700", "800"],
-  // Next/font автоматически добавит preload для этого шрифта
   preload: true,
 });
 
@@ -266,7 +265,9 @@ export default function RootLayout({
   return (
     <html lang="ru" className={`${inter.variable} ${unbounded.variable} overflow-x-hidden`}>
       <head>
-        
+        {/* Preconnect к Google Fonts CDN для ускорения загрузки веб-шрифтов */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
 
         {/* JSON-LD Schema — Organization + WebSite + WebPage + LocalBusiness */}
         <script

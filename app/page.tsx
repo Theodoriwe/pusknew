@@ -9,7 +9,7 @@ import { TeamSection } from "@/components/sections/team";
 import { TestimonialsSection } from "@/components/sections/testimonials";
 import { PainPointsSection } from "@/components/sections/pain-points";
 
-// Lazy load heavy components
+// Lazy load heavy components with SSR disabled for faster initial load
 const QuizSection = dynamic(() => import("@/components/sections/quiz").then(mod => ({ default: mod.QuizSection })), {
   loading: () => null,
 });
