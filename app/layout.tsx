@@ -3,7 +3,6 @@ import { Inter, Unbounded } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { ModalProvider } from "@/components/modal-provider";
-import { Preloader } from "@/components/preloader";
 import { Toaster } from "@/components/ui/sonner";
 import { FloatingHelpWidget } from "@/components/floating-help-widget";
 
@@ -288,8 +287,6 @@ export default function RootLayout({
         <meta name="color-scheme" content="light dark" />
       </head>
       <body className="font-sans antialiased overflow-x-hidden">
-        <div id="preloader-root" />
-        
         <ModalProvider>
           <div className="noise" />
           {children}
