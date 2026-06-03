@@ -14,10 +14,10 @@ const inter = Inter({
 });
 
 const unbounded = Unbounded({
-  subsets: ["latin", "cyrillic"],
+  subsets: ["cyrillic"],
   variable: "--font-unbounded",
   display: "swap",
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["600", "700"],
   preload: true,
 });
 
@@ -265,33 +265,12 @@ export default function RootLayout({
   return (
     <html lang="ru" className={`${inter.variable} ${unbounded.variable} overflow-x-hidden`}>
       <head>
-        {/* DNS Prefetch и Preconnect для максимальной скорости */}
-        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+        {/* Preconnect для ускорения загрузки Google Fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
 
-        {/* Встроить минимальный критичный CSS для LCP */}
-        <style dangerouslySetInnerHTML={{__html: `
-          :root {
-            --background: #FFFFFF;
-            --foreground: #111827;
-            --primary: #549AF2;
-            --muted: #EEF2FF;
-            --border: rgba(17, 24, 39, 0.08);
-          }
-          html { overflow-x: hidden; }
-          body {
-            font-family: Inter, system-ui, sans-serif;
-            background: var(--background);
-            color: var(--foreground);
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            margin: 0;
-            padding: 0;
-          }
-          .noise { pointer-events: none; }
-        `}} />
+        {/* DNS Prefetch для Analytics и других сервисов */}
+        <link rel="dns-prefetch" href="https://va.vercel-analytics.com" />
 
         {/* JSON-LD Schema — Organization + WebSite + WebPage + LocalBusiness */}
         <script
@@ -301,9 +280,6 @@ export default function RootLayout({
 
         {/* color-scheme hint — помогает браузеру быстрее применить тему */}
         <meta name="color-scheme" content="light dark" />
-
-        {/* Explicitly set font-display: swap для более быстрой отрисовки текста */}
-        <link rel="preload" as="font" type="font/woff2" href="/_next/static/media/1bffadaabf893a1e-s.7cd81963.woff2" crossOrigin="anonymous" />
       </head>
       <body className="font-sans antialiased overflow-x-hidden">
         <Preloader />
