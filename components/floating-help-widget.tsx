@@ -82,7 +82,7 @@ export function FloatingHelpWidget() {
   if (!mounted) return null;
 
   return (
-    <div ref={ref} className="fixed bottom-8 right-8 z-50 flex flex-col items-end gap-3">
+    <div ref={ref} className="fixed bottom-8 right-8 z-50 flex flex-col items-end gap-3" style={{ pointerEvents: isOpen ? "auto" : "none" }}>
 
       {/* Panel */}
       <div
