@@ -124,6 +124,19 @@
     background-color: var(--primary);
     color: var(--primary-foreground);
   }
+  
+  /* CSS Containment for performance */
+  main {
+    contain: layout style paint;
+  }
+  
+  section {
+    contain: layout style;
+  }
+  
+  article {
+    contain: content;
+  }
 }
 
 /* Noise texture overlay */

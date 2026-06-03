@@ -276,7 +276,14 @@ export function ProcessSection() {
               <div className="flex items-start justify-between gap-2">
                 <Num n="04" dark={false} />
                 <div style={{ width: "45%", height: "100px", position: "relative" }}>
-                  <Image src="/paz.png" alt="Puzzle" fill style={{ objectFit: "contain" }} />
+                  <Image 
+                    src="/paz.png" 
+                    alt="Puzzle" 
+                    fill 
+                    loading="lazy"
+                    sizes="(max-width: 768px) 100px, 200px"
+                    style={{ objectFit: "contain" }} 
+                  />
                 </div>
               </div>
               <div className="mt-2 flex flex-col gap-1.5">
@@ -296,7 +303,14 @@ export function ProcessSection() {
               <Tags tags={["Присутствие в выдаче", "Реклама", "Карты"]} />
             </div>
             <div className="mt-4" style={{ height: "140px", position: "relative" }}>
-              <Image src="/graf.png" alt="Growth chart" fill style={{ objectFit: "contain" }} />
+              <Image 
+                src="/graf.png" 
+                alt="Growth chart" 
+                fill 
+                loading="lazy"
+                sizes="(max-width: 768px) 150px, 250px"
+                style={{ objectFit: "contain" }} 
+              />
             </div>
             <div className="mt-3">
               <Num n="01" dark />
@@ -306,7 +320,14 @@ export function ProcessSection() {
           <Card dark={false} index={1}>
             <Num n="02" dark={false} />
             <div className="my-3" style={{ height: "160px", position: "relative" }}>
-              <Image src="/peop.png" alt="People network" fill style={{ objectFit: "contain" }} />
+              <Image 
+                src="/peop.png" 
+                alt="People network" 
+                fill 
+                loading="lazy"
+                sizes="(max-width: 768px) 150px, 250px"
+                style={{ objectFit: "contain" }} 
+              />
             </div>
             <Title dark={false}>Конкуренты уже вкладываются в digital</Title>
             <div className="mt-3">
@@ -330,7 +351,14 @@ export function ProcessSection() {
             <div className="flex items-start justify-between">
               <Num n="04" dark={false} />
               <div style={{ width: "42%", height: "90px", position: "relative" }}>
-                <Image src="/paz.png" alt="Puzzle" fill style={{ objectFit: "contain" }} />
+                <Image 
+                src="/paz.png" 
+                alt="Puzzle" 
+                fill 
+                loading="lazy"
+                sizes="(max-width: 768px) 100px, 200px"
+                style={{ objectFit: "contain" }} 
+              />
               </div>
             </div>
             <div className="mt-2">

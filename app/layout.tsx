@@ -271,6 +271,12 @@ export default function RootLayout({
 
         {/* DNS Prefetch для Analytics и других сервисов */}
         <link rel="dns-prefetch" href="https://va.vercel-analytics.com" />
+        
+        {/* Preload critical OG image for social sharing */}
+        <link rel="preload" as="image" href="/og-image.jpg" type="image/jpeg" />
+        
+        {/* Preload logo for faster rendering */}
+        <link rel="preload" as="image" href="/logo.svg" type="image/svg+xml" />
 
         {/* JSON-LD Schema — Organization + WebSite + WebPage + LocalBusiness */}
         <script
@@ -282,13 +288,15 @@ export default function RootLayout({
         <meta name="color-scheme" content="light dark" />
       </head>
       <body className="font-sans antialiased overflow-x-hidden">
-        <Preloader />
-        <div className="noise" />
+        <div id="preloader-root" />
+        
         <ModalProvider>
+          <div className="noise" />
           {children}
           <FloatingHelpWidget />
         </ModalProvider>
         <Toaster position="top-center" />
+        {/* Analytics deferred - load after page interactive */}
         <Analytics />
       </body>
     </html>

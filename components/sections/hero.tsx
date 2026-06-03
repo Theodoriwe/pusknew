@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, ArrowRight } from "lucide-react";
 import { useModalStore } from "@/lib/store";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 const WORDS = ["продаж", "заявок", "клиентов", "выручки"];
 
@@ -43,6 +44,7 @@ export function HeroSection() {
   const [wordIdx, setWordIdx] = useState(0);
   const [started, setStarted] = useState(false);
   const [isHoveringTicker, setIsHoveringTicker] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
   const tickerRef = useRef<HTMLDivElement>(null);
 
@@ -53,10 +55,23 @@ export function HeroSection() {
   const y = useTransform(scrollYProgress, [0, 1], [0, -50]);
   const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
+  // Start animations when section comes into view (not immediately)
   useEffect(() => {
-    const t = setTimeout(() => setStarted(true), 200);
-    return () => clearTimeout(t);
-  }, []);
+    if (!sectionRef.current || prefersReducedMotion) return;
+    
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setStarted(true);
+          observer.disconnect(); // Only trigger once
+        }
+      },
+      { threshold: 0.1 }
+    );
+    
+    observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, [prefersReducedMotion]);
 
   useEffect(() => {
     const id = setInterval(() => setWordIdx((i) => (i + 1) % WORDS.length), 2600);
