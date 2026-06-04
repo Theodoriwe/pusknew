@@ -290,7 +290,14 @@ export function HeroSection() {
             <div className="flex flex-col gap-7 max-w-[440px] hero-left">
               <p
                 className="leading-[1.7]"
-                style={{ fontSize: "clamp(0.95rem, 1.8vw, 1.1rem)", color: "var(--muted-foreground)" }}
+                style={{ 
+                  fontSize: "clamp(0.95rem, 1.8vw, 1.1rem)", 
+                  color: "var(--muted-foreground)",
+                  fontFamily: "var(--font-sans)",
+                  fontWeight: 400,
+                  fontSynthesis: "none",
+                  textRendering: "optimizeLegibility",
+                }}
               >
                 Разрабатываем сайты, запускаем рекламу и выстраиваем
                 продажи в Сочи. Берём все продвижение под ключ —

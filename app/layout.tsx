@@ -12,6 +12,7 @@ const inter = Inter({
   variable: "--font-inter",
   display: "swap",
   weight: ["400", "500"], // добавь "600"/"700" только если явно используешь bold Inter
+  preload: true,
 });
 
 // ✅ Unbounded — оставляем как есть, preload: true важен если это LCP-шрифт

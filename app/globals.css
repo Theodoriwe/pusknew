@@ -542,13 +542,32 @@
     transition-duration: 0.01ms !important;
   }
 
+  /* Disable all Framer Motion animations */
+  [data-framer-motion],
   .hero-eyebrow,
   .hero-title,
   .hero-left,
   .hero-right,
   .hero-ping,
-  .hero-parallax { animation: none !important; }
+  .hero-parallax,
+  .word-enter,
+  .word-exit,
+  .animate-ticker,
+  .animate-ticker-reverse,
+  .animate-float,
+  .animate-float-delay-1,
+  .animate-float-delay-2,
+  .animate-pulse-glow,
+  .animate-morph,
+  .animate-orbit { 
+    animation: none !important;
+    transition: none !important;
+  }
 
   .word-enter,
-  .word-exit { animation: none !important; opacity: 1 !important; }
+  .word-exit { opacity: 1 !important; }
+
+  html {
+    scroll-behavior: auto !important;
+  }
 }
