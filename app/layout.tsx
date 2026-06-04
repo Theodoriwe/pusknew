@@ -10,7 +10,7 @@ import { FloatingHelpWidget } from "@/components/floating-help-widget";
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
   variable: "--font-inter",
-  display: "swap",
+  display: "fallback", // ✅ Ждет шрифт 100ms (не 3 сек!), потом показывает fallback. Быстрее, чем swap!
   weight: ["400", "500"], // добавь "600"/"700" только если явно используешь bold Inter
   preload: true,
 });
