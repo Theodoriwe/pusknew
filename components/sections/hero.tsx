@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { ArrowUpRight, ArrowRight } from "lucide-react";
 import { useModalStore } from "@/lib/store";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
+
+// ─── constants ────────────────────────────────────────────────────────────────
 
 const WORDS = ["продаж", "заявок", "клиентов", "выручки"];
 
@@ -15,11 +16,12 @@ const TICKER_ITEMS = [
   "Продвижение в геосервисах",
   "Telegram-боты",
   "SEO-продвижение",
-  "Таргетированная реклама", // ИСПРАВЛЕНО: опечатка "Тарегетированная"
+  "Таргетированная реклама",
 ];
 
-// Дублируем для бесшовной прокрутки
-const REPEATED_ITEMS = [...TICKER_ITEMS, ...TICKER_ITEMS, ...TICKER_ITEMS, ...TICKER_ITEMS];
+const TICKER_LOOP = [...TICKER_ITEMS, ...TICKER_ITEMS];
+
+// ─── useCounter ───────────────────────────────────────────────────────────────
 
 function useCounter(target: number, duration = 1600, started = false) {
   const [val, setVal] = useState(0);
@@ -39,63 +41,91 @@ function useCounter(target: number, duration = 1600, started = false) {
   return val;
 }
 
+// ─── HeroSection ──────────────────────────────────────────────────────────────
+
 export function HeroSection() {
   const { openContact, openQuiz } = useModalStore();
-  const [wordIdx, setWordIdx] = useState(0);
-  const [started, setStarted] = useState(false);
-  const [isHoveringTicker, setIsHoveringTicker] = useState(false);
   const prefersReducedMotion = useReducedMotion();
+
+  // mounted = false on server, true after first client render.
+  // Any className/state that differs SSR↔client must be gated on mounted.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+
+  // Word cycling — only runs on client, after mount.
+  const [displayIdx, setDisplayIdx] = useState(0);
+  const [phase, setPhase] = useState<"idle" | "exiting" | "entering">("idle");
+
+  // Counter start
+  const [started, setStarted] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const tickerRef = useRef<HTMLDivElement>(null);
 
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end start"],
-  });
-  const y = useTransform(scrollYProgress, [0, 1], [0, -50]);
-  const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
-
-  // Start animations when section comes into view (not immediately)
+  // IntersectionObserver for counters
   useEffect(() => {
     if (!sectionRef.current || prefersReducedMotion) return;
-    
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setStarted(true);
-          observer.disconnect(); // Only trigger once
-        }
+        if (entry.isIntersecting) { setStarted(true); observer.disconnect(); }
       },
       { threshold: 0.1 }
     );
-    
     observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, [prefersReducedMotion]);
 
+  // Sequential word swap — starts only after mount to prevent SSR mismatch.
+  // Server always renders: displayIdx=0, phase="idle", className="word-idle"
+  // Client picks up from that exact state and then starts cycling.
   useEffect(() => {
-    const id = setInterval(() => setWordIdx((i) => (i + 1) % WORDS.length), 2600);
-    return () => clearInterval(id);
-  }, []);
+    if (!mounted || prefersReducedMotion) return;
 
+    const id = setInterval(() => {
+      // 1. exit: current word slides up + fades (300ms)
+      setPhase("exiting");
+
+      const exitTimer = setTimeout(() => {
+        // 2. swap word, start enter animation (420ms)
+        setDisplayIdx((i) => (i + 1) % WORDS.length);
+        setPhase("entering");
+
+        const enterTimer = setTimeout(() => {
+          // 3. done — settle to idle
+          setPhase("idle");
+        }, 420);
+
+        return () => clearTimeout(enterTimer);
+      }, 300);
+
+      return () => clearTimeout(exitTimer);
+    }, 2600);
+
+    return () => clearInterval(id);
+  }, [mounted, prefersReducedMotion]);
+
+  // Counters
   const c1 = useCounter(340, 1400, started);
   const c2 = useCounter(7, 1200, started);
   const c3 = useCounter(4, 800, started);
 
-  // FIX: управляем willChange только во время hover
-  const handleTickerMouseEnter = () => {
-    setIsHoveringTicker(true);
-    if (tickerRef.current) {
-      tickerRef.current.style.animationPlayState = "paused";
-    }
-  };
+  // Ticker handlers
+  const pauseTicker = useCallback(() => {
+    if (tickerRef.current) tickerRef.current.style.animationPlayState = "paused";
+  }, []);
+  const resumeTicker = useCallback(() => {
+    if (tickerRef.current) tickerRef.current.style.animationPlayState = "running";
+  }, []);
 
-  const handleTickerMouseLeave = () => {
-    setIsHoveringTicker(false);
-    if (tickerRef.current) {
-      tickerRef.current.style.animationPlayState = "running";
-    }
-  };
+  // The word className is determined by phase, but ONLY after mount.
+  // Before mount (SSR + first paint) we always use "word-idle" so server
+  // and client produce identical HTML.
+  const wordClassName = !mounted
+    ? "word-idle"
+    : phase === "exiting"
+    ? "word-exit"
+    : phase === "entering"
+    ? "word-enter"
+    : "word-idle";
 
   return (
     <section
@@ -103,7 +133,7 @@ export function HeroSection() {
       className="relative bg-background overflow-hidden"
       style={{ minHeight: "100svh", display: "flex", flexDirection: "column" }}
     >
-      {/* Subtle dot grid */}
+      {/* Dot grid */}
       <div
         aria-hidden="true"
         className="absolute inset-0 pointer-events-none"
@@ -114,12 +144,13 @@ export function HeroSection() {
         }}
       />
 
-      {/* Large decorative arcs — top right */}
+      {/* Arcs — top right */}
       <svg
         aria-hidden="true"
         className="absolute pointer-events-none hidden sm:block"
         style={{ top: -120, right: -120, width: 600, height: 600, zIndex: 1, opacity: 0.055 }}
-        viewBox="0 0 600 600" fill="none"
+        viewBox="0 0 600 600"
+        fill="none"
       >
         <circle cx="300" cy="300" r="280" stroke="#549AF2" strokeWidth="1" />
         <circle cx="300" cy="300" r="220" stroke="#7B5AF5" strokeWidth="0.75" />
@@ -127,77 +158,62 @@ export function HeroSection() {
         <circle cx="300" cy="300" r="100" stroke="#7B5AF5" strokeWidth="0.5" />
       </svg>
 
-      {/* Bottom-left square grid accent */}
+      {/* Dot grid accent — bottom left */}
       <svg
         aria-hidden="true"
         className="absolute bottom-16 left-8 pointer-events-none hidden md:block"
         style={{ width: 140, height: 140, zIndex: 1, opacity: 0.1 }}
-        viewBox="0 0 140 140" fill="none"
+        viewBox="0 0 140 140"
+        fill="none"
       >
-        {[0, 1, 2, 3].map(row =>
-          [0, 1, 2, 3].map(col => (
-            <circle
-              key={`${row}-${col}`}
-              cx={col * 40 + 20}
-              cy={row * 40 + 20}
-              r="2"
-              fill="#549AF2"
-            />
+        {[0, 1, 2, 3].map((row) =>
+          [0, 1, 2, 3].map((col) => (
+            <circle key={`${row}-${col}`} cx={col * 40 + 20} cy={row * 40 + 20} r="2" fill="#549AF2" />
           ))
         )}
       </svg>
 
-      {/* Diagonal cross — left middle */}
+      {/* Cross — left middle */}
       <svg
         aria-hidden="true"
         className="absolute pointer-events-none hidden lg:block"
         style={{ top: "38%", left: "6%", width: 32, height: 32, zIndex: 1, opacity: 0.18 }}
-        viewBox="0 0 32 32" fill="none"
+        viewBox="0 0 32 32"
+        fill="none"
       >
         <line x1="16" y1="0" x2="16" y2="32" stroke="#549AF2" strokeWidth="1.5" />
         <line x1="0" y1="16" x2="32" y2="16" stroke="#549AF2" strokeWidth="1.5" />
         <circle cx="16" cy="16" r="3" fill="#549AF2" />
       </svg>
 
-      {/* Small rotated square — right middle */}
+      {/* Rotated square — right middle */}
       <svg
         aria-hidden="true"
         className="absolute pointer-events-none hidden lg:block"
         style={{ top: "55%", right: "8%", width: 44, height: 44, zIndex: 1, opacity: 0.12 }}
-        viewBox="0 0 44 44" fill="none"
+        viewBox="0 0 44 44"
+        fill="none"
       >
-        <rect
-          x="4" y="4" width="36" height="36" rx="4"
-          stroke="#7B5AF5" strokeWidth="1.5"
-          transform="rotate(18 22 22)"
-        />
+        <rect x="4" y="4" width="36" height="36" rx="4" stroke="#7B5AF5" strokeWidth="1.5" transform="rotate(18 22 22)" />
       </svg>
 
       {/* Main content */}
-      <motion.div
-        style={{ y, opacity, zIndex: 2 }} // FIX: убран sx={} (MUI проп, не работает в Next.js)
-        className="relative flex-1 flex flex-col"
-      >
+      <div className="hero-parallax relative flex-1 flex flex-col" style={{ zIndex: 2 }}>
         <div
           className="w-full max-w-[1360px] mx-auto px-5 sm:px-8 xl:px-10 flex flex-col flex-1"
           style={{ paddingTop: "var(--header-h, 72px)", zIndex: 2, position: "relative" }}
         >
+          {/* SEO H1 */}
+          <h1 className="sr-only">
+            Больше продаж, заявок, клиентов и выручки для бизнеса в Сочи —
+            агентство цифрового маркетинга
+          </h1>
+
           {/* Eyebrow */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="flex items-center gap-2.5 pt-10 sm:pt-14 pb-7 sm:pb-9"
-          >
-            <span className="relative flex h-2 w-2 shrink-0">
-              <span
-                className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-60"
-                style={{ background: "#00C48C" }}
-              />
-              <span
-                className="relative inline-flex h-2 w-2 rounded-full"
-                style={{ background: "#00C48C" }}
-              />
+          <div className="hero-eyebrow flex items-center gap-2.5 pt-10 sm:pt-14 pb-7 sm:pb-9">
+            <span className="relative flex h-2 w-2 shrink-0" aria-hidden="true">
+              <span className="absolute inline-flex h-full w-full rounded-full hero-ping" style={{ background: "#00C48C" }} />
+              <span className="relative inline-flex h-2 w-2 rounded-full" style={{ background: "#00C48C" }} />
             </span>
             <span
               className="text-[10px] sm:text-[11px] font-semibold tracking-[0.2em] uppercase"
@@ -205,25 +221,12 @@ export function HeroSection() {
             >
               Агентство цифрового маркетинга · Сочи
             </span>
-          </motion.div>
+          </div>
 
-          {/* 
-            SEO FIX:
-            - Большой заголовок стал div + aria-hidden="true"
-              (визуально главный, но невидим для поисковых ботов и скринридеров)
-            - H1 теперь подзаголовок с ключевыми словами
-          */}
-
-          {/* Большой декоративный заголовок — НЕ H1 */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.75, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
-            style={{ zIndex: 2, position: "relative" }}
-          >
+          {/* Decorative heading */}
+          <div aria-hidden="true" style={{ zIndex: 2, position: "relative" }}>
             <div
-              className="font-black select-none text-foreground"
-              aria-hidden="true" // скрыт от ботов и скринридеров — H1 находится ниже
+              className="font-black select-none text-foreground hero-title"
               style={{
                 fontFamily: "var(--font-display)",
                 fontSize: "clamp(2.8rem, 8.5vw, 9rem)",
@@ -231,39 +234,33 @@ export function HeroSection() {
                 letterSpacing: "-0.04em",
               }}
             >
-              {/* Line 1 */}
               <span className="block">Больше</span>
 
-              {/* Line 2 — animated word */}
+              {/*
+                Word switcher.
+                SSR + first paint: always "word-idle" (mounted=false).
+                After mount: phase drives the class — exit → swap → enter → idle.
+                suppressHydrationWarning on the inner span is not needed because
+                server and client now always agree on the initial render.
+              */}
               <span
                 className="block"
-                style={{
-                  height: "1.02em",
-                  overflow: "hidden",
-                  position: "relative",
-                }}
+                style={{ height: "1.02em", overflow: "hidden", position: "relative" }}
               >
-                <AnimatePresence mode="popLayout" initial={false}>
-                  <motion.span
-                    key={wordIdx}
-                    initial={{ y: "110%", opacity: 0 }}
-                    animate={{ y: "0%", opacity: 1 }}
-                    exit={{ y: "-110%", opacity: 0 }}
-                    transition={{ duration: 0.55, ease: [0.76, 0, 0.24, 1] }}
-                    style={{
-                      display: "block",
-                      position: "absolute",
-                      inset: 0,
-                      lineHeight: "1.02em",
-                      color: "var(--primary)",
-                    }}
-                  >
-                    {WORDS[wordIdx]}
-                  </motion.span>
-                </AnimatePresence>
+                <span
+                  className={wordClassName}
+                  style={{
+                    display: "block",
+                    position: "absolute",
+                    inset: 0,
+                    lineHeight: "1.02em",
+                    color: "var(--primary)",
+                  }}
+                >
+                  {WORDS[displayIdx]}
+                </span>
               </span>
 
-              {/* Line 3 */}
               <span className="block">
                 {"для "}
                 <span style={{ display: "inline", position: "relative", whiteSpace: "nowrap" }}>
@@ -284,93 +281,70 @@ export function HeroSection() {
                 </span>
               </span>
             </div>
-          </motion.div>
+          </div>
 
-          {/* Bottom block: H1 (SEO) + CTAs + stats */}
+          {/* Bottom block */}
           <div className="flex flex-col lg:flex-row lg:items-end gap-8 lg:gap-16 mt-10 sm:mt-14 pb-14 lg:pb-16">
 
             {/* Left */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.22, ease: [0.22, 1, 0.36, 1] }}
-              className="flex flex-col gap-7 max-w-[440px]"
-            >
-              
-              <h1
+            <div className="flex flex-col gap-7 max-w-[440px] hero-left">
+              <p
                 className="leading-[1.7]"
-                style={{
-                  fontSize: "clamp(0.95rem, 1.8vw, 1.1rem)",
-                  color: "var(--muted-foreground)",
-                }}
+                style={{ fontSize: "clamp(0.95rem, 1.8vw, 1.1rem)", color: "var(--muted-foreground)" }}
               >
                 Разрабатываем сайты, запускаем рекламу и выстраиваем
                 продажи в Сочи. Берём все продвижение под ключ —
                 вы занимаетесь бизнесом.
-              </h1>
+              </p>
 
-              {/* FIX: кнопки через CSS-классы вместо инлайн style-мутаций в onMouseEnter/Leave */}
               <div className="flex flex-col sm:flex-row gap-3">
                 <button
                   onClick={() => openContact()}
-                  className="
-                    group inline-flex items-center justify-center gap-2
-                    px-6 py-3.5 text-sm font-semibold rounded-xl
-                    transition-colors duration-200
-                    text-white
-                    hover:bg-primary hover:text-primary-foreground
-                  "
+                  aria-label="Обсудить проект с агентством"
+                  className="group inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-semibold rounded-xl transition-colors duration-200 text-white hover:opacity-90"
                   style={{ backgroundColor: "#549AF2" }}
                 >
                   Обсудить проект
                   <ArrowUpRight
+                    aria-hidden="true"
                     size={15}
                     className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-150"
                   />
                 </button>
                 <button
                   onClick={() => openQuiz()}
-                  className="
-                    group inline-flex items-center justify-center gap-2
-                    px-6 py-3.5 text-sm font-semibold rounded-xl
-                    transition-all duration-200
-                    hover:opacity-90
-                  "
+                  aria-label="Узнать стоимость услуг"
+                  className="group inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-semibold rounded-xl transition-all duration-200 hover:opacity-90"
                   style={{ backgroundColor: "#d0ef4c", color: "#000000" }}
                 >
                   Узнать стоимость
                   <ArrowRight
+                    aria-hidden="true"
                     size={15}
                     className="group-hover:translate-x-1 transition-transform duration-150"
                   />
                 </button>
               </div>
-
-
-            </motion.div>
+            </div>
 
             {/* Right — stats */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.34, ease: [0.22, 1, 0.36, 1] }}
-              className="w-full lg:flex-1"
-            >
+            <div className="w-full lg:flex-1 hero-right">
               <div
                 className="grid grid-cols-3 rounded-2xl overflow-hidden"
                 style={{ border: "1px solid var(--border)", background: "var(--card)" }}
               >
-                {[
-                  { n: c1, suffix: "%", label: "рост заявок", sub: "в среднем по клиентам" },
-                  { n: c2, prefix: "от ", suffix: "", label: "дней", sub: "до запуска проекта" },
-                  { n: c3, suffix: "+", label: "года на рынке", sub: "в цифровом-маркетинге" },
-                ].map((s, i) => (
+                {(
+                  [
+                    { n: c1, suffix: "%",  label: "рост заявок",    sub: "в среднем по клиентам" },
+                    { n: c2, prefix: "от ", suffix: "", label: "дней", sub: "до запуска проекта" },
+                    { n: c3, suffix: "+",  label: "года на рынке",  sub: "в цифровом маркетинге" },
+                  ] as const
+                ).map((s, i) => (
                   <div
                     key={i}
                     className="flex flex-col px-4 sm:px-6 py-5 sm:py-6"
                     style={{ borderLeft: i > 0 ? "1px solid var(--border)" : undefined }}
                   >
-                    {/* FIX: minWidth на цифрах — предотвращает CLS при анимации счётчика */}
                     <span
                       className="font-black leading-none tabular-nums"
                       style={{
@@ -382,7 +356,9 @@ export function HeroSection() {
                         display: "inline-block",
                       }}
                     >
-                      {s.prefix && <span style={{ color: "#549AF2" }}>{s.prefix}</span>}
+                      {"prefix" in s && s.prefix && (
+                        <span style={{ color: "#549AF2" }}>{s.prefix}</span>
+                      )}
                       {s.n}
                       <span style={{ color: "var(--primary)" }}>{s.suffix}</span>
                     </span>
@@ -401,17 +377,12 @@ export function HeroSection() {
                   </div>
                 ))}
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
-      </motion.div>
+      </div>
 
-      {/* 
-        Ticker — бесшовная прокрутка
-        FIX: @keyframes перенесены в globals.css (см. комментарий ниже)
-        FIX: willChange добавляется только при hover через state
-        FIX: логика паузы упрощена до animationPlayState — без сложных матричных вычислений
-      */}
+      {/* Ticker */}
       <div
         className="relative shrink-0 overflow-hidden"
         style={{
@@ -420,17 +391,14 @@ export function HeroSection() {
           background: "#549AF2",
           zIndex: 5,
         }}
-        onMouseEnter={handleTickerMouseEnter}
-        onMouseLeave={handleTickerMouseLeave}
+        onMouseEnter={pauseTicker}
+        onMouseLeave={resumeTicker}
       >
-        {/* Left gradient fade */}
         <div
           aria-hidden="true"
           className="absolute left-0 top-0 bottom-0 w-20 sm:w-40 pointer-events-none z-20"
           style={{ background: "linear-gradient(90deg, #549AF2 0%, rgba(84,154,242,0) 100%)" }}
         />
-
-        {/* Right gradient fade */}
         <div
           aria-hidden="true"
           className="absolute right-0 top-0 bottom-0 w-20 sm:w-40 pointer-events-none z-20"
@@ -439,49 +407,31 @@ export function HeroSection() {
 
         <div
           ref={tickerRef}
-          className="flex whitespace-nowrap py-4 sm:py-5 select-none w-max"
-          style={{
-            animation: "ticker-seamless 30s linear infinite",
-            // FIX: willChange только при hover
-            willChange: isHoveringTicker ? "transform" : "auto",
-          }}
+          className="flex whitespace-nowrap py-4 sm:py-5 select-none"
+          style={{ width: "max-content", animation: "ticker-seamless 30s linear infinite", willChange: "transform" }}
         >
-          {/* TRACK 1 */}
+          {/* Visible copy */}
           <div className="flex items-center shrink-0">
-            {REPEATED_ITEMS.map((label, i) => (
-              <div
-                key={`t1-${i}`}
-                className="inline-flex items-center gap-6 sm:gap-10 px-3 sm:px-5 shrink-0"
-              >
+            {TICKER_LOOP.map((label, i) => (
+              <div key={`a-${i}`} className="inline-flex items-center gap-6 sm:gap-10 px-3 sm:px-5 shrink-0">
                 <span
                   className="font-black whitespace-nowrap uppercase text-white"
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: "clamp(0.9rem, 1.8vw, 1.5rem)",
-                    letterSpacing: "0.02em",
-                  }}
+                  style={{ fontFamily: "var(--font-display)", fontSize: "clamp(0.9rem, 1.8vw, 1.5rem)", letterSpacing: "0.02em" }}
                 >
                   {label}
                 </span>
-                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full shrink-0" style={{ background: "#ffffff" }} />
+                <div aria-hidden="true" className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full shrink-0" style={{ background: "#ffffff" }} />
               </div>
             ))}
           </div>
 
-          {/* TRACK 2 — дубликат для бесшовности */}
-          <div className="flex items-center shrink-0" aria-hidden="true">
-            {REPEATED_ITEMS.map((label, i) => (
-              <div
-                key={`t2-${i}`}
-                className="inline-flex items-center gap-6 sm:gap-10 px-3 sm:px-5 shrink-0"
-              >
+          {/* Aria-hidden duplicate for seamless loop */}
+          <div aria-hidden="true" className="flex items-center shrink-0">
+            {TICKER_LOOP.map((label, i) => (
+              <div key={`b-${i}`} className="inline-flex items-center gap-6 sm:gap-10 px-3 sm:px-5 shrink-0">
                 <span
                   className="font-black whitespace-nowrap uppercase text-white"
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: "clamp(0.9rem, 1.8vw, 1.5rem)",
-                    letterSpacing: "0.02em",
-                  }}
+                  style={{ fontFamily: "var(--font-display)", fontSize: "clamp(0.9rem, 1.8vw, 1.5rem)", letterSpacing: "0.02em" }}
                 >
                   {label}
                 </span>
@@ -494,4 +444,3 @@ export function HeroSection() {
     </section>
   );
 }
-
