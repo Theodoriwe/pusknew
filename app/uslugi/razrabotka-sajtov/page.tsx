@@ -1,8 +1,10 @@
  "use client";
 
+import dynamic from "next/dynamic";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -27,6 +29,7 @@ import { Footer } from "@/components/footer";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { CasesSection } from "@/components/sections/cases";
 import { useModalStore } from "@/lib/store";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 function FAQItem({ q, a, isOpen, toggle }: { q: string; a: string; isOpen: boolean; toggle: () => void }) {
   return (
@@ -35,15 +38,15 @@ function FAQItem({ q, a, isOpen, toggle }: { q: string; a: string; isOpen: boole
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      className="border-b border-white/10 last:border-b-0 py-6"
+      className="border-b border-white/10 last:border-b-0 py-4 sm:py-6"
     >
       <button
         onClick={toggle}
         className="w-full flex items-start justify-between gap-4 text-left group"
       >
-        <span className="text-lg font-semibold text-white leading-tight flex-1 group-hover:text-primary transition-colors">{q}</span>
+        <span className="text-base sm:text-lg font-semibold text-white leading-tight flex-1 group-hover:text-primary transition-colors">{q}</span>
         <ChevronDown
-          className={`w-5 h-5 shrink-0 text-primary transition-transform duration-300 mt-1 ${isOpen ? "rotate-180" : ""}`}
+          className={`w-4 h-4 sm:w-5 sm:h-5 shrink-0 text-primary transition-transform duration-300 mt-0.5 sm:mt-1 ${isOpen ? "rotate-180" : ""}`}
         />
       </button>
       <AnimatePresence>
@@ -55,7 +58,7 @@ function FAQItem({ q, a, isOpen, toggle }: { q: string; a: string; isOpen: boole
             transition={{ duration: 0.3 }}
             className="overflow-hidden"
           >
-            <p className="text-white/60 leading-relaxed mt-4">{a}</p>
+            <p className="text-xs sm:text-base text-white/60 leading-relaxed mt-4">{a}</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -66,12 +69,24 @@ function FAQItem({ q, a, isOpen, toggle }: { q: string; a: string; isOpen: boole
 export default function RazrabotkaSajtovPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const { openQuiz } = useModalStore();
+  const prefersReducedMotion = useReducedMotion();
   const leftColRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const cardWrapperRef = useRef<HTMLDivElement>(null);
 
+  // Animation config based on reduced motion preference
+  const animConfig = useMemo(
+    () => ({
+      enabled: !prefersReducedMotion,
+      duration: prefersReducedMotion ? 0 : 0.6,
+      delay: prefersReducedMotion ? 0 : 0.1,
+    }),
+    [prefersReducedMotion]
+  );
+
   useEffect(() => {
     const mediaQuery = window.matchMedia("(min-width: 1024px)");
+    let rafId: number | null = null;
 
     const updateCardPosition = () => {
       if (!mediaQuery.matches) return;
@@ -82,11 +97,9 @@ export default function RazrabotkaSajtovPage() {
 
       if (!leftCol || !card || !cardWrapper) return;
 
-      const TOP_OFFSET = 128; // lg:top-32 = 8rem
-
+      const TOP_OFFSET = 128;
       const leftColRect = leftCol.getBoundingClientRect();
       const cardHeight = card.offsetHeight;
-
       const leftColBottom = leftColRect.bottom;
       const leftColTop = leftColRect.top;
 
@@ -109,6 +122,11 @@ export default function RazrabotkaSajtovPage() {
       }
     };
 
+    const handleScroll = () => {
+      if (rafId !== null) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(updateCardPosition);
+    };
+
     const handleResize = () => {
       if (!mediaQuery.matches) {
         const card = cardRef.current;
@@ -123,14 +141,15 @@ export default function RazrabotkaSajtovPage() {
       }
     };
 
-    window.addEventListener("scroll", updateCardPosition, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", handleResize, { passive: true });
 
     updateCardPosition();
 
     return () => {
-      window.removeEventListener("scroll", updateCardPosition);
+      window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleResize);
+      if (rafId !== null) cancelAnimationFrame(rafId);
     };
   }, []);
 
@@ -139,10 +158,10 @@ export default function RazrabotkaSajtovPage() {
       <Header />
       <main className="min-h-screen">
       {/* HERO */}
-      <section className="relative pt-32 pb-24 overflow-hidden bg-background">
-        <div className="container mx-auto px-4 sm:px-6">
+      <section className="relative pt-20 sm:pt-32 pb-24 overflow-hidden bg-background">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           {/* Breadcrumbs */}
-          <div className="max-w-7xl mx-auto mb-12">
+          <div className="max-w-7xl mx-auto mb-8 sm:mb-12">
             <Breadcrumbs
               items={[
                 { label: "Услуги", href: "/uslugi" },
@@ -152,7 +171,7 @@ export default function RazrabotkaSajtovPage() {
           </div>
 
           <div className="max-w-7xl mx-auto">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 items-center">
               {/* Left column - Content */}
               <div>
                 {/* Title */}
@@ -160,7 +179,7 @@ export default function RazrabotkaSajtovPage() {
                   initial={{ opacity: 0, y: 40, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
-                  className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 text-balance leading-[1.05]"
+                  className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 text-balance leading-[1.05]"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   Разработка
@@ -184,10 +203,10 @@ export default function RazrabotkaSajtovPage() {
                 >
                   <div
                     className="absolute inset-0 rounded-2xl blur-xl opacity-20"
-                    style={{ background: "#549AF2" }}
+                    style={{ background: "#549AF2", willChange: "transform" }}
                   />
-                  <div className="relative px-6 py-4 rounded-2xl border-2 border-primary/30 bg-background">
-                    <p className="text-base sm:text-lg font-semibold lg:whitespace-nowrap">
+                  <div className="relative px-4 sm:px-6 py-4 rounded-2xl border-2 border-primary/30 bg-background">
+                    <p className="text-sm sm:text-base lg:text-lg font-semibold">
                       Сайт, который приносит заявки —{" "}
                       <span className="text-primary whitespace-nowrap">от 7 дней и <span className="whitespace-nowrap">35 000 ₽</span></span>
                     </p>
@@ -199,7 +218,7 @@ export default function RazrabotkaSajtovPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.7, delay: 0.35, ease: "easeOut" }}
-                  className="flex flex-wrap gap-3 mb-8"
+                  className="flex flex-wrap gap-2 sm:gap-3 mb-8"
                 >
                   {[
                     { icon: Clock, text: "7 дней запуска" },
@@ -212,10 +231,9 @@ export default function RazrabotkaSajtovPage() {
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.4, delay: 0.4 + i * 0.08 }}
-                      whileHover={{ scale: 1.05, y: -2 }}
                       className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-primary/5 border border-primary/20 hover:bg-primary/10 hover:border-primary/40 transition-all"
                     >
-                      <item.icon className="w-4 h-4 text-primary shrink-0" strokeWidth={2} />
+                      <item.icon className="w-3 h-3 sm:w-4 sm:h-4 text-primary shrink-0" strokeWidth={2} />
                       <span className="text-xs sm:text-sm font-medium text-foreground/90">{item.text}</span>
                     </motion.div>
                   ))}
@@ -236,30 +254,25 @@ export default function RazrabotkaSajtovPage() {
                   >
                     <Link
                       href="/kontakty"
-                      className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground font-semibold rounded-full hover:bg-primary-hover transition-all hover:shadow-lg hover:shadow-primary/25 text-lg group"
+                      className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-primary text-primary-foreground font-semibold rounded-full hover:bg-primary-hover transition-all hover:shadow-lg hover:shadow-primary/25 text-sm sm:text-lg group"
                     >
                       Получить расчёт стоимости
                       <motion.div
                         animate={{ x: [0, 5, 0] }}
                         transition={{ duration: 2, repeat: Infinity }}
                       >
-                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                        <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
                       </motion.div>
                     </Link>
                   </motion.div>
                   <motion.div 
-                    className="flex items-center gap-2 px-4 py-4"
+                    className="flex items-center gap-2 px-4 py-3 sm:py-4"
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.6, delay: 0.6 }}
                   >
-                    <motion.div
-                      animate={{ scale: [1, 1.2, 1] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    >
-                      <Check className="w-5 h-5 text-accent shrink-0" />
-                    </motion.div>
-                    <span className="text-sm text-muted-foreground font-medium">
+                    <Check className="w-4 h-4 sm:w-5 sm:h-5 text-accent shrink-0" />
+                    <span className="text-xs sm:text-sm text-muted-foreground font-medium">
                       Отвечаем за 15 минут
                     </span>
                   </motion.div>
@@ -271,72 +284,70 @@ export default function RazrabotkaSajtovPage() {
                 initial={{ opacity: 0, x: 60, scale: 0.9 }}
                 animate={{ opacity: 1, x: 0, scale: 1 }}
                 transition={{ duration: 0.8, delay: 0.35, ease: "easeOut" }}
-                className="relative flex items-center justify-center"
+                className="relative flex items-center justify-center hidden sm:flex"
               >
-                <img 
+                <Image 
                   src="/dv.png" 
-                  alt="Code symbol"
-                  className="w-full h-auto"
+                  alt="Website development illustration"
+                  width={500}
+                  height={500}
+                  priority
+                  quality={85}
+                  className="w-full h-auto max-w-md"
                 />
               </motion.div>
             </div>
           </div>
         </div>
 
-        {/* Background decorations */}
-        <motion.div
-          className="absolute top-20 left-10 w-72 h-72 rounded-full blur-[120px] opacity-10 pointer-events-none"
+        {/* Optimized background decorations - static or reduced motion */}
+        <div
+          className="absolute top-20 left-4 sm:left-10 w-56 sm:w-72 h-56 sm:h-72 rounded-full blur-[80px] sm:blur-[120px] opacity-5 pointer-events-none"
           style={{ background: "radial-gradient(circle, #549AF2, transparent)" }}
-          animate={{ y: [0, 30, 0] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         />
-        <motion.div
-          className="absolute bottom-20 right-10 w-96 h-96 rounded-full blur-[140px] opacity-8 pointer-events-none"
+        <div
+          className="absolute bottom-0 right-4 sm:right-10 w-64 sm:w-96 h-64 sm:h-96 rounded-full blur-[80px] sm:blur-[140px] opacity-3 pointer-events-none"
           style={{ background: "radial-gradient(circle, #7B5AF5, transparent)" }}
-          animate={{ y: [0, -40, 0] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
         />
       </section>
 
       {/* ЧТО ВХОДИТ В УСЛУГУ */}
-      <section className="py-24 overflow-hidden relative" style={{ background: "#f6f7ff" }}>
-        {/* Background decorations */}
-        <motion.div
-          className="absolute top-0 right-0 w-80 h-80 rounded-full blur-[120px] opacity-10 pointer-events-none"
+      <section className="py-24 lg:py-32 overflow-hidden relative" style={{ background: "#f6f7ff" }}>
+        {/* Static background decoration - no animation */}
+        <div
+          className="absolute top-0 right-0 w-64 sm:w-80 h-64 sm:h-80 rounded-full blur-[80px] sm:blur-[120px] opacity-5 pointer-events-none"
           style={{ background: "#549AF2" }}
-          animate={{ y: [0, 40, 0] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         />
         
-        <div className="container mx-auto px-4 sm:px-6 relative z-10">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-6xl mx-auto">
             {/* Section header */}
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={animConfig.enabled ? { opacity: 0, y: 40 } : false}
+              whileInView={animConfig.enabled ? { opacity: 1, y: 0 } : false}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="text-center mb-16"
+              transition={animConfig.enabled ? { duration: 0.8, ease: "easeOut" } : {}}
+              className="text-center mb-12 lg:mb-16"
             >
               <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
+                initial={animConfig.enabled ? { opacity: 0, scale: 0.9 } : false}
+                whileInView={animConfig.enabled ? { opacity: 1, scale: 1 } : false}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-muted border border-[#549AF2]/20 text-sm font-medium text-foreground/70 mb-6"
+                transition={animConfig.enabled ? { duration: 0.6, delay: 0.1 } : {}}
+                className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-muted border border-[#549AF2]/20 text-xs sm:text-sm font-medium text-foreground/70 mb-6"
               >
-                <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
                 Полный спектр услуг в один сайт
               </motion.div>
               
               <h2
-                className="text-5xl sm:text-6xl font-bold mb-4 text-balance"
+                className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 text-balance"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 Разработка сайтов под ключ - от прототипа до <span className="text-primary font-black">первых заявок</span>
               </h2>
               
-              <p className="text-lg text-foreground/75 max-w-2xl mx-auto mt-6 font-medium">
+              <p className="text-base sm:text-lg text-foreground/75 max-w-2xl mx-auto mt-6 font-medium">
                 Мы не только создаем сайты, а строим работающие системы для привлечения клиентов
               </p>
             </motion.div>
@@ -487,16 +498,15 @@ export default function RazrabotkaSajtovPage() {
       </section>
 
       {/* СТОИМОСТЬ */}
-      <section className="py-32 lg:py-48 bg-muted/40 relative overflow-hidden">
-
+      <section className="py-24 lg:py-48 bg-muted/40 relative overflow-hidden">
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={animConfig.enabled ? { opacity: 0, y: 40 } : false}
+            whileInView={animConfig.enabled ? { opacity: 1, y: 0 } : false}
             viewport={{ once: true }}
-            className="text-center mb-20"
+            className="text-center mb-16 lg:mb-20"
           >
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted border border-primary/10 text-sm font-medium text-foreground/70 mb-6">
               <span className="w-1.5 h-1.5 rounded-full bg-primary" />
@@ -506,7 +516,7 @@ export default function RazrabotkaSajtovPage() {
               className="font-bold text-foreground"
               style={{
                 fontFamily: "var(--font-display)",
-                fontSize: "clamp(2.5rem, 6vw, 4rem)",
+                fontSize: "clamp(2rem, 5vw, 3.5rem)",
                 lineHeight: 1.1,
                 letterSpacing: "-0.03em",
               }}
@@ -515,7 +525,7 @@ export default function RazrabotkaSajtovPage() {
             </h2>
           </motion.div>
 
-          <div className="grid lg:grid-cols-3 gap-6 lg:gap-8">
+          <div className="grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             {[
               {
                 name: "Лендинг",
@@ -541,55 +551,55 @@ export default function RazrabotkaSajtovPage() {
             ].map((plan, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={animConfig.enabled ? { opacity: 0, y: 40 } : false}
+                whileInView={animConfig.enabled ? { opacity: 1, y: 0 } : false}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.1 }}
-                className={`relative p-10 rounded-3xl flex flex-col ${
+                transition={animConfig.enabled ? { duration: 0.6, delay: i * 0.1 } : {}}
+                className={`relative p-8 sm:p-10 rounded-3xl flex flex-col ${
                   plan.featured
                     ? "bg-foreground text-background lg:scale-105 lg:-my-4"
                     : "bg-card border border-border"
                 }`}
               >
                 {plan.featured && (
-                  <div className="absolute -top-4 left-10 px-4 py-2 bg-primary text-primary-foreground text-sm font-semibold rounded-full">
+                  <div className="absolute -top-4 left-8 sm:left-10 px-4 py-2 bg-primary text-primary-foreground text-sm font-semibold rounded-full">
                     Популярный
                   </div>
                 )}
 
                 <div className="mb-8">
-                  <h3 className="text-xl font-semibold mb-2" style={{ fontFamily: "var(--font-display)" }}>
+                  <h3 className="text-lg sm:text-xl font-semibold mb-2" style={{ fontFamily: "var(--font-display)" }}>
                     {plan.name}
                   </h3>
-                  <p className={plan.featured ? "text-background/60" : "text-muted-foreground"}>
+                  <p className={`text-sm sm:text-base ${plan.featured ? "text-background/60" : "text-muted-foreground"}`}>
                     {plan.desc}
                   </p>
                 </div>
 
                 <div className="mb-8 whitespace-nowrap">
-                  <span className={plan.featured ? "text-background/60" : "text-muted-foreground"}>
+                  <span className={`text-xs sm:text-sm ${plan.featured ? "text-background/60" : "text-muted-foreground"}`}>
                     ОТ{" "}
                   </span>
                   <span
                     className="font-bold"
                     style={{
                       fontFamily: "var(--font-display)",
-                      fontSize: "clamp(2.5rem, 4vw, 3.5rem)",
+                      fontSize: "clamp(2rem, 3vw, 3.5rem)",
                       letterSpacing: "-0.03em",
                     }}
                   >
                     {plan.price}
                   </span>
-                  <span className={plan.featured ? "text-background/60" : "text-muted-foreground"}>
+                  <span className={`text-xs sm:text-sm ${plan.featured ? "text-background/60" : "text-muted-foreground"}`}>
                     {" "}₽
                   </span>
                 </div>
 
-                <ul className="space-y-4 mb-10 flex-1">
+                <ul className="space-y-3 sm:space-y-4 mb-8 sm:mb-10 flex-1">
                   {plan.features.map((f, j) => (
                     <li key={j} className="flex items-start gap-3">
-                      <Check size={20} className={plan.featured ? "text-primary shrink-0" : "text-primary shrink-0"} />
-                      <span className={plan.featured ? "text-background/80" : "text-muted-foreground"}>{f}</span>
+                      <Check size={18} className={`${plan.featured ? "text-primary shrink-0" : "text-primary shrink-0"} mt-0.5`} />
+                      <span className={`text-sm sm:text-base ${plan.featured ? "text-background/80" : "text-muted-foreground"}`}>{f}</span>
                     </li>
                   ))}
                 </ul>
@@ -597,28 +607,28 @@ export default function RazrabotkaSajtovPage() {
                 <div className="flex flex-col gap-3 w-full">
                   <motion.button
                     onClick={openQuiz}
-                    className={`block w-full py-4 px-6 text-center font-semibold rounded-xl transition-all duration-300 flex items-center justify-center gap-2 ${
+                    className={`block w-full py-3 sm:py-4 px-6 text-center font-semibold rounded-xl transition-all duration-300 flex items-center justify-center gap-2 text-sm sm:text-base ${
                       plan.featured
                         ? "bg-primary text-primary-foreground hover:shadow-xl hover:shadow-primary/30"
                         : ""
                     }`}
                     style={!plan.featured ? { backgroundColor: "#d5ed5d", color: "#000000" } : {}}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+                    whileHover={animConfig.enabled ? { scale: 1.02 } : false}
+                    whileTap={animConfig.enabled ? { scale: 0.98 } : false}
                   >
-                    <Calculator className="w-5 h-5" />
-                    Калькулятор стоимости
+                    <Calculator className="w-4 h-4 sm:w-5 sm:h-5" />
+                    Калькулятор
                   </motion.button>
                   <Link
                     href="/kontakty"
-                    className={`block w-full py-4 px-6 text-center font-semibold rounded-xl transition-all duration-300 border-2 flex items-center justify-center gap-2 ${
+                    className={`block w-full py-3 sm:py-4 px-6 text-center font-semibold rounded-xl transition-all duration-300 border-2 flex items-center justify-center gap-2 text-sm sm:text-base ${
                       plan.featured
                         ? "border-primary text-primary-foreground hover:bg-primary/10"
                         : ""
                     }`}
                     style={!plan.featured ? { borderColor: "#d5ed5d", color: "#000000", backgroundColor: "transparent" } : {}}
                   >
-                    <Phone className="w-5 h-5" />
+                    <Phone className="w-4 h-4 sm:w-5 sm:h-5" />
                     Заказать звонок
                   </Link>
                 </div>
