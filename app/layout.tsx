@@ -5,12 +5,16 @@ import { ModalProvider } from "@/components/modal-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { FloatingHelpWidget } from "@/components/floating-help-widget";
 
+// ✅ Ограничили веса Inter — только то, что реально используется на сайте.
+//    Убрали лишние веса = меньше woff2-файлов = быстрее загрузка шрифтов.
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
   variable: "--font-inter",
   display: "swap",
+  weight: ["400", "500"], // добавь "600"/"700" только если явно используешь bold Inter
 });
 
+// ✅ Unbounded — оставляем как есть, preload: true важен если это LCP-шрифт
 const unbounded = Unbounded({
   subsets: ["cyrillic"],
   variable: "--font-unbounded",
@@ -54,8 +58,6 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL("https://agencypusk.ru"),
   alternates: {
-    // canonical рендерится Next.js автоматически из этого поля —
-    // дублировать через <link> в <head> не нужно
     canonical: "https://agencypusk.ru",
     languages: {
       "ru-RU": "https://agencypusk.ru",
@@ -77,7 +79,7 @@ export const metadata: Metadata = {
       "Разрабатываем сайты, запускаем рекламу и продвигаем бизнес в интернете. 200+ успешных проектов за 7 лет.",
     images: [
       {
-        url: "https://agencypusk.ru/og-image.jpg", // абсолютный URL обязателен
+        url: "https://agencypusk.ru/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "ПУСК — Агентство цифрового маркетинга в Москве",
@@ -92,7 +94,7 @@ export const metadata: Metadata = {
     title: "ПУСК — Агентство цифрового маркетинга",
     description:
       "Разрабатываем сайты, запускаем рекламу и продвигаем бизнес в интернете.",
-    images: ["https://agencypusk.ru/og-image.jpg"], // абсолютный URL
+    images: ["https://agencypusk.ru/og-image.jpg"],
   },
   robots: {
     index: true,
@@ -107,8 +109,8 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: "ЗАМЕНИ_НА_РЕАЛЬНЫЙ_КОД", // Google Search Console → Настройки → Подтверждение
-    yandex: "ЗАМЕНИ_НА_РЕАЛЬНЫЙ_КОД", // Яндекс Вебмастер → Проверка прав
+    google: "ЗАМЕНИ_НА_РЕАЛЬНЫЙ_КОД",
+    yandex: "ЗАМЕНИ_НА_РЕАЛЬНЫЙ_КОД",
   },
   icons: {
     icon: [
@@ -132,7 +134,6 @@ export const viewport: Viewport = {
   maximumScale: 5,
 };
 
-// JSON-LD Schema — вынесено в константу для читаемости
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
@@ -145,7 +146,7 @@ const jsonLd = {
       "logo": {
         "@type": "ImageObject",
         "@id": "https://agencypusk.ru/#logo",
-        "url": "https://agencypusk.ru/logo.png", // замени на реальный путь
+        "url": "https://agencypusk.ru/logo.png",
         "width": 200,
         "height": 60,
         "caption": "ПУСК — Агентство цифрового маркетинга",
@@ -153,7 +154,7 @@ const jsonLd = {
       "image": { "@id": "https://agencypusk.ru/#logo" },
       "description":
         "Агентство цифрового маркетинга в Сочи. Разрабатываем сайты, запускаем контекстную рекламу, SMM, SEO-продвижение.",
-      "foundingDate": "2024", // замени на реальный год
+      "foundingDate": "2024",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Сочи",
@@ -163,14 +164,8 @@ const jsonLd = {
         "@type": "ContactPoint",
         "contactType": "customer service",
         "availableLanguage": "Russian",
-        // "telephone": "+7-XXX-XXX-XX-XX", // раскомментируй и вставь номер
-        // "email": "hello@pusk.agency",
       },
-      "sameAs": [
-        // "https://vk.com/pusk_agency",
-        // "https://t.me/pusk_agency",
-        // "https://www.instagram.com/pusk_agency",
-      ],
+      "sameAs": [],
     },
     {
       "@type": "WebSite",
@@ -212,7 +207,6 @@ const jsonLd = {
       },
     },
     {
-      // LocalBusiness — даёт отдельный блок в Google с адресом, картой и отзывами
       "@type": ["LocalBusiness", "ProfessionalService"],
       "@id": "https://agencypusk.ru/#localbusiness",
       "name": "ПУСК",
@@ -223,13 +217,9 @@ const jsonLd = {
         "@type": "PostalAddress",
         "addressLocality": "Москва",
         "addressCountry": "RU",
-        // "streetAddress": "ул. Примерная, д. 1", // раскомментируй если есть офис
-        // "postalCode": "115522",
       },
       "geo": {
         "@type": "GeoCoordinates",
-        // "latitude": 55.7558,   // раскомментируй и вставь координаты офиса
-        // "longitude": 37.6173,
       },
       "openingHoursSpecification": [
         {
@@ -263,26 +253,24 @@ export default function RootLayout({
   return (
     <html lang="ru" className={`${inter.variable} ${unbounded.variable} overflow-x-hidden`}>
       <head>
-        {/* Preconnect для ускорения загрузки Google Fonts */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/*
+          ❌ УДАЛЕНО: preconnect к Google Fonts — шрифты грузятся локально через next/font,
+             эти теги только создавали лишние TCP-соединения.
 
-        {/* DNS Prefetch для Analytics и других сервисов */}
-        <link rel="dns-prefetch" href="https://va.vercel-analytics.com" />
-        
-        {/* Preload critical OG image for social sharing */}
-        <link rel="preload" as="image" href="/og-image.jpg" type="image/jpeg" />
-        
-        {/* Preload logo for faster rendering */}
-        <link rel="preload" as="image" href="/logo.svg" type="image/svg+xml" />
+          ❌ УДАЛЕНО: dns-prefetch к Vercel Analytics — сайт на VPS, не используется.
 
-        {/* JSON-LD Schema — Organization + WebSite + WebPage + LocalBusiness */}
+          ❌ УДАЛЕНО: preload og-image.jpg и logo.svg — они не LCP-элементы,
+             но браузер качал их с высоким приоритетом, отнимая полосу у критических ресурсов.
+             Если выяснится что logo — это LCP-элемент hero-секции, верни preload только для него.
+        */}
+
+        {/* JSON-LD Schema */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
 
-        {/* color-scheme hint — помогает браузеру быстрее применить тему */}
+        {/* color-scheme hint */}
         <meta name="color-scheme" content="light dark" />
       </head>
       <body className="font-sans antialiased overflow-x-hidden">
@@ -292,8 +280,6 @@ export default function RootLayout({
           <FloatingHelpWidget />
         </ModalProvider>
         <Toaster position="top-center" />
-        {/* Analytics deferred - load after page interactive */}
-      
       </body>
     </html>
   );
