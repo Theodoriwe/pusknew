@@ -19,17 +19,15 @@ const nextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
   experimental: {
-    // FIX: убраны lucide-react и framer-motion из optimizePackageImports
-    // они конфликтуют с Turbopack HMR и вызывают ошибку "module factory is not available"
     optimizePackageImports: ["@radix-ui/react-dialog"],
     parallelServerBuildTraces: true,
+     optimizeCss: true,
   },
-  // FIX: убран turbopack: {} — переходим на стабильный webpack
   headers: async () => {
     return [
       {
-        source: "/api/:path*",
-        headers: [{ key: "Cache-Control", value: "public, max-age=60, s-maxage=60" }],
+        source: "/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=3600, s-maxage=86400" }],
       },
       {
         source: "/:path*(.js)",
@@ -76,8 +74,8 @@ const nextConfig = {
         headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
       },
       {
-        source: "/:path*",
-        headers: [{ key: "Cache-Control", value: "public, max-age=3600, s-maxage=86400" }],
+        source: "/api/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=60, s-maxage=60" }],
       },
     ];
   },

@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Unbounded } from "next/font/google";
-import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { ModalProvider } from "@/components/modal-provider";
 import { Toaster } from "@/components/ui/sonner";
@@ -294,7 +293,7 @@ export default function RootLayout({
         </ModalProvider>
         <Toaster position="top-center" />
         {/* Analytics deferred - load after page interactive */}
-        <Analytics />
+      
       </body>
     </html>
   );
