@@ -20,7 +20,7 @@ const unbounded = Unbounded({
   subsets: ["cyrillic"],
   variable: "--font-unbounded",
   display: "swap",
-  weight: ["600", "700"],
+  weight: ["600", "700", "900"],
   preload: true,
 });
 

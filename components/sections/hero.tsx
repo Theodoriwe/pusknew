@@ -245,7 +245,11 @@ export function HeroSection() {
               */}
               <span
                 className="block"
-                style={{ height: "1.02em", overflow: "hidden", position: "relative" }}
+               style={{ 
+                height: "1.02em", 
+                overflow: mounted ? "hidden" : "visible", // до mount не обрезаем
+                  position: "relative" 
+                    }}
               >
                 <span
                   className={wordClassName}
