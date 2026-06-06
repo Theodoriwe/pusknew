@@ -4,6 +4,7 @@ import "./globals.css";
 import { ModalProvider } from "@/components/modal-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { FloatingHelpWidget } from "@/components/floating-help-widget";
+import { MotionProvider } from "@/components/motion-provider";
 
 
 const inter = localFont({
@@ -268,13 +269,15 @@ export default function RootLayout({
         <meta name="color-scheme" content="light dark" />
       </head>
       <body className="font-sans antialiased overflow-x-hidden">
-        <ModalProvider>
-          <div className="noise" />
-          {children}
-          <FloatingHelpWidget />
-        </ModalProvider>
-        <Toaster position="top-center" />
-      </body>
+  <MotionProvider>
+    <ModalProvider>
+      <div className="noise" />
+      {children}
+      <FloatingHelpWidget />
+    </ModalProvider>
+    <Toaster position="top-center" />
+  </MotionProvider>
+</body>
     </html>
   );
 }
