@@ -37,7 +37,7 @@ const organizationSchema = {
   address: {
     "@type": "PostalAddress",
     streetAddress: "ул. Примерная, 123",
-    addressLocality: "Москва",
+    addressLocality: "Сочи",
     addressCountry: "RU",
   },
   sameAs: [
@@ -85,14 +85,14 @@ const localBusinessSchema = {
   address: {
     "@type": "PostalAddress",
     streetAddress: "ул. Примерная, 123",
-    addressLocality: "Москва",
+    addressLocality: "Сочи",
     postalCode: "101000",
     addressCountry: "RU",
   },
   priceRange: "₽₽",
   areaServed: {
     "@type": "City",
-    name: "Москва",
+    name: "Сочи",
   },
   geo: {
     "@type": "GeoCoordinates",
@@ -170,7 +170,7 @@ const companySchema = {
   telephone: "+7-900-123-45-67",
   areaServed: {
     "@type": "City",
-    name: "Москва",
+    name: "Сочи",
   },
   knowsAbout: [
     "Веб-разработка",

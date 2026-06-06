@@ -5,32 +5,30 @@ import { ModalProvider } from "@/components/modal-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { FloatingHelpWidget } from "@/components/floating-help-widget";
 
-// ✅ Ограничили веса Inter — только то, что реально используется на сайте.
-//    Убрали лишние веса = меньше woff2-файлов = быстрее загрузка шрифтов.
+
 const inter = Inter({
-  subsets: ["latin", "cyrillic"],
+  subsets: ["cyrillic", "latin"],
   variable: "--font-inter",
-  display: "fallback", // ✅ Ждет шрифт 100ms (не 3 сек!), потом показывает fallback. Быстрее, чем swap!
-  weight: ["400", "500"], // добавь "600"/"700" только если явно используешь bold Inter
-  preload: true,
+  display: "swap",
+  weight: ["400", "500"],
+  preload: false, // ← не блокирует первый рендер
 });
 
-// ✅ Unbounded — оставляем как есть, preload: true важен если это LCP-шрифт
 const unbounded = Unbounded({
   subsets: ["cyrillic"],
   variable: "--font-unbounded",
   display: "swap",
   weight: ["600", "700", "900"],
-  preload: true,
+  preload: true, // ← только этот грузится сразу (LCP шрифт)
 });
 
 export const metadata: Metadata = {
   title: {
-    default: "ПУСК — Агентство цифрового маркетинга в Москве",
+    default: "ПУСК — Агентство цифрового маркетинга в Сочи",
     template: "%s | ПУСК",
   },
   description:
-    "Разрабатываем сайты, запускаем рекламу и продвигаем бизнес в интернете. Более 200 успешных проектов за 7 лет работы. Контекстная реклама, SMM, SEO, веб-разработка в Москве.",
+    "Разрабатываем сайты, запускаем рекламу и продвигаем бизнес в интернете. Более 200 успешных проектов за 7 лет работы. Контекстная реклама, SMM, SEO, веб-разработка в Сочи.",
   keywords: [
     "цифровой маркетинг",
     "разработка сайтов",
@@ -75,7 +73,7 @@ export const metadata: Metadata = {
     locale: "ru_RU",
     url: "https://agencypusk.ru",
     siteName: "ПУСК",
-    title: "ПУСК — Агентство цифрового маркетинга в Москве",
+    title: "ПУСК — Агентство цифрового маркетинга в Сочи",
     description:
       "Разрабатываем сайты, запускаем рекламу и продвигаем бизнес в интернете. 200+ успешных проектов за 7 лет.",
     images: [
@@ -83,7 +81,7 @@ export const metadata: Metadata = {
         url: "https://agencypusk.ru/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "ПУСК — Агентство цифрового маркетинга в Москве",
+        alt: "ПУСК — Агентство цифрового маркетинга в Сочи",
         type: "image/jpeg",
       },
     ],
@@ -189,7 +187,7 @@ const jsonLd = {
       "@type": "WebPage",
       "@id": "https://agencypusk.ru/#webpage",
       "url": "https://agencypusk.ru",
-      "name": "ПУСК — Агентство цифрового маркетинга в Москве",
+      "name": "ПУСК — Агентство цифрового маркетинга в Сочи",
       "description":
         "Разрабатываем сайты, запускаем рекламу и продвигаем бизнес в интернете.",
       "isPartOf": { "@id": "https://agencypusk.ru/#website" },
@@ -216,7 +214,7 @@ const jsonLd = {
       "priceRange": "$$",
       "address": {
         "@type": "PostalAddress",
-        "addressLocality": "Москва",
+        "addressLocality": "Сочи",
         "addressCountry": "RU",
       },
       "geo": {
