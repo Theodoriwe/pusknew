@@ -7,19 +7,19 @@ import { FloatingHelpWidget } from "@/components/floating-help-widget";
 
 
 const inter = Inter({
-  subsets: ["cyrillic", "latin"],
+  subsets: ["cyrillic"], // ← убрали latin
   variable: "--font-inter",
   display: "swap",
   weight: ["400", "500"],
-  preload: false, // ← не блокирует первый рендер
+  preload: true,
 });
 
 const unbounded = Unbounded({
-  subsets: ["cyrillic"],
+  subsets: ["cyrillic"], // ← убрали latin
   variable: "--font-unbounded",
   display: "swap",
   weight: ["600", "700", "900"],
-  preload: true, // ← только этот грузится сразу (LCP шрифт)
+  preload: true,
 });
 
 export const metadata: Metadata = {
