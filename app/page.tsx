@@ -61,7 +61,7 @@ export default function HomePage() {
         <QuizSection />
         <FAQSection />
       </main>
-      <Header />
+      {/*  <Header /> */}
       <Footer />
     </>
   );
