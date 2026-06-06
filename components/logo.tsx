@@ -19,7 +19,7 @@ export function Logo({ className, variant = "full", height = 32, dark = false }:
         alt="ПУСК логотип"
         width={Math.round(height * (8504.84 / 2645.88))}
         height={height}
-        priority
+        
         className="h-auto"
         style={{ width: "auto", height }}
       />
