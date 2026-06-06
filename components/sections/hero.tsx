@@ -203,12 +203,6 @@ export function HeroSection() {
           className="w-full max-w-[1360px] mx-auto px-5 sm:px-8 xl:px-10 flex flex-col flex-1"
           style={{ paddingTop: "var(--header-h, 72px)", zIndex: 2, position: "relative" }}
         >
-          {/* SEO H1 */}
-          <h1 className="sr-only">
-            Больше продаж, заявок, клиентов и выручки для бизнеса в Сочи —
-            агентство цифрового маркетинга
-          </h1>
-
           {/* Eyebrow */}
           <div className="hero-eyebrow flex items-center gap-2.5 pt-10 sm:pt-14 pb-7 sm:pb-9">
             <span className="relative flex h-2 w-2 shrink-0" aria-hidden="true">
@@ -223,8 +217,8 @@ export function HeroSection() {
             </span>
           </div>
 
-          {/* Decorative heading */}
-          <div aria-hidden="true" style={{ zIndex: 2, position: "relative" }}>
+          {/* Main heading */}
+          <h1 style={{ zIndex: 2, position: "relative" }}>
             <div
               className="font-black select-none text-foreground hero-title"
               style={{
@@ -285,7 +279,7 @@ export function HeroSection() {
                 </span>
               </span>
             </div>
-          </div>
+          </h1>
 
           {/* Bottom block */}
           <div className="flex flex-col lg:flex-row lg:items-end gap-8 lg:gap-16 mt-10 sm:mt-14 pb-14 lg:pb-16">
