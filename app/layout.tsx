@@ -271,7 +271,7 @@ export default function RootLayout({
         <ModalProvider>
           <div className="noise" />
           {children}
-          <FloatingHelpWidget />
+         {/*  <FloatingHelpWidget /> */}
         </ModalProvider>
         <Toaster position="top-center" />
       </body>
