@@ -1,24 +1,29 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Unbounded } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { ModalProvider } from "@/components/modal-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { FloatingHelpWidget } from "@/components/floating-help-widget";
 
 
-const inter = Inter({
-  subsets: ["cyrillic"], // ← убрали latin
+const inter = localFont({
+  src: [
+    { path: "../public/fonts/inter-400.woff2", weight: "400" },
+    { path: "../public/fonts/inter-500.woff2", weight: "500" },
+  ],
   variable: "--font-inter",
   display: "swap",
-  weight: ["400", "500"],
   preload: true,
 });
 
-const unbounded = Unbounded({
-  subsets: ["cyrillic"], // ← убрали latin
+const unbounded = localFont({
+  src: [
+    { path: "../public/fonts/unbounded-600.woff2", weight: "600" },
+    { path: "../public/fonts/unbounded-700.woff2", weight: "700" },
+    { path: "../public/fonts/unbounded-900.woff2", weight: "900" },
+  ],
   variable: "--font-unbounded",
   display: "swap",
-  weight: ["600", "700", "900"],
   preload: true,
 });
 
