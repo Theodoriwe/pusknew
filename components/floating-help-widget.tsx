@@ -162,6 +162,7 @@ export function FloatingHelpWidget() {
             : unreadCount > 0
             ? "0 4px 20px rgba(239, 68, 68, 0.4)"
             : "0 4px 20px rgba(213, 237, 93, 0.25)",
+          pointerEvents: "auto",
         }}
         aria-label="Открыть меню помощи"
       >

@@ -16,6 +16,7 @@ const STORAGE_KEY = "chat-messages";
 const STORAGE_EXPIRY_KEY = "chat-messages-expiry";
 const STORAGE_LAST_ID_KEY = "chat-last-message-id";
 const SESSION_KEY = "chat-session-id";
+const HAS_USER_MESSAGES_KEY = "chat-has-user-messages";
 const EXPIRY_TIME = 24 * 60 * 60 * 1000;
 const WORKER_URL = "https://pusknew.theodoriwe.workers.dev";
 
@@ -36,6 +37,8 @@ export function ChatModal() {
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId, setSessionId] = useState<string>("");
   const [lastMessageId, setLastMessageId] = useState("0");
+  // Polling запускается только если юзер когда-либо писал
+  const [hasUserMessages, setHasUserMessages] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const pollingRef = useRef<NodeJS.Timeout | null>(null);
@@ -51,7 +54,6 @@ export function ChatModal() {
     }
     setSessionId(sid);
 
-    // Восстанавливаем lastMessageId
     const savedLastId = localStorage.getItem(STORAGE_LAST_ID_KEY);
     if (savedLastId) setLastMessageId(savedLastId);
 
@@ -61,15 +63,21 @@ export function ChatModal() {
 
       if (stored && expiry && Date.now() < parseInt(expiry, 10)) {
         const parsed = JSON.parse(stored);
-        setMessages(parsed.map((msg: any) => ({
+        const restoredMessages = parsed.map((msg: any) => ({
           ...msg,
           sender: msg.sender === "bot" ? "operator" : msg.sender,
           timestamp: toDate(msg.timestamp),
-        })));
+        }));
+        setMessages(restoredMessages);
+
+        // Проверяем были ли сообщения от юзера в прошлой сессии
+        const hadUserMessages = restoredMessages.some((m: Message) => m.sender === "user");
+        if (hadUserMessages) setHasUserMessages(true);
       } else {
         localStorage.removeItem(STORAGE_KEY);
         localStorage.removeItem(STORAGE_EXPIRY_KEY);
         localStorage.removeItem(STORAGE_LAST_ID_KEY);
+        localStorage.removeItem(HAS_USER_MESSAGES_KEY);
         setMessages([{
           id: "welcome",
           text: "Привет! 👋 Чем могу помочь?",
@@ -105,9 +113,9 @@ export function ChatModal() {
     }
   }, [lastMessageId]);
 
-  // Polling
+  // Polling — запускается ТОЛЬКО если юзер когда-либо писал
   useEffect(() => {
-    if (!sessionId || !initialized) return;
+    if (!sessionId || !initialized || !hasUserMessages) return;
 
     const poll = async () => {
       try {
@@ -125,7 +133,6 @@ export function ChatModal() {
           }));
 
           setMessages(prev => {
-            // Дополнительная защита от дублей по id
             const existingIds = new Set(prev.map(m => m.id));
             const unique = newMessages.filter(m => !existingIds.has(m.id));
             return unique.length > 0 ? [...prev, ...unique] : prev;
@@ -143,11 +150,14 @@ export function ChatModal() {
       } catch {}
     };
 
-    pollingRef.current = setInterval(poll, 3000);
+    // Когда чат открыт — каждые 3с, закрыт — каждые 15с
+    const interval = isChatOpen ? 3000 : 15000;
+    pollingRef.current = setInterval(poll, interval);
+
     return () => {
       if (pollingRef.current) clearInterval(pollingRef.current);
     };
-  }, [sessionId, initialized, lastMessageId]);
+  }, [sessionId, initialized, hasUserMessages, lastMessageId, isChatOpen]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -214,6 +224,11 @@ export function ChatModal() {
     setMessages(prev => [...prev, userMessage]);
     setInputValue("");
     setIsLoading(true);
+
+    // Включаем polling — юзер написал первое сообщение
+    if (!hasUserMessages) {
+      setHasUserMessages(true);
+    }
 
     try {
       await fetch(`${WORKER_URL}/chat`, {
