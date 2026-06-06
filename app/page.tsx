@@ -50,7 +50,6 @@ export default function HomePage() {
           }),
         }}
       />
-      <Header />
       <main className="overflow-x-hidden">
         <HeroSection />
         <PainPointsSection />
@@ -62,6 +61,7 @@ export default function HomePage() {
         <QuizSection />
         <FAQSection />
       </main>
+      <Header />
       <Footer />
     </>
   );
