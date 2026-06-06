@@ -21,7 +21,7 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ["@radix-ui/react-dialog"],
     parallelServerBuildTraces: true,
-     optimizeCss: true,
+      // optimizeCss: true,
   },
   headers: async () => {
     return [
