@@ -257,8 +257,10 @@ export default function RootLayout({
   return (
     <html lang="ru" className={`${inter.variable} ${unbounded.variable} overflow-x-hidden`}>
       <head>
-         <link rel="preload" href="/_next/static/media/b98cf4dce8130f85-s.p.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
-  <link rel="preload" href="/_next/static/media/a4b6c085eda64c4e-s.p.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+         {/* Unbounded 900 — LCP заголовок */}
+        <link rel="preload" href="/_next/static/media/a4b6c085eda64c4e-s.p.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+          {/* Inter 400 — основной текст */}
+        <link rel="preload" href="/_next/static/media/7ed82c5765395a01-s.p.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
 
         {/* JSON-LD Schema */}
         <script
