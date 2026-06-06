@@ -3,7 +3,7 @@
 import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion, useInView } from "framer-motion";
+import { m, useInView } from "framer-motion";
 import { ArrowRight, ArrowUpRight, Check, TrendingUp, Globe, Smartphone, ShoppingCart, Palette, Zap, Search, Target, Users, TrendingDown, BarChart3, BarChart2, LineChart, MousePointerClick, RefreshCw, MapPin, Star, MessageSquare, Eye, Navigation, Bot, Cpu, Plug, BrainCircuit, Share2, PenTool, Megaphone, UserCheck, MessageCircle, ChartSpline, Settings, Award, Layers, Lightbulb, Repeat } from "lucide-react";
 
 const iconMap = {
@@ -290,12 +290,12 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               {/* Left Content */}
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, x: -40 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               >
-                <motion.h1
+                <m.h1
                   className="font-black mb-6"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -355,9 +355,9 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                       {data.title}
                     </span>
                   )}
-                </motion.h1>
+                </m.h1>
 
-                <motion.p
+                <m.p
                   className="text-lg leading-relaxed mb-10"
                   style={{ color: "rgba(255, 255, 255, 0.85)" }}
                   initial={{ opacity: 0, y: 20 }}
@@ -365,9 +365,9 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                   transition={{ duration: 0.6, delay: 0.2 }}
                 >
                   {data.subtitle}
-                </motion.p>
+                </m.p>
 
-                <motion.div
+                <m.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.3 }}
@@ -396,11 +396,11 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                     Бесплатный аудит
                     <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                   </button>
-                </motion.div>
-              </motion.div>
+                </m.div>
+              </m.div>
 
               {/* Right Visual */}
-              <motion.div
+              <m.div
                 className="relative h-96 flex items-center justify-center"
                 initial={{ opacity: 0, x: 40 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -409,7 +409,7 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                 {/* Social Media Icons - Rainbow Arc */}
                 <div className="absolute inset-0 flex items-center justify-center">
                   {/* Instagram Icon - Left Arc */}
-                  <motion.div
+                  <m.div
                     className="absolute"
                     style={{
                       left: "8%",
@@ -427,10 +427,10 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                       className="object-contain drop-shadow-lg"
                       style={{ filter: "invert(1)" }}
                     />
-                  </motion.div>
+                  </m.div>
 
                   {/* VK Icon - Center Top Arc */}
-                  <motion.div
+                  <m.div
                     className="absolute"
                     style={{
                       left: "50%",
@@ -449,10 +449,10 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                       className="object-contain drop-shadow-lg"
                       style={{ filter: "invert(1)" }}
                     />
-                  </motion.div>
+                  </m.div>
 
                   {/* Telegram Icon - Right Arc */}
-                  <motion.div
+                  <m.div
                     className="absolute"
                     style={{
                       left: "92%",
@@ -470,9 +470,9 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                       className="object-contain drop-shadow-lg"
                       style={{ filter: "invert(1)" }}
                     />
-                  </motion.div>
+                  </m.div>
                 </div>
-              </motion.div>
+              </m.div>
             </div>
 
           </div>
@@ -498,12 +498,12 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               {/* Left Content */}
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, x: -40 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               >
-                <motion.h1
+                <m.h1
                   className="font-black mb-6"
                   style={{
                     fontFamily: "var(--font-display)",
@@ -517,9 +517,9 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                   transition={{ duration: 0.6, delay: 0.1 }}
                 >
                   {data.title}
-                </motion.h1>
+                </m.h1>
 
-                <motion.p
+                <m.p
                   className="text-lg leading-relaxed mb-10"
                   style={{ color: "rgba(255, 255, 255, 0.85)" }}
                   initial={{ opacity: 0, y: 20 }}
@@ -527,9 +527,9 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                   transition={{ duration: 0.6, delay: 0.2 }}
                 >
                   {data.subtitle}
-                </motion.p>
+                </m.p>
 
-                <motion.div
+                <m.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.3 }}
@@ -558,18 +558,18 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                     Запросить демо
                     <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                   </button>
-                </motion.div>
-              </motion.div>
+                </m.div>
+              </m.div>
 
               {/* Right Visual - Telegram 3D Icon */}
-              <motion.div
+              <m.div
                 className="relative flex items-center justify-center overflow-visible px-2 md:px-0"
                 style={{ minHeight: "280px" }}
                 initial={{ opacity: 0, x: 40 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               >
-                <motion.div
+                <m.div
                   className="relative w-full max-w-[280px] sm:max-w-[320px] md:max-w-[360px] lg:max-w-[560px] aspect-square"
                   style={{
                     rotateZ: 15,
@@ -585,8 +585,8 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                       filter: "drop-shadow(0 36px 80px rgba(0, 0, 0, 0.22))",
                     }}
                   />
-                </motion.div>
-              </motion.div>
+                </m.div>
+              </m.div>
             </div>
 
           </div>
@@ -609,12 +609,12 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               {/* Left Content */}
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, x: -40 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               >
-                <motion.h1
+                <m.h1
                   className="font-black mb-6"
                   style={{
                     fontFamily: "var(--font-display)",
@@ -636,9 +636,9 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                   ) : (
                     <span style={{ color: "var(--primary)" }}>{data.title}</span>
                   )}
-                </motion.h1>
+                </m.h1>
 
-                <motion.p
+                <m.p
                   className="text-lg leading-relaxed mb-10"
                   style={{ color: "var(--muted-foreground)" }}
                   initial={{ opacity: 0, y: 20 }}
@@ -646,9 +646,9 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                   transition={{ duration: 0.6, delay: 0.2 }}
                 >
                   {data.subtitle}
-                </motion.p>
+                </m.p>
 
-                <motion.div
+                <m.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.3 }}
@@ -677,11 +677,11 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                     Бесплатный аудит
                     <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                   </button>
-                </motion.div>
-              </motion.div>
+                </m.div>
+              </m.div>
 
               {/* Right Visual */}
-              <motion.div
+              <m.div
                 className="relative h-96 flex items-center justify-center"
                 initial={{ opacity: 0, x: 40 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -741,7 +741,7 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                 </div>
 
                 {/* Google Maps Icon - Top Right */}
-                <motion.div
+                <m.div
                   className="absolute"
                   style={{ top: "5%", right: "8%" }}
                   initial={{ opacity: 0 }}
@@ -757,10 +757,10 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                       className="object-contain"
                     />
                   </div>
-                </motion.div>
+                </m.div>
 
                 {/* Yandex Maps Icon - Bottom Left */}
-                <motion.div
+                <m.div
                   className="absolute"
                   style={{ bottom: "8%", left: "5%" }}
                   initial={{ opacity: 0 }}
@@ -776,10 +776,10 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                       className="object-contain"
                     />
                   </div>
-                </motion.div>
+                </m.div>
 
                 {/* 2GIS Icon - Bottom Right */}
-                <motion.div
+                <m.div
                   className="absolute"
                   style={{ bottom: "10%", right: "6%" }}
                   initial={{ opacity: 0 }}
@@ -795,8 +795,8 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                       className="object-contain"
                     />
                   </div>
-                </motion.div>
-              </motion.div>
+                </m.div>
+              </m.div>
             </div>
 
           </div>
@@ -809,7 +809,7 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
           style={data.slug === "telegram-bots" ? undefined : { backgroundColor: data.slug === "smm" ? "white" : "#549AF2" }}
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
+            <m.div
               ref={ref}
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
@@ -836,14 +836,14 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
               >
                 {data.featuresSubtitle || "Мы собираем решение под задачи бизнеса: от сценариев общения до интеграций, чтобы бот помогал не только отвечать, но и продавать."}
               </p>
-            </motion.div>
+            </m.div>
 
             {data.slug === "telegram-bots" ? (
               <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
                 {data.features.map((feature, index) => {
                   const IconComponent = iconMap[feature.icon];
                   return (
-                    <motion.div
+                    <m.div
                       key={feature.title}
                       initial={{ opacity: 0, y: 24 }}
                       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
@@ -868,7 +868,7 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                       <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                         {feature.description}
                       </p>
-                    </motion.div>
+                    </m.div>
                   );
                 })}
               </div>
@@ -884,7 +884,7 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                   }
 
                   return (
-                    <motion.div
+                    <m.div
                       key={feature.title}
                       initial={{ opacity: 0, y: 20 }}
                       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
@@ -907,7 +907,7 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                         {(() => {
                           const IconComponent = iconMap[feature.icon];
                           return (
-                            <motion.div
+                            <m.div
                               className={`w-16 h-16 rounded-xl flex items-center justify-center mb-6 transition-colors duration-300 ${
                                 data.slug === "smm" ? "" : "bg-primary/15 group-hover:bg-primary/20"
                               }`}
@@ -915,7 +915,7 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                               whileHover={{ rotate: 5 }}
                             >
                               <IconComponent className={`w-8 h-8 ${data.slug === "smm" ? "text-white" : "text-primary"}`} />
-                            </motion.div>
+                            </m.div>
                           );
                         })()}
 
@@ -943,7 +943,7 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                           </div>
                         )}
                       </div>
-                    </motion.div>
+                    </m.div>
                   );
                 })}
               </div>
@@ -957,7 +957,7 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               {data.metrics.map((metric, index) => (
-                <motion.div
+                <m.div
                   key={metric.label}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -974,7 +974,7 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                   <p className="text-sm text-muted-foreground">
                     {metric.label}
                   </p>
-                </motion.div>
+                </m.div>
               ))}
             </div>
           </div>
@@ -986,7 +986,7 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
           <section className="py-20 bg-background">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="grid lg:grid-cols-[0.9fr_1.1fr] gap-10 lg:gap-14 items-start">
-                <motion.div
+                <m.div
                   initial={{ opacity: 0, y: 24 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -1032,7 +1032,7 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </m.div>
 
                 <div className="relative">
                   <div className="absolute left-6 top-0 bottom-0 hidden lg:block w-px bg-border" />
@@ -1042,7 +1042,7 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                       const Icon = index === 0 ? Bot : index === 2 ? Smartphone : Check;
 
                       return (
-                        <motion.div
+                        <m.div
                           key={step.title}
                           initial={{ opacity: 0, y: 24 }}
                           whileInView={{ opacity: 1, y: 0 }}
@@ -1110,7 +1110,7 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                               </div>
                             </div>
                           </div>
-                        </motion.div>
+                        </m.div>
                       );
                     })}
                   </div>
@@ -1121,7 +1121,7 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
         ) : (
           <section className="py-20 bg-background">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -1137,14 +1137,14 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                 <p className="text-muted-foreground max-w-2xl mx-auto">
                   Четырёхэтапный процесс, который гарантирует результаты и полную прозрачность
                 </p>
-              </motion.div>
+              </m.div>
 
               <div className="relative">
                 <div className="hidden lg:block absolute top-32 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-4 lg:gap-6">
                   {data.steps.map((step, index) => (
-                    <motion.div
+                    <m.div
                       key={step.title}
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
@@ -1185,13 +1185,13 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                           <div className="w-1 h-8 bg-gradient-to-b from-primary/50 to-primary/20 rounded-full" />
                         </div>
                       )}
-                    </motion.div>
+                    </m.div>
                   ))}
                 </div>
               </div>
 
               {data.slug !== "telegram-bots" && (
-                <motion.div
+                <m.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -1216,7 +1216,7 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                       <p className="text-sm text-muted-foreground">поддержка и консультации</p>
                     </div>
                   </div>
-                </motion.div>
+                </m.div>
               )}
             </div>
           </section>
@@ -1229,7 +1229,7 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
         <section className="py-32 lg:py-48 bg-muted/40">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -1250,11 +1250,11 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
               >
                 Выберите подходящий тариф
               </h2>
-            </motion.div>
+            </m.div>
 
             <div className="grid lg:grid-cols-3 gap-6 lg:gap-8">
               {data.prices.map((price, i) => (
-                <motion.div
+                <m.div
                   key={price.title}
                   initial={{ opacity: 0, y: 40 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -1307,7 +1307,7 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                   >
                     Выбрать тариф
                   </Button>
-                </motion.div>
+                </m.div>
               ))}
             </div>
           </div>

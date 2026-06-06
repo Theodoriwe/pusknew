@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { X, Send, CheckCircle2, Loader2 } from "lucide-react";
 import { useModalStore } from "@/lib/store";
 import { Button } from "@/components/ui/button";
@@ -140,7 +140,7 @@ export function ContactModal() {
   return (
     <AnimatePresence>
       {isContactOpen && (
-        <motion.div
+        <m.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -148,7 +148,7 @@ export function ContactModal() {
           className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-foreground/60 backdrop-blur-sm p-0 sm:p-4"
           onClick={handleOverlayClick}
         >
-          <motion.div
+          <m.div
             ref={modalRef}
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -169,19 +169,19 @@ export function ContactModal() {
             </button>
 
             {formState === "success" ? (
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 className="p-8 sm:p-10 text-center"
               >
-                <motion.div
+                <m.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ delay: 0.1, type: "spring", stiffness: 200 }}
                   className="w-16 h-16 mx-auto mb-6 rounded-full bg-accent flex items-center justify-center"
                 >
                   <CheckCircle2 className="w-8 h-8 text-accent-foreground" />
-                </motion.div>
+                </m.div>
                 <h3 className="text-2xl font-semibold mb-2">Заявка принята!</h3>
                 <p className="text-muted-foreground mb-6">
                   Напишем вам в ближайшее время
@@ -189,7 +189,7 @@ export function ContactModal() {
                 <Button onClick={closeContact} variant="outline" size="lg">
                   Закрыть
                 </Button>
-              </motion.div>
+              </m.div>
             ) : (
               <div className="p-6 sm:p-8">
                 <h2
@@ -344,8 +344,8 @@ export function ContactModal() {
                 </form>
               </div>
             )}
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       )}
     </AnimatePresence>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { m, useInView } from "framer-motion";
 import { ArrowUpRight, Sparkles, TrendingUp, Eye, Handshake, Users, Palette, BarChart3, MessageSquare, Code2 } from "lucide-react";
 import Link from "next/link";
 
@@ -78,14 +78,14 @@ export function TeamSection() {
 
       <div className="max-w-[1200px] mx-auto px-6 lg:px-8 relative">
         {/* Header */}
-        <motion.div
+        <m.div
           ref={ref}
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.7 }}
           className="mb-20 text-center"
         >
-          <motion.div
+          <m.div
             initial={{ scale: 0 }}
             animate={isInView ? { scale: 1 } : { scale: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
@@ -94,7 +94,7 @@ export function TeamSection() {
           >
             <span className="w-1.5 h-1.5 rounded-full" style={{ background: memberColors[0] }} />
             Наша команда
-          </motion.div>
+          </m.div>
           <h2 
             className="font-black text-foreground mb-6"
             style={{ 
@@ -111,12 +111,12 @@ export function TeamSection() {
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             Специалисты по созданию сайтов, рекламе и цифровому-маркетингу
           </p>
-        </motion.div>
+        </m.div>
 
 
 
         {/* Team Members - Asymmetric Grid */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
@@ -128,7 +128,7 @@ export function TeamSection() {
               const isMedium = member.size === "medium";
 
               return (
-                <motion.a
+                <m.a
                   key={member.name}
                   href={`https://t.me/${member.telegram.slice(1)}`}
                   target="_blank"
@@ -194,13 +194,13 @@ export function TeamSection() {
                   </svg>
 
                   {/* Corner glow */}
-                  <motion.div 
+                  <m.div 
                     className="absolute -top-16 -right-16 w-32 h-32 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                     style={{ background: accentColor }}
                   />
 
                   {/* Border glow on hover */}
-                  <motion.div
+                  <m.div
                     className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
                     style={{
                       background: `radial-gradient(circle at 100% 0%, ${accentColor}30, transparent 80%)`,
@@ -210,7 +210,7 @@ export function TeamSection() {
                   <div className={`relative z-10 h-full flex flex-col ${isLarge ? "p-8 lg:p-10" : "p-6 lg:p-8"}`}>
                     {/* Top accent */}
                     <div className="flex items-center gap-3 mb-6 lg:mb-8">
-                      <motion.div 
+                      <m.div 
                         className="w-1.5 h-8 rounded-full"
                         style={{ background: accentColor }}
                       />
@@ -235,13 +235,13 @@ export function TeamSection() {
 
                     {/* Footer */}
                     <div className="pt-6 lg:pt-8 mt-6 lg:mt-8 border-t border-border/30 flex items-center justify-between">
-                      <motion.span 
+                      <m.span 
                         className="text-xs font-medium text-muted-foreground"
                         whileHover={{ x: 2 }}
                       >
                         {member.telegram}
-                      </motion.span>
-                      <motion.div
+                      </m.span>
+                      <m.div
                         className="w-7 h-7 lg:w-9 lg:h-9 rounded-lg border flex items-center justify-center transition-all"
                         style={{
                           borderColor: accentColor,
@@ -250,17 +250,17 @@ export function TeamSection() {
                         whileHover={{ rotate: -45, scale: 1.15 }}
                       >
                         <ArrowUpRight className="w-4 h-4 lg:w-5 lg:h-5" style={{ color: accentColor }} />
-                      </motion.div>
+                      </m.div>
                     </div>
                   </div>
-                </motion.a>
+                </m.a>
               );
             })}
           </div>
-        </motion.div>
+        </m.div>
 
         {/* Why Choose Us Section */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
           transition={{ duration: 0.8, delay: 0.3 }}
@@ -269,7 +269,7 @@ export function TeamSection() {
           <div className="max-w-6xl mx-auto">
             {/* Header with left border accent */}
             <div className="mb-20 pl-6 md:pl-8 border-l-4 border-blue-500/50">
-              <motion.h3 
+              <m.h3 
                 initial={{ opacity: 0, x: -20 }}
                 animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
                 transition={{ delay: 0.4 }}
@@ -280,13 +280,13 @@ export function TeamSection() {
                 <span className="bg-gradient-to-r from-[#6e9bee] to-[#6e9bee] bg-clip-text text-transparent">
                   ПУСК
                 </span>
-              </motion.h3>
+              </m.h3>
             </div>
 
             {/* Two column premium layout */}
             <div className="grid md:grid-cols-2 gap-16 md:gap-24">
               {/* Column 1 */}
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                 transition={{ delay: 0.5, duration: 0.6 }}
@@ -300,7 +300,7 @@ export function TeamSection() {
                 </div>
 
                 {/* Dot accent */}
-                <motion.div
+                <m.div
                   className="absolute -top-4 right-0 w-3 h-3 rounded-full bg-blue-500/40"
                   animate={{ opacity: [0.3, 0.8, 0.3] }}
                   transition={{ duration: 4, repeat: Infinity }}
@@ -316,17 +316,17 @@ export function TeamSection() {
                   </p>
 
                   {/* Divider line */}
-                  <motion.div
+                  <m.div
                     className="w-12 h-1 bg-gradient-to-r from-blue-500 to-transparent"
                     initial={{ scaleX: 0 }}
                     animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
                     transition={{ delay: 0.7, duration: 0.6 }}
                   />
                 </div>
-              </motion.div>
+              </m.div>
 
               {/* Column 2 */}
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                 transition={{ delay: 0.6, duration: 0.6 }}
@@ -356,7 +356,7 @@ export function TeamSection() {
                   </p>
 
                   {/* Divider line */}
-                  <motion.div
+                  <m.div
                     className="w-12 h-1 to-transparent"
                     style={{ background: "linear-gradient(to right, #F76C6C, transparent)" }}
                     initial={{ scaleX: 0 }}
@@ -364,11 +364,11 @@ export function TeamSection() {
                     transition={{ delay: 0.8, duration: 0.6 }}
                   />
                 </div>
-              </motion.div>
+              </m.div>
             </div>
 
             {/* Bottom accent line */}
-            <motion.div
+            <m.div
               className="mt-24 h-px to-transparent"
               style={{ background: "linear-gradient(to right, rgba(84, 154, 242, 0.2), rgba(247, 108, 108, 0.2), transparent)" }}
               initial={{ scaleX: 0 }}
@@ -376,10 +376,10 @@ export function TeamSection() {
               transition={{ delay: 1, duration: 0.8 }}
             />
           </div>
-        </motion.div>
+        </m.div>
 
         {/* CTA */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
           transition={{ delay: 0.5 }}
@@ -390,11 +390,11 @@ export function TeamSection() {
             className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 transition-all group font-bold text-base"
           >
             <span>Обсудить проект</span>
-            <motion.div whileHover={{ rotate: 45 }}>
+            <m.div whileHover={{ rotate: 45 }}>
               <ArrowUpRight className="w-5 h-5" />
-            </motion.div>
+            </m.div>
           </Link>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

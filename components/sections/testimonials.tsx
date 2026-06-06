@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { motion, useInView, AnimatePresence } from "framer-motion";
+import { m, useInView, AnimatePresence } from "framer-motion";
 import { ArrowRight, ChevronLeft, ChevronRight, Star } from "lucide-react";
 
 const testimonials = [
@@ -80,7 +80,7 @@ export function TestimonialsSection() {
 
       <div className="max-w-[1400px] mx-auto px-6 lg:px-8">
         {/* Header */}
-        <motion.div
+        <m.div
           ref={ref}
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
@@ -103,10 +103,10 @@ export function TestimonialsSection() {
           <p className="text-lg text-muted-foreground mt-6 max-w-2xl leading-relaxed">
             Реальные истории роста бизнеса благодаря нашим решениям
           </p>
-        </motion.div>
+        </m.div>
 
         {/* Main card + sidebar */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.7, delay: 0.15 }}
@@ -123,7 +123,7 @@ export function TestimonialsSection() {
             />
 
             <AnimatePresence mode="wait">
-              <motion.div
+              <m.div
                 key={current.id}
                 initial={{ opacity: 0, scale: 0.98 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -134,7 +134,7 @@ export function TestimonialsSection() {
                 {/* Stars */}
                 <div className="flex gap-1.5 mb-12">
                   {Array.from({ length: 5 }).map((_, i) => (
-                    <motion.div
+                    <m.div
                       key={i}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -147,7 +147,7 @@ export function TestimonialsSection() {
                           stroke: i < current.rating ? current.color : "var(--border)",
                         }}
                       />
-                    </motion.div>
+                    </m.div>
                   ))}
                 </div>
 
@@ -164,7 +164,7 @@ export function TestimonialsSection() {
                 {/* Author row */}
                 <div className="flex items-end justify-between gap-6 flex-wrap lg:flex-nowrap">
                   <div className="flex items-center gap-4">
-                    <motion.div
+                    <m.div
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       transition={{ duration: 0.3, type: "spring", stiffness: 200 }}
@@ -172,7 +172,7 @@ export function TestimonialsSection() {
                       style={{ background: current.color }}
                     >
                       {current.initials}
-                    </motion.div>
+                    </m.div>
                     <div>
                       <p className="font-bold text-lg text-foreground">{current.name}</p>
                       <p className="text-sm text-muted-foreground">
@@ -182,7 +182,7 @@ export function TestimonialsSection() {
                   </div>
 
                   {/* Result badge */}
-                  <motion.div
+                  <m.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.3, delay: 0.1 }}
@@ -191,16 +191,16 @@ export function TestimonialsSection() {
                   >
                     {current.result}
                     <ArrowRight className="w-4 h-4" />
-                  </motion.div>
+                  </m.div>
                 </div>
-              </motion.div>
+              </m.div>
             </AnimatePresence>
           </div>
 
           {/* Sidebar cards */}
           <div className="flex flex-col gap-2">
             {testimonials.map((t, index) => (
-              <motion.button
+              <m.button
                 key={t.id}
                 onClick={() => setCurrentIndex(index)}
                 initial={{ opacity: 0, x: 20 }}
@@ -271,20 +271,20 @@ export function TestimonialsSection() {
 
                 {/* Active indicator */}
                 {index === currentIndex && (
-                  <motion.div
+                  <m.div
                     layoutId="active-indicator"
                     className="absolute top-0 right-0 w-1 h-1 rounded-full bg-white opacity-70"
                   />
                 )}
-              </motion.button>
+              </m.button>
             ))}
           </div>
-        </motion.div>
+        </m.div>
 
         {/* Desktop navigation buttons */}
         <div className="hidden lg:flex items-center justify-between mt-12">
           <div className="flex items-center gap-3">
-            <motion.button
+            <m.button
               onClick={goToPrev}
               whileHover={{ scale: 1.05, rotate: -10 }}
               whileTap={{ scale: 0.95 }}
@@ -292,8 +292,8 @@ export function TestimonialsSection() {
               aria-label="Предыдущий отзыв"
             >
               <ChevronLeft className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
-            </motion.button>
-            <motion.button
+            </m.button>
+            <m.button
               onClick={goToNext}
               whileHover={{ scale: 1.05, rotate: 10 }}
               whileTap={{ scale: 0.95 }}
@@ -301,7 +301,7 @@ export function TestimonialsSection() {
               aria-label="Следующий отзыв"
             >
               <ChevronRight className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
-            </motion.button>
+            </m.button>
           </div>
 
           {/* Progress indicator */}
@@ -316,14 +316,14 @@ export function TestimonialsSection() {
 
         {/* Mobile nav — dots + buttons */}
         <div className="flex flex-col gap-6 mt-10 lg:hidden">
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
             className="flex items-center justify-center gap-3"
           >
             {testimonials.map((_, index) => (
-              <motion.button
+              <m.button
                 key={index}
                 onClick={() => setCurrentIndex(index)}
                 className="rounded-full transition-all duration-300"
@@ -337,11 +337,11 @@ export function TestimonialsSection() {
                 aria-label={`Отзыв ${index + 1}`}
               />
             ))}
-          </motion.div>
+          </m.div>
 
           {/* Mobile buttons */}
           <div className="flex items-center justify-center gap-3">
-            <motion.button
+            <m.button
               onClick={goToPrev}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -349,8 +349,8 @@ export function TestimonialsSection() {
               aria-label="Предыдущий отзыв"
             >
               <ChevronLeft className="w-4 h-4" />
-            </motion.button>
-            <motion.button
+            </m.button>
+            <m.button
               onClick={goToNext}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -358,7 +358,7 @@ export function TestimonialsSection() {
               aria-label="Следующий отзыв"
             >
               <ChevronRight className="w-4 h-4" />
-            </motion.button>
+            </m.button>
           </div>
         </div>
       </div>

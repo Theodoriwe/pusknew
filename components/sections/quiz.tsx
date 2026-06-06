@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { m, useInView } from "framer-motion";
 import { ArrowRight, Clock, Target, Gift, Sparkles } from "lucide-react";
 import { useModalStore } from "@/lib/store";
 
@@ -37,7 +37,7 @@ export function QuizSection() {
   return (
     <section id="quiz" className="py-32 relative overflow-hidden bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div
+        <m.div
           ref={ref}
           initial={{ opacity: 0, y: 60 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
@@ -55,16 +55,16 @@ export function QuizSection() {
               <div className="grid lg:grid-cols-2 gap-0 items-center">
                 {/* Left side - Main CTA */}
                 <div className="p-12 lg:p-16 flex flex-col justify-center">
-                  <motion.div
+                  <m.div
                     initial={{ opacity: 0, y: 2 }}
                     animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                     transition={{ duration: 0.6, delay: 0.2 }}
                     className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 border border-white/40 text-white text-sm font-semibold mb-8 self-start"
                   >
                     Быстрый расчёт
-                  </motion.div>
+                  </m.div>
 
-                  <motion.h2
+                  <m.h2
                     initial={{ opacity: 0, y: 30 }}
                     animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                     transition={{ duration: 0.7, delay: 0.3 }}
@@ -80,46 +80,46 @@ export function QuizSection() {
                     <span className="text-white">стоимость</span>
                     <br />
                     проекта
-                  </motion.h2>
+                  </m.h2>
 
-                  <motion.p
+                  <m.p
                     initial={{ opacity: 0, y: 20 }}
                     animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                     transition={{ duration: 0.7, delay: 0.4 }}
                     className="text-lg lg:text-xl text-white/90 leading-relaxed mb-12 max-w-md font-medium"
                   >
                     Ответьте на несколько вопросов — мы подготовим персональный расчёт стоимости вашего проекта и отправим в удобный мессенджер.
-                  </motion.p>
+                  </m.p>
 
-                  <motion.div
+                  <m.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                     transition={{ duration: 0.7, delay: 0.5 }}
                   >
-                    <motion.button
+                    <m.button
                       onClick={openQuiz}
                       whileHover={{ scale: 1.05, boxShadow: "0 20px 60px rgba(0,0,0,0.3)" }}
                       whileTap={{ scale: 0.95 }}
                       className="group inline-flex items-center gap-3 px-10 py-5 bg-white text-[#549AF2] font-black text-lg rounded-2xl transition-all duration-300 shadow-xl hover:shadow-2xl"
                     >
                       Начать расчёт
-                      <motion.div
+                      <m.div
                         animate={{ x: [0, 5, 0] }}
                         transition={{ duration: 2, repeat: Infinity }}
                       >
                         <ArrowRight className="w-6 h-6" />
-                      </motion.div>
-                    </motion.button>
-                  </motion.div>
+                      </m.div>
+                    </m.button>
+                  </m.div>
 
-                  <motion.p
+                  <m.p
                     initial={{ opacity: 0 }}
                     animate={isInView ? { opacity: 1 } : { opacity: 0 }}
                     transition={{ duration: 0.7, delay: 0.6 }}
                     className="text-sm text-white/70 mt-6 font-medium"
                   >
                     ✓ Бесплатная консультация • Никакой спама
-                  </motion.p>
+                  </m.p>
                 </div>
 
                 {/* Right side - Perks */}
@@ -127,7 +127,7 @@ export function QuizSection() {
                   {perks.map((item, idx) => {
                     const Icon = item.icon;
                     return (
-                      <motion.div
+                      <m.div
                         key={item.title}
                         initial={{ opacity: 0, x: 30 }}
                         animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 30 }}
@@ -141,7 +141,7 @@ export function QuizSection() {
                               : "hover:bg-white/10"
                           }`}
                         >
-                          <motion.div
+                          <m.div
                             className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:scale-110"
                             style={{
                               background: item.featured 
@@ -155,7 +155,7 @@ export function QuizSection() {
                             whileHover={{ rotateZ: 10 }}
                           >
                             <Icon className="w-6 h-6 text-white" />
-                          </motion.div>
+                          </m.div>
                           <div className="flex-1">
                             <p className={`font-black leading-tight ${
                               item.featured 
@@ -169,14 +169,14 @@ export function QuizSection() {
                             }`}>{item.desc}</p>
                           </div>
                         </div>
-                      </motion.div>
+                      </m.div>
                     );
                   })}
                 </div>
               </div>
             </div>
           </div>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

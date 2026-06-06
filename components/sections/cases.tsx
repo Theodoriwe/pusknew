@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, ArrowRight } from "lucide-react";
 
 // ─── SVG Icons ────────────────────────────────────────────────────────────────
@@ -259,7 +259,7 @@ function CaseCard({
   const [hovered, setHovered] = useState(false);
 
   return (
-    <motion.button
+    <m.button
       onClick={onClick}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -312,7 +312,7 @@ function CaseCard({
           </div>
 
           {/* Arrow with animation from original component */}
-          <motion.div
+          <m.div
             animate={{
               scale: hovered || isActive ? 1.2 : 1,
               rotate: hovered || isActive ? 45 : 0,
@@ -330,7 +330,7 @@ function CaseCard({
               className="w-4 h-4"
               style={{ color: isActive ? "white" : ACCENT }}
             />
-          </motion.div>
+          </m.div>
         </div>
 
         {/* Mini stats */}
@@ -365,7 +365,7 @@ function CaseCard({
           ))}
         </div>
       </div>
-    </motion.button>
+    </m.button>
   );
 }
 
@@ -463,7 +463,7 @@ export function CasesSection({ title }: { title?: string } = {}) {
     >
       <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -491,7 +491,7 @@ export function CasesSection({ title }: { title?: string } = {}) {
             </h2>
           </div>
 
-          <motion.div
+          <m.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -509,8 +509,8 @@ export function CasesSection({ title }: { title?: string } = {}) {
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" style={{ color: ACCENT }} />
               </div>
             </Link>
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
 
         <div className="grid lg:grid-cols-2 gap-5 lg:gap-6 items-start">
 
@@ -526,7 +526,7 @@ export function CasesSection({ title }: { title?: string } = {}) {
           >
             <div className="flex flex-col gap-3">
               {cases.map((c, i) => (
-                <motion.div
+                <m.div
                   key={c.id}
                   initial={{ opacity: 10, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -538,7 +538,7 @@ export function CasesSection({ title }: { title?: string } = {}) {
                     isActive={c.id === activeId}
                     onClick={() => setActiveId(c.id)}
                   />
-                </motion.div>
+                </m.div>
               ))}
             </div>
           </div>
@@ -572,7 +572,7 @@ export function CasesSection({ title }: { title?: string } = {}) {
                 >
             {/* Animated content */}
             <AnimatePresence mode="wait">
-              <motion.div
+              <m.div
                 key={activeId}
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -607,7 +607,7 @@ export function CasesSection({ title }: { title?: string } = {}) {
                   </div>
 
                   {/* Arrow Icon */}
-                  <motion.div
+                  <m.div
                     animate={{ 
                       opacity: 0.7,
                       scale: 1,
@@ -626,7 +626,7 @@ export function CasesSection({ title }: { title?: string } = {}) {
                     }}
                   >
                     <ArrowUpRight className="w-7 h-7" style={{ color: ACCENT }} />
-                  </motion.div>
+                  </m.div>
                 </div>
 
                 {/* ЗАДАЧИ */}
@@ -644,7 +644,7 @@ export function CasesSection({ title }: { title?: string } = {}) {
 
                   <div className="flex flex-col gap-3.5">
                     {activeCase.tasks.map(({ Icon, label }, i) => (
-                      <motion.div
+                      <m.div
                         key={label}
                         initial={{ opacity: 0, x: 14 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -672,7 +672,7 @@ export function CasesSection({ title }: { title?: string } = {}) {
                         >
                           {label}
                         </p>
-                      </motion.div>
+                      </m.div>
                     ))}
                   </div>
                 </div>
@@ -692,7 +692,7 @@ export function CasesSection({ title }: { title?: string } = {}) {
 
                   <div className="grid grid-cols-3 gap-3">
                     {activeCase.results.map((r, i) => (
-                      <motion.div
+                      <m.div
                         key={r.label}
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
@@ -726,11 +726,11 @@ export function CasesSection({ title }: { title?: string } = {}) {
                         >
                           {r.sub}
                         </p>
-                      </motion.div>
+                      </m.div>
                     ))}
                   </div>
                 </div>
-              </motion.div>
+              </m.div>
             </AnimatePresence>
                 </div>
               </Link>
@@ -749,7 +749,7 @@ export function CasesSection({ title }: { title?: string } = {}) {
             >
               {/* Animated content */}
               <AnimatePresence mode="wait">
-                <motion.div
+                <m.div
                   key={activeId}
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -784,7 +784,7 @@ export function CasesSection({ title }: { title?: string } = {}) {
                     </div>
 
                     {/* Arrow Icon */}
-                    <motion.div
+                    <m.div
                       animate={{ 
                         opacity: 0.7,
                         scale: 1,
@@ -803,7 +803,7 @@ export function CasesSection({ title }: { title?: string } = {}) {
                       }}
                     >
                       <ArrowUpRight className="w-7 h-7" style={{ color: ACCENT }} />
-                    </motion.div>
+                    </m.div>
                   </div>
 
                   {/* ЗАДАЧИ */}
@@ -821,7 +821,7 @@ export function CasesSection({ title }: { title?: string } = {}) {
 
                     <div className="flex flex-col gap-3.5">
                       {activeCase.tasks.map(({ Icon, label }, i) => (
-                        <motion.div
+                        <m.div
                           key={label}
                           initial={{ opacity: 0, x: 14 }}
                           animate={{ opacity: 1, x: 0 }}
@@ -849,7 +849,7 @@ export function CasesSection({ title }: { title?: string } = {}) {
                           >
                             {label}
                           </p>
-                        </motion.div>
+                        </m.div>
                       ))}
                     </div>
                   </div>
@@ -869,7 +869,7 @@ export function CasesSection({ title }: { title?: string } = {}) {
 
                     <div className="grid grid-cols-3 gap-3">
                       {activeCase.results.map((r, i) => (
-                        <motion.div
+                        <m.div
                           key={r.label}
                           initial={{ opacity: 0, scale: 0.9 }}
                           animate={{ opacity: 1, scale: 1 }}
@@ -903,11 +903,11 @@ export function CasesSection({ title }: { title?: string } = {}) {
                           >
                             {r.sub}
                           </p>
-                        </motion.div>
+                        </m.div>
                       ))}
                     </div>
                   </div>
-                </motion.div>
+                </m.div>
               </AnimatePresence>
             </div>
           </div>

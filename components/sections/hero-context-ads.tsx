@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { m, useScroll, useTransform } from "framer-motion";
 import { ArrowUpRight, Sparkles } from "lucide-react";
 import { useModalStore } from "@/lib/store";
 
@@ -71,34 +71,34 @@ export function HeroContextAds() {
       </div>
 
       {/* Main content */}
-      <motion.div
+      <m.div
         style={{ y, opacity }}
         className="relative flex-1 flex flex-col z-10"
       >
         <div className="w-full max-w-[1400px] mx-auto px-6 sm:px-8 xl:px-12 flex flex-col flex-1 justify-center py-20">
           
           {/* Category badge with subtle animation */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: -15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.08 }}
             className="mb-12 flex items-center gap-2"
           >
-            <motion.div
+            <m.div
               animate={{ rotate: 360 }}
               transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
               className="w-2 h-2"
             >
               <Sparkles size={14} className="text-primary" />
-            </motion.div>
+            </m.div>
             <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Контекстная реклама</span>
-          </motion.div>
+          </m.div>
 
           {/* Main hero layout - staggered asymmetric */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start mb-24">
             
             {/* Left side - Headline section */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0, x: -60 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
@@ -143,7 +143,7 @@ export function HeroContextAds() {
               </div>
 
               {/* CTA Buttons */}
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
@@ -164,18 +164,18 @@ export function HeroContextAds() {
                   Узнать стоимость
                   <ArrowUpRight size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </button>
-              </motion.div>
-            </motion.div>
+              </m.div>
+            </m.div>
 
             {/* Right side - Stats cards with modern layout */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0, x: 60 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
               className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4 auto-rows-max"
             >
               {stats.map((stat, idx) => (
-                <motion.div
+                <m.div
                   key={idx}
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -204,13 +204,13 @@ export function HeroContextAds() {
                       {stat.label}
                     </p>
                   </div>
-                </motion.div>
+                </m.div>
               ))}
-            </motion.div>
+            </m.div>
           </div>
 
           {/* Divider */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, scaleX: 0 }}
             animate={{ opacity: 1, scaleX: 1 }}
             transition={{ duration: 0.8, delay: 0.5 }}
@@ -218,7 +218,7 @@ export function HeroContextAds() {
           />
 
           {/* Platforms section - modern grid */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
@@ -230,7 +230,7 @@ export function HeroContextAds() {
             
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
               {platforms.map((platform, idx) => (
-                <motion.div
+                <m.div
                   key={idx}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -247,7 +247,7 @@ export function HeroContextAds() {
                   <div className="relative z-10">
                     <div className="flex items-start justify-between mb-4">
                       <h4 className="font-semibold text-foreground text-sm">{platform.name}</h4>
-                      <motion.div
+                      <m.div
                         animate={{ y: [0, -2, 0] }}
                         transition={{ duration: 2, repeat: Infinity, delay: idx * 0.3 }}
                         className="w-2 h-2 rounded-full bg-primary/60"
@@ -260,12 +260,12 @@ export function HeroContextAds() {
                       <span className="text-sm font-bold text-primary/90">{platform.highlight}</span>
                     </div>
                   </div>
-                </motion.div>
+                </m.div>
               ))}
             </div>
-          </motion.div>
+          </m.div>
         </div>
-      </motion.div>
+      </m.div>
     </section>
   );
 }

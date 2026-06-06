@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 interface TextInputProps {
   label: string;
@@ -21,7 +21,7 @@ export function TextInput({
   const [isFocused, setIsFocused] = useState(false);
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -36,7 +36,7 @@ export function TextInput({
         {description && <p className="text-xs text-muted-foreground mt-1">{description}</p>}
       </label>
 
-      <motion.input
+      <m.input
         type="text"
         placeholder={placeholder}
         value={value}
@@ -53,7 +53,7 @@ export function TextInput({
           borderColor: isFocused ? "rgb(84, 154, 242)" : "rgba(84, 154, 242, 0.2)",
         }}
       />
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -79,7 +79,7 @@ export function TextArea({
   const [isFocused, setIsFocused] = useState(false);
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -94,7 +94,7 @@ export function TextArea({
         {description && <p className="text-xs text-muted-foreground mt-1">{description}</p>}
       </label>
 
-      <motion.textarea
+      <m.textarea
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -106,7 +106,7 @@ export function TextArea({
           borderColor: isFocused ? "rgb(84, 154, 242)" : "rgba(84, 154, 242, 0.2)",
         }}
       />
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -148,7 +148,7 @@ export function CheckboxGroup({
   }[columns];
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -165,8 +165,8 @@ export function CheckboxGroup({
 
       <div className={`grid ${gridClass} gap-3`}>
         {options.map((option, index) => (
-          <motion.div key={option.id} initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: index * 0.05 }}>
-            <motion.button
+          <m.div key={option.id} initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: index * 0.05 }}>
+            <m.button
               type="button"
               onClick={() => handleToggle(option.id)}
               className="flex items-start gap-3 p-4 rounded-lg border-2 transition-all text-left group w-full hover:shadow-md"
@@ -178,7 +178,7 @@ export function CheckboxGroup({
                 borderColor: selected.includes(option.id) ? "rgb(84, 154, 242)" : "rgba(84, 154, 242, 0.4)",
               }}
             >
-              <motion.div
+              <m.div
                 className="flex-shrink-0 w-6 h-6 rounded-lg border-2 flex items-center justify-center mt-0.5 transition-all"
                 style={{
                   borderColor: selected.includes(option.id) ? "rgb(84, 154, 242)" : "rgba(84, 154, 242, 0.4)",
@@ -186,7 +186,7 @@ export function CheckboxGroup({
                 }}
               >
                 {selected.includes(option.id) && (
-                  <motion.svg
+                  <m.svg
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     className="w-4 h-4 text-white"
@@ -195,9 +195,9 @@ export function CheckboxGroup({
                     viewBox="0 0 24 24"
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                  </motion.svg>
+                  </m.svg>
                 )}
-              </motion.div>
+              </m.div>
 
               <div className="flex-1">
                 <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
@@ -205,11 +205,11 @@ export function CheckboxGroup({
                 </span>
                 {option.subtext && <p className="text-xs text-muted-foreground mt-1">{option.subtext}</p>}
               </div>
-            </motion.button>
+            </m.button>
 
             {/* Custom input field for "Other" options */}
             {selected.includes(option.id) && option.requiresInput && onCustomInputChange && (
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, height: 0, marginTop: 0 }}
                 animate={{ opacity: 1, height: "auto", marginTop: 12 }}
                 exit={{ opacity: 0, height: 0, marginTop: 0 }}
@@ -225,12 +225,12 @@ export function CheckboxGroup({
                   onClick={(e) => e.stopPropagation()}
                   autoFocus
                 />
-              </motion.div>
+              </m.div>
             )}
-          </motion.div>
+          </m.div>
         ))}
       </div>
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -264,7 +264,7 @@ export function RadioGroup({
   }[columns];
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -281,8 +281,8 @@ export function RadioGroup({
 
       <div className={`grid ${gridClass} gap-3`}>
         {options.map((option, index) => (
-          <motion.div key={option.id} initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: index * 0.05 }}>
-            <motion.button
+          <m.div key={option.id} initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: index * 0.05 }}>
+            <m.button
               type="button"
               onClick={() => onChange(option.id)}
               className="flex items-start gap-3 p-4 rounded-lg border-2 transition-all text-left group w-full hover:shadow-md"
@@ -294,20 +294,20 @@ export function RadioGroup({
                 borderColor: selected === option.id ? "rgb(84, 154, 242)" : "rgba(84, 154, 242, 0.4)",
               }}
             >
-              <motion.div
+              <m.div
                 className="flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center mt-0.5 transition-all"
                 style={{
                   borderColor: selected === option.id ? "rgb(84, 154, 242)" : "rgba(84, 154, 242, 0.4)",
                 }}
               >
                 {selected === option.id && (
-                  <motion.div
+                  <m.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     className="w-3 h-3 rounded-full bg-primary"
                   />
                 )}
-              </motion.div>
+              </m.div>
 
               <div className="flex-1">
                 <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
@@ -315,11 +315,11 @@ export function RadioGroup({
                 </span>
                 {option.subtext && <p className="text-xs text-muted-foreground mt-1">{option.subtext}</p>}
               </div>
-            </motion.button>
+            </m.button>
 
             {/* Custom input field for "Other" options */}
             {selected === option.id && option.requiresInput && onCustomInputChange && (
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, height: 0, marginTop: 0 }}
                 animate={{ opacity: 1, height: "auto", marginTop: 12 }}
                 exit={{ opacity: 0, height: 0, marginTop: 0 }}
@@ -335,12 +335,12 @@ export function RadioGroup({
                   onClick={(e) => e.stopPropagation()}
                   autoFocus
                 />
-              </motion.div>
+              </m.div>
             )}
-          </motion.div>
+          </m.div>
         ))}
       </div>
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -382,7 +382,7 @@ export function ColorPicker({
   };
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -395,7 +395,7 @@ export function ColorPicker({
       </label>
 
       <div className="relative" ref={pickerRef}>
-        <motion.button
+        <m.button
           onClick={() => setShowPicker(!showPicker)}
           className="flex items-center gap-3 p-3 rounded-lg border-2 transition-all w-full"
           style={{
@@ -405,7 +405,7 @@ export function ColorPicker({
             borderColor: "rgba(84, 154, 242, 0.4)",
           }}
         >
-          <motion.div
+          <m.div
             className="w-12 h-12 rounded-lg border-2 border-white/20 shadow-lg"
             style={{ backgroundColor: localValue }}
             layoutId="color-preview"
@@ -422,11 +422,11 @@ export function ColorPicker({
           >
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
           </svg>
-        </motion.button>
+        </m.button>
 
         {/* Color Picker Dropdown */}
         {showPicker && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: -10, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
@@ -454,7 +454,7 @@ export function ColorPicker({
               <label className="text-xs font-medium text-muted-foreground mb-2 block">Популярные цвета</label>
               <div className="grid grid-cols-6 gap-2">
                 {presets.map((preset) => (
-                  <motion.button
+                  <m.button
                     key={preset}
                     onClick={() => handleColorChange(preset)}
                     className="w-full aspect-square rounded-lg border-2 transition-all hover:scale-110 active:scale-95"
@@ -467,7 +467,7 @@ export function ColorPicker({
                     whileTap={{ scale: 0.95 }}
                   >
                     {preset === localValue && (
-                      <motion.svg
+                      <m.svg
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         className="w-4 h-4 text-white mx-auto"
@@ -479,9 +479,9 @@ export function ColorPicker({
                           d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                           clipRule="evenodd"
                         />
-                      </motion.svg>
+                      </m.svg>
                     )}
-                  </motion.button>
+                  </m.button>
                 ))}
               </div>
             </div>
@@ -496,10 +496,10 @@ export function ColorPicker({
                 className="w-full h-12 rounded-lg cursor-pointer"
               />
             </div>
-          </motion.div>
+          </m.div>
         )}
       </div>
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -606,7 +606,7 @@ export function MultiColorPicker({
   };
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -627,14 +627,14 @@ export function MultiColorPicker({
         {/* Selected Colors */}
         <div className="flex flex-wrap gap-2">
           {values.map((color) => (
-            <motion.div
+            <m.div
               key={color}
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0 }}
               className="relative group"
             >
-              <motion.button
+              <m.button
                 type="button"
                 onClick={() => handleSetEditingColor(color)}
                 className="w-12 h-12 rounded-lg border-2 border-primary/40 shadow-md cursor-pointer hover:border-primary transition-all hover:scale-110"
@@ -642,32 +642,32 @@ export function MultiColorPicker({
                 title={color}
                 whileHover={{ scale: 1.1 }}
               />
-              <motion.button
+              <m.button
                 onClick={() => handleRemoveColor(color)}
                 className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity"
                 whileHover={{ scale: 1.1 }}
               >
                 ×
-              </motion.button>
-            </motion.div>
+              </m.button>
+            </m.div>
           ))}
 
           {/* Add Color Button */}
           {values.length < maxColors && (
-            <motion.button
+            <m.button
               onClick={() => handleSetShowPicker(!showPicker)}
               className="w-12 h-12 rounded-lg border-2 border-dashed border-primary/40 flex items-center justify-center text-primary hover:border-primary transition-all"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               <span className="text-xl font-bold">+</span>
-            </motion.button>
+            </m.button>
           )}
         </div>
 
         {/* Color Editor for existing color */}
         {editingColor && (
-          <motion.div
+          <m.div
             ref={pickerRef}
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
@@ -706,7 +706,7 @@ export function MultiColorPicker({
 
             {/* Action Buttons */}
             <div className="flex gap-2">
-              <motion.button
+              <m.button
                 onClick={() => {
                   if (localValue.startsWith("#")) {
                     handleUpdateColor(editingColor, localValue);
@@ -717,22 +717,22 @@ export function MultiColorPicker({
                 whileTap={{ scale: 0.98 }}
               >
                 Сохранить
-              </motion.button>
-              <motion.button
+              </m.button>
+              <m.button
                 onClick={() => setEditingColor(null)}
                 className="flex-1 px-4 py-2 rounded-lg border-2 border-border text-foreground font-semibold transition-all hover:border-primary active:scale-95"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
                 Отмена
-              </motion.button>
+              </m.button>
             </div>
-          </motion.div>
+          </m.div>
         )}
 
         {/* Color Picker */}
         {showPicker && (
-          <motion.div
+          <m.div
             ref={pickerRef}
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
@@ -761,7 +761,7 @@ export function MultiColorPicker({
               <label className="text-xs font-medium text-muted-foreground mb-2 block">Популярные цвета</label>
               <div className="grid grid-cols-6 gap-2">
                 {presets.map((preset) => (
-                  <motion.button
+                  <m.button
                     key={preset}
                     onClick={() => {
                       handleAddColor(preset);
@@ -778,7 +778,7 @@ export function MultiColorPicker({
                     whileTap={{ scale: 0.95 }}
                   >
                     {values.includes(preset) && (
-                      <motion.svg
+                      <m.svg
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         className="w-4 h-4 text-white mx-auto"
@@ -790,9 +790,9 @@ export function MultiColorPicker({
                           d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                           clipRule="evenodd"
                         />
-                      </motion.svg>
+                      </m.svg>
                     )}
-                  </motion.button>
+                  </m.button>
                 ))}
               </div>
             </div>
@@ -807,7 +807,7 @@ export function MultiColorPicker({
                 className="w-full h-16 rounded-lg cursor-pointer border-2 border-primary/20"
               />
               
-              <motion.button
+              <m.button
                 onClick={() => {
                   if (localValue.startsWith("#")) {
                     handleAddColor(localValue);
@@ -819,11 +819,11 @@ export function MultiColorPicker({
                 whileTap={{ scale: 0.98 }}
               >
                 Добавить цвет
-              </motion.button>
+              </m.button>
             </div>
-          </motion.div>
+          </m.div>
         )}
       </div>
-    </motion.div>
+    </m.div>
   );
 }

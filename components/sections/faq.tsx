@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { ChevronDown, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
@@ -60,7 +60,7 @@ function FAQItem({
   toggle: () => void;
 }) {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -82,7 +82,7 @@ function FAQItem({
       </button>
       <AnimatePresence>
         {isOpen && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
@@ -92,10 +92,10 @@ function FAQItem({
             <p className="text-white/60 text-sm sm:text-base leading-relaxed mt-3 sm:mt-4">
               {a}
             </p>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -213,7 +213,7 @@ export function FAQSection({ faqs: customFaqs }: { faqs?: Array<{ question: stri
         <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-24 items-start">
           {/* Left — FAQ list (drives the grid height) */}
           <div ref={leftColRef} className="min-w-0">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -233,7 +233,7 @@ export function FAQSection({ faqs: customFaqs }: { faqs?: Array<{ question: stri
               >
                 Частые вопросы
               </h2>
-            </motion.div>
+            </m.div>
 
             <div>
               {displayFaqs.map((faq, i) => (
@@ -256,7 +256,7 @@ export function FAQSection({ faqs: customFaqs }: { faqs?: Array<{ question: stri
               - fixed (while scrolling within the FAQ section)
               - absolute (after reaching the bottom of the left column)
             */}
-            <motion.div
+            <m.div
               ref={cardRef}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -320,12 +320,12 @@ export function FAQSection({ faqs: customFaqs }: { faqs?: Array<{ question: stri
                   <div className="text-xs sm:text-sm text-white/40 mt-1">опыта</div>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           </div>
 
           {/* Mobile-only card (no sticky logic needed) */}
           <div className="lg:hidden">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -388,7 +388,7 @@ export function FAQSection({ faqs: customFaqs }: { faqs?: Array<{ question: stri
                   <div className="text-xs sm:text-sm text-white/40 mt-1">опыта</div>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         </div>
       </div>

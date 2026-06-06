@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Send, Phone, Mail, MapPin, ArrowUpRight } from "lucide-react";
 import { useModalStore } from "@/lib/store";
 import { Logo } from "@/components/logo";
@@ -44,7 +44,7 @@ export function Footer() {
       {/* CTA Section */}
       <div className="relative border-b border-border">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-8 py-20 lg:py-32">
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -81,7 +81,7 @@ export function Footer() {
                 <ArrowUpRight className="w-6 h-6 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
               </button>
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </div>
 

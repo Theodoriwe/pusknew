@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import Link from "next/link";
-import { motion, useInView } from "framer-motion";
+import { m, useInView } from "framer-motion";
 import { Globe, Target, MapPin, Share2, Bot, ArrowUpRight, Sparkles } from "lucide-react";
 
 // cardBg: explicit bg color; dark: true = white text on dark bg
@@ -81,7 +81,7 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
   const iconColor = service.dark ? "#ffffff" : "#549AF2";
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
@@ -155,7 +155,7 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
           </div>
         </div>
       </Link>
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -170,14 +170,14 @@ export function ServicesSection() {
       
       <div className="max-w-[1400px] mx-auto px-6 lg:px-8 relative">
         {/* Section header */}
-        <motion.div
+        <m.div
           ref={ref}
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
           transition={{ duration: 0.8 }}
           className="text-center mb-20"
         >
-          <motion.div
+          <m.div
             initial={{ scale: 0 }}
             animate={isInView ? { scale: 1 } : { scale: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
@@ -185,7 +185,7 @@ export function ServicesSection() {
           >
             <span className="w-1.5 h-1.5 rounded-full bg-primary" />
             Услуги
-          </motion.div>
+          </m.div>
           
           <h2 
             className="heading-1 mb-6 text-balance"
@@ -199,7 +199,7 @@ export function ServicesSection() {
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Берём на себя сайт, рекламу и продвижение — вы занимаетесь бизнесом.
           </p>
-        </motion.div>
+        </m.div>
 
         {/* Services grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -208,7 +208,7 @@ export function ServicesSection() {
           ))}
           
           {/* CTA Card */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 60 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
@@ -243,7 +243,7 @@ export function ServicesSection() {
                 </Link>
               </div>
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </div>
     </section>

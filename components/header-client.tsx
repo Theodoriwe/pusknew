@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
+import { m, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { X, ArrowUpRight, ChevronDown, Globe, Target, MapPin, Share2, Bot } from "lucide-react";
 import { useModalStore } from "@/lib/store";
 import { Logo } from "@/components/logo";
@@ -49,7 +49,7 @@ export function HeaderClient() {
   return (
     <>
       {/* Scroll-aware wrapper — двигает весь хедер вверх при скролле вниз */}
-      <motion.div
+      <m.div
         animate={{ y: hidden ? "-110%" : "0%" }}
         transition={{ duration: 0.4, ease: [0.76, 0, 0.24, 1] }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -82,17 +82,17 @@ export function HeaderClient() {
                   aria-expanded={servicesOpen}
                 >
                   Услуги
-                  <motion.span
+                  <m.span
                     animate={{ rotate: servicesOpen ? 180 : 0 }}
                     transition={{ duration: 0.2 }}
                   >
                     <ChevronDown size={14} />
-                  </motion.span>
+                  </m.span>
                 </button>
 
                 <AnimatePresence>
                   {servicesOpen && (
-                    <motion.div
+                    <m.div
                       initial={{ opacity: 0, y: 8, scale: 0.97 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 8, scale: 0.97 }}
@@ -136,7 +136,7 @@ export function HeaderClient() {
                           </Link>
                         </div>
                       </div>
-                    </motion.div>
+                    </m.div>
                   )}
                 </AnimatePresence>
               </div>
@@ -153,7 +153,7 @@ export function HeaderClient() {
                 >
                   {link.label}
                   {pathname === link.href && (
-                    <motion.span
+                    <m.span
                       layoutId="nav-active"
                       className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary"
                     />
@@ -164,7 +164,7 @@ export function HeaderClient() {
 
             {/* Right actions */}
             <div className="flex items-center gap-2">
-              <motion.button
+              <m.button
                 onClick={() => openContact()}
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
@@ -173,7 +173,7 @@ export function HeaderClient() {
               >
                 Связаться
                 <ArrowUpRight size={15} />
-              </motion.button>
+              </m.button>
 
               {/* Hamburger */}
               <button
@@ -181,17 +181,17 @@ export function HeaderClient() {
                 className="lg:hidden relative w-9 h-9 flex flex-col items-center justify-center gap-[5px] rounded-xl border border-border bg-white/80 backdrop-blur-sm hover:bg-muted/60 transition-colors"
                 aria-label={mobileOpen ? "Закрыть меню" : "Открыть меню"}
               >
-                <motion.span
+                <m.span
                   animate={mobileOpen ? { rotate: 45, y: 5.5 } : { rotate: 0, y: 0 }}
                   transition={{ duration: 0.25 }}
                   className="block w-[18px] h-[1.5px] bg-foreground origin-center rounded-full"
                 />
-                <motion.span
+                <m.span
                   animate={mobileOpen ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
                   transition={{ duration: 0.2 }}
                   className="block w-[18px] h-[1.5px] bg-foreground rounded-full"
                 />
-                <motion.span
+                <m.span
                   animate={mobileOpen ? { rotate: -45, y: -5.5 } : { rotate: 0, y: 0 }}
                   transition={{ duration: 0.25 }}
                   className="block w-[18px] h-[1.5px] bg-foreground origin-center rounded-full"
@@ -200,12 +200,12 @@ export function HeaderClient() {
             </div>
           </div>
         </div>
-      </motion.div>
+      </m.div>
 
       {/* ─── Mobile fullscreen menu ───────────────────────── */}
       <AnimatePresence>
         {mobileOpen && (
-          <motion.div
+          <m.div
             key="mobile-menu"
             initial={{ clipPath: "circle(0% at calc(100% - 2.5rem) 3rem)" }}
             animate={{ clipPath: "circle(150% at calc(100% - 2.5rem) 3rem)" }}
@@ -232,7 +232,7 @@ export function HeaderClient() {
                 {services.map((s, i) => {
                   const IconComponent = s.icon;
                   return (
-                    <motion.div
+                    <m.div
                       key={s.href}
                       initial={{ opacity: 0, x: -16 }}
                       animate={{ opacity: 1, x: 0 }}
@@ -250,7 +250,7 @@ export function HeaderClient() {
                         </span>
                         {s.label}
                       </Link>
-                    </motion.div>
+                    </m.div>
                   );
                 })}
               </div>
@@ -258,7 +258,7 @@ export function HeaderClient() {
               <div className="h-px bg-border my-2" />
 
               {navLinks.map((link, i) => (
-                <motion.div
+                <m.div
                   key={link.href}
                   initial={{ opacity: 0, x: -16 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -271,11 +271,11 @@ export function HeaderClient() {
                   >
                     {link.label}
                   </Link>
-                </motion.div>
+                </m.div>
               ))}
             </div>
 
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.45 }}
@@ -293,8 +293,8 @@ export function HeaderClient() {
                 <a href="https://wa.me/79001234567" className="hover:text-foreground transition-colors">WhatsApp</a>
                 <a href="tel:+79001234567" className="hover:text-foreground transition-colors">Телефон</a>
               </div>
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
         )}
       </AnimatePresence>
     </>

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 const clients = [
   { name: "СберБизнес", width: "w-24" },
@@ -24,14 +24,14 @@ export function ClientsSection() {
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background-alt/50 to-background" />
       
       <div className="relative max-w-[1400px] mx-auto px-6 lg:px-8 mb-10">
-        <motion.p
+        <m.p
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="text-center text-sm text-muted-foreground uppercase tracking-widest"
         >
           Нам доверяют более 200 компаний
-        </motion.p>
+        </m.p>
       </div>
 
       {/* First row - moves left */}

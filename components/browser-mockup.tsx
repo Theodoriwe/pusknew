@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import {
   Monitor,
   Smartphone,
@@ -100,7 +100,7 @@ export function BrowserMockup({
       {/* Фреймы */}
       <AnimatePresence mode="wait">
         {view === "live" && siteUrl ? (
-          <motion.div
+          <m.div
             key="live"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -151,9 +151,9 @@ export function BrowserMockup({
                 />
               </div>
             </div>
-          </motion.div>
+          </m.div>
         ) : (
-          <motion.div
+          <m.div
             key="mobile"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -242,7 +242,7 @@ export function BrowserMockup({
                 />
               </div>
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </>

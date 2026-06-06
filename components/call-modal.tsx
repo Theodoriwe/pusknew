@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { X, Phone } from "lucide-react";
 import { useModalStore } from "@/lib/store";
 import { Button } from "@/components/ui/button";
@@ -40,7 +40,7 @@ export function CallModal() {
   return (
     <AnimatePresence>
       {isCallOpen && (
-        <motion.div
+        <m.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -48,7 +48,7 @@ export function CallModal() {
           className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-foreground/60 backdrop-blur-sm p-0 sm:p-4"
           onClick={handleOverlayClick}
         >
-          <motion.div
+          <m.div
             ref={modalRef}
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -70,14 +70,14 @@ export function CallModal() {
 
             <div className="p-8 sm:p-10 text-center">
               {/* Icon */}
-              <motion.div
+              <m.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: 0.1, type: "spring", stiffness: 200 }}
                 className="w-16 h-16 mx-auto mb-6 rounded-full bg-primary/20 flex items-center justify-center"
               >
                 <Phone className="w-8 h-8 text-primary" />
-              </motion.div>
+              </m.div>
 
               {/* Title */}
               <h2
@@ -128,8 +128,8 @@ export function CallModal() {
                 </Button>
               </div>
             </div>
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       )}
     </AnimatePresence>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import { m, useInView } from "framer-motion";
 
 const stats = [
   {
@@ -83,7 +83,7 @@ export function StatsSection() {
 
       <div ref={ref} className="max-w-[1400px] mx-auto px-6 lg:px-8">
         {/* Section label */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
@@ -101,12 +101,12 @@ export function StatsSection() {
           >
             Результаты, которые говорят сами за себя
           </h2>
-        </motion.div>
+        </m.div>
 
         {/* Stats grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
           {stats.map((stat, index) => (
-            <motion.div
+            <m.div
               key={stat.label}
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
@@ -140,7 +140,7 @@ export function StatsSection() {
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-2xl"
                 style={{ background: `${stat.color}08` }}
               />
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </div>

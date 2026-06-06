@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { m, useInView } from "framer-motion";
 import Image from "next/image";
 
 const ACCENT = "#549AF2";
@@ -85,7 +85,7 @@ function Card({
   className?: string;
 }) {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 28 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
@@ -112,7 +112,7 @@ function Card({
       <div className="relative z-10 p-6 md:p-7 h-full flex flex-col">
         {children}
       </div>
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -134,7 +134,7 @@ export function ProcessSection() {
       <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 relative">
 
         {/* ── Header ── */}
-        <motion.div
+        <m.div
           ref={ref}
           initial={{ opacity: 0, y: 28 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
@@ -159,7 +159,7 @@ export function ProcessSection() {
           >
             <span className="inline-flex items-center gap-3">
               Почему это
-              <motion.span
+              <m.span
                 initial={{ rotate: 0 }}
                 animate={isInView ? { rotate: -10 } : { rotate: 0 }}
                 transition={{ duration: 0.5, delay: 0.3, type: "spring", stiffness: 160 }}
@@ -173,12 +173,12 @@ export function ProcessSection() {
                 }}
               >
                 !
-              </motion.span>
+              </m.span>
             </span>
             <br />
             <span style={{ color: ACCENT }}>нужно бизнесу</span>
           </h2>
-        </motion.div>
+        </m.div>
 
         {/* ── Bento grid — Desktop ── */}
         {/*

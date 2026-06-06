@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { motion, useSpring, useMotionValue } from "framer-motion";
+import { m, useSpring, useMotionValue } from "framer-motion";
 
 export function CustomCursor() {
   const [isVisible, setIsVisible] = useState(false);
@@ -72,14 +72,14 @@ export function CustomCursor() {
   return (
     <>
       {/* Main cursor dot */}
-      <motion.div
+      <m.div
         className="fixed top-0 left-0 pointer-events-none z-[9999]"
         style={{
           x: cursorXSpring,
           y: cursorYSpring,
         }}
       >
-        <motion.div
+        <m.div
           className="relative flex items-center justify-center"
           animate={{
             scale: isPointer ? 2.5 : isHovering ? 2 : 1,
@@ -93,18 +93,18 @@ export function CustomCursor() {
             }`}
             style={{ transform: "translate(-50%, -50%)" }}
           />
-        </motion.div>
-      </motion.div>
+        </m.div>
+      </m.div>
 
       {/* Cursor ring */}
-      <motion.div
+      <m.div
         className="fixed top-0 left-0 pointer-events-none z-[9998]"
         style={{
           x: cursorXSpring,
           y: cursorYSpring,
         }}
       >
-        <motion.div
+        <m.div
           className="relative flex items-center justify-center"
           animate={{
             scale: isPointer ? 1.5 : isHovering ? 1.2 : 1,
@@ -116,27 +116,27 @@ export function CustomCursor() {
             className="w-10 h-10 rounded-full border border-foreground/30"
             style={{ transform: "translate(-50%, -50%)" }}
           />
-        </motion.div>
-      </motion.div>
+        </m.div>
+      </m.div>
 
       {/* Cursor text label */}
       {cursorText && (
-        <motion.div
+        <m.div
           className="fixed top-0 left-0 pointer-events-none z-[9999]"
           style={{
             x: cursorXSpring,
             y: cursorYSpring,
           }}
         >
-          <motion.div
+          <m.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             className="absolute left-6 top-0 px-3 py-1.5 bg-primary text-primary-foreground text-xs font-medium rounded-full whitespace-nowrap"
           >
             {cursorText}
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       )}
     </>
   );

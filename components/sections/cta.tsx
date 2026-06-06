@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { m, useInView } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useModalStore } from "@/lib/store";
@@ -20,14 +20,14 @@ export function CTASection() {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <motion.div
+        <m.div
           ref={ref}
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.5 }}
           className="text-center"
         >
-          <motion.div
+          <m.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={
               isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }
@@ -37,7 +37,7 @@ export function CTASection() {
           >
             <span className="w-1.5 h-1.5 rounded-full bg-primary" />
             Бесплатная консультация
-          </motion.div>
+          </m.div>
 
           <h2
             className="heading-1 mb-6"
@@ -51,7 +51,7 @@ export function CTASection() {
             и ответим на все вопросы
           </p>
 
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.5, delay: 0.3 }}
@@ -68,10 +68,10 @@ export function CTASection() {
             <p className="text-sm text-muted-foreground">
               Ответим в течение 15 минут
             </p>
-          </motion.div>
+          </m.div>
 
           {/* Trust indicators */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.5, delay: 0.5 }}
@@ -89,8 +89,8 @@ export function CTASection() {
               <span className="w-2 h-2 rounded-full bg-accent" />
               Прозрачные цены
             </div>
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       </div>
     </section>
   );

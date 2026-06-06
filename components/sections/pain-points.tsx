@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useModalStore } from "@/lib/store";
 import { useState, useEffect, useRef } from "react";
@@ -82,7 +82,7 @@ export function PainPointsSection() {
       <div className="max-w-[1320px] mx-auto px-5 sm:px-8 xl:px-10">
 
         {/* Header */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
@@ -112,7 +112,7 @@ export function PainPointsSection() {
             Типичные проблемы бизнеса с рекламой, сайтом и продажами в интернете —
             мы поможем вам их решить.
           </p>
-        </motion.div>
+        </m.div>
 
         {/* Main Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 mb-16">
@@ -145,7 +145,7 @@ export function PainPointsSection() {
               {pains.map((pain) => {
                 const isActive = pain.id === selectedId;
                 return (
-                  <motion.div
+                  <m.div
                     key={pain.id}
                     animate={{ opacity: isActive ? 1 : 0 }}
                     transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
@@ -200,7 +200,7 @@ export function PainPointsSection() {
                         />
                       </button>
                     </div>
-                  </motion.div>
+                  </m.div>
                 );
               })}
             </div>
@@ -256,7 +256,7 @@ export function PainPointsSection() {
         </div>
 
         {/* Bottom CTA */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
@@ -294,7 +294,7 @@ export function PainPointsSection() {
               />
             </button>
           </div>
-        </motion.div>
+        </m.div>
 
       </div>
     </section>

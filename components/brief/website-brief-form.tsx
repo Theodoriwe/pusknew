@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { ArrowLeft, CheckCircle, Loader2 } from "lucide-react";
 import {
   TextInput,
@@ -155,36 +155,36 @@ export function WebsiteBriefForm({ onBack }: WebsiteBriefFormProps) {
 
   if (isSubmitted) {
     return (
-      <motion.div
+      <m.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         className="min-h-screen flex items-center justify-center py-24"
       >
         <div className="max-w-md w-full mx-auto text-center">
-          <motion.div
+          <m.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ type: "spring", delay: 0.2 }}
             className="mb-8"
           >
             <CheckCircle className="w-24 h-24 text-green-500 mx-auto" />
-          </motion.div>
+          </m.div>
 
           <h2 className="text-3xl font-bold mb-4 text-foreground">Спасибо!</h2>
           <p className="text-muted-foreground mb-8">
             Ваш бриф успешно отправлен. Мы свяжемся с вами в течение 15 минут для уточнения деталей.
           </p>
 
-          <motion.button
+          <m.button
             onClick={onBack}
             className="px-8 py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary-hover transition-all"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             Вернуться на главную
-          </motion.button>
+          </m.button>
         </div>
-      </motion.div>
+      </m.div>
     );
   }
 
@@ -193,12 +193,12 @@ export function WebsiteBriefForm({ onBack }: WebsiteBriefFormProps) {
       <div className="container mx-auto px-4 sm:px-6">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="mb-12"
           >
-            <motion.button
+            <m.button
               type="button"
               onClick={onBack}
               className="flex items-center gap-2 text-primary hover:text-primary-hover transition-colors mb-6"
@@ -206,7 +206,7 @@ export function WebsiteBriefForm({ onBack }: WebsiteBriefFormProps) {
             >
               <ArrowLeft className="w-4 h-4" />
               <span className="text-sm font-medium">Выбрать другую услугу</span>
-            </motion.button>
+            </m.button>
 
             <h1
               className="text-5xl font-black text-foreground mb-3"
@@ -217,10 +217,10 @@ export function WebsiteBriefForm({ onBack }: WebsiteBriefFormProps) {
             <p className="text-lg text-muted-foreground">
               Заполните форму, чтобы мы лучше поняли ваши задачи. Это займет 10-15 минут.
             </p>
-          </motion.div>
+          </m.div>
 
           {/* Progress Steps */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
@@ -228,8 +228,8 @@ export function WebsiteBriefForm({ onBack }: WebsiteBriefFormProps) {
           >
             <div className="flex items-center justify-between gap-2 lg:gap-4">
               {steps.map((step, index) => (
-                <motion.div key={step.id} className="flex items-center flex-1">
-                  <motion.button
+                <m.div key={step.id} className="flex items-center flex-1">
+                  <m.button
                     type="button"
                     onClick={() => setCurrentStep(index)}
                     className="flex-1 flex flex-col items-center justify-center gap-3 p-4 rounded-lg border-2 transition-all min-h-[140px]"
@@ -243,7 +243,7 @@ export function WebsiteBriefForm({ onBack }: WebsiteBriefFormProps) {
                       borderColor: "rgb(84, 154, 242)",
                     }}
                   >
-                    <motion.div
+                    <m.div
                       className="w-8 h-8 rounded-full flex items-center justify-center font-semibold text-sm flex-shrink-0"
                       style={{
                         backgroundColor:
@@ -252,17 +252,17 @@ export function WebsiteBriefForm({ onBack }: WebsiteBriefFormProps) {
                       }}
                     >
                       {currentStep > index ? "✓" : index + 1}
-                    </motion.div>
+                    </m.div>
                     <div className="hidden lg:block text-center">
                       <div className="text-xs font-semibold text-muted-foreground">
                         Шаг {index + 1}
                       </div>
                       <div className="text-sm font-semibold text-foreground">{step.title}</div>
                     </div>
-                  </motion.button>
+                  </m.button>
 
                   {index < steps.length - 1 && (
-                    <motion.div
+                    <m.div
                       className="hidden lg:block h-1 flex-1 mx-2 rounded-full"
                       style={{
                         backgroundColor:
@@ -270,13 +270,13 @@ export function WebsiteBriefForm({ onBack }: WebsiteBriefFormProps) {
                       }}
                     />
                   )}
-                </motion.div>
+                </m.div>
               ))}
             </div>
-          </motion.div>
+          </m.div>
 
           {/* Form Steps */}
-          <motion.div
+          <m.div
             key={currentStep}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -287,7 +287,7 @@ export function WebsiteBriefForm({ onBack }: WebsiteBriefFormProps) {
             {/* Step 0: General Information */}
             {currentStep === 0 && (
               <>
-                <motion.div
+                <m.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.1 }}
@@ -299,7 +299,7 @@ export function WebsiteBriefForm({ onBack }: WebsiteBriefFormProps) {
                   <p className="text-sm text-muted-foreground leading-relaxed">
                     Подсказка: чем больше информации вы предоставите, тем точнее будет наша оценка и рекомендации
                   </p>
-                </motion.div>
+                </m.div>
                 <div className="space-y-6">
                   <TextInput
                     label="Как называется Ваша компания?"
@@ -415,7 +415,7 @@ export function WebsiteBriefForm({ onBack }: WebsiteBriefFormProps) {
             {/* Step 1: Goals and Functionality */}
             {currentStep === 1 && (
               <>
-                <motion.div
+                <m.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.1 }}
@@ -427,7 +427,7 @@ export function WebsiteBriefForm({ onBack }: WebsiteBriefFormProps) {
                   <p className="text-sm text-muted-foreground leading-relaxed">
                     Совет: выбирайте только необходимые модули. Это поможет оптимизировать стоимость и время разработки
                   </p>
-                </motion.div>
+                </m.div>
                 <CheckboxGroup
                   label="Какова цель создания сайта?"
                   description="Выберите одну или несколько целей"
@@ -539,7 +539,7 @@ export function WebsiteBriefForm({ onBack }: WebsiteBriefFormProps) {
             {/* Step 2: Structure */}
             {currentStep === 2 && (
               <>
-                <motion.div
+                <m.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.1 }}
@@ -551,7 +551,7 @@ export function WebsiteBriefForm({ onBack }: WebsiteBriefFormProps) {
                   <p className="text-sm text-muted-foreground leading-relaxed">
                     Совет: структурируйте разделы по логике пути клиента. Начните со списка отдельно, потом обсудим оптимизацию
                   </p>
-                </motion.div>
+                </m.div>
                 <TextArea
                   label="Укажите основные разделы сайта"
                   description="Перечислите разделы, которые должны быть на сайте"
@@ -593,7 +593,7 @@ export function WebsiteBriefForm({ onBack }: WebsiteBriefFormProps) {
             {/* Step 3: Design */}
             {currentStep === 3 && (
               <>
-                <motion.div
+                <m.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.1 }}
@@ -605,7 +605,7 @@ export function WebsiteBriefForm({ onBack }: WebsiteBriefFormProps) {
                   <p className="text-sm text-muted-foreground leading-relaxed">
                     Совет: чем больше примеров вы предоставите, тем точнее мы создадим дизайн вашей мечты
                   </p>
-                </motion.div>
+                </m.div>
                 <RadioGroup
                   label="Нужен ли Вам уникальный дизайн?"
                   options={[
@@ -722,7 +722,7 @@ export function WebsiteBriefForm({ onBack }: WebsiteBriefFormProps) {
             {/* Step 4: Additional Services */}
             {currentStep === 4 && (
               <>
-                <motion.div
+                <m.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.1 }}
@@ -734,7 +734,7 @@ export function WebsiteBriefForm({ onBack }: WebsiteBriefFormProps) {
                   <p className="text-sm text-muted-foreground leading-relaxed">
                     Финальный шаг: выберите услуги, которые помогут сайту работать лучше. Всё можно обсудить на консультации
                   </p>
-                </motion.div>
+                </m.div>
                 <CheckboxGroup
                   label="Какие дополнительные услуги вам нужны?"
                   options={[
@@ -787,16 +787,16 @@ export function WebsiteBriefForm({ onBack }: WebsiteBriefFormProps) {
                 )}
               </>
             )}
-          </motion.div>
+          </m.div>
 
           {/* Navigation Buttons */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
             className="flex justify-between gap-4 mt-12 pt-12 border-t border-border"
           >
-            <motion.button
+            <m.button
               type="button"
               onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
               disabled={currentStep === 0}
@@ -805,10 +805,10 @@ export function WebsiteBriefForm({ onBack }: WebsiteBriefFormProps) {
               whileTap={{ scale: 0.95 }}
             >
               Назад
-            </motion.button>
+            </m.button>
 
             {currentStep === steps.length - 1 ? (
-              <motion.button
+              <m.button
                 type="submit"
                 disabled={isSubmitting}
                 className="px-8 py-3 rounded-lg bg-primary text-primary-foreground font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 hover:shadow-lg active:scale-95"
@@ -823,9 +823,9 @@ export function WebsiteBriefForm({ onBack }: WebsiteBriefFormProps) {
                 ) : (
                   "Отправить бриф"
                 )}
-              </motion.button>
+              </m.button>
             ) : (
-              <motion.button
+              <m.button
                 type="button"
                 onClick={() => setCurrentStep(Math.min(steps.length - 1, currentStep + 1))}
                 className="px-8 py-3 rounded-lg bg-primary text-primary-foreground font-semibold transition-all hover:shadow-lg active:scale-95"
@@ -833,9 +833,9 @@ export function WebsiteBriefForm({ onBack }: WebsiteBriefFormProps) {
                 whileTap={{ scale: 0.95 }}
               >
                 Далее
-              </motion.button>
+              </m.button>
             )}
-          </motion.div>
+          </m.div>
         </div>
       </div>
     </form>

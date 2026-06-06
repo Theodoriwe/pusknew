@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { useModalStore } from "@/lib/store";
 import { ArrowUpRight, ArrowRight } from "lucide-react";
 
@@ -58,7 +58,7 @@ export function HeroContextAdsMarquee() {
       <div className="relative z-10 h-full flex flex-col items-center justify-center px-4 sm:px-8 lg:px-12">
         {/* Top Marquee - Left to Right */}
         <div className="absolute top-20 left-0 right-0 w-full overflow-hidden">
-          <motion.div
+          <m.div
             className="flex gap-12 whitespace-nowrap"
             animate={{ x: [0, -1500] }}
             transition={{
@@ -79,18 +79,18 @@ export function HeroContextAdsMarquee() {
                 {item}
               </span>
             ))}
-          </motion.div>
+          </m.div>
         </div>
 
         {/* Center Content */}
-        <motion.div
+        <m.div
           className="text-center max-w-3xl mx-auto"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
           {/* Main Heading */}
-          <motion.h1
+          <m.h1
             className="font-black select-none mb-6"
             style={{
               fontFamily: "var(--font-display)",
@@ -107,10 +107,10 @@ export function HeroContextAdsMarquee() {
             <span className="block" style={{ color: "#549AF2" }}>
               реклама
             </span>
-          </motion.h1>
+          </m.h1>
 
           {/* Subtitle */}
-          <motion.p
+          <m.p
             className="text-lg sm:text-xl leading-relaxed mb-10"
             style={{ color: "#6B7280" }}
             initial={{ opacity: 0, y: 20 }}
@@ -118,10 +118,10 @@ export function HeroContextAdsMarquee() {
             transition={{ duration: 0.6, delay: 0.4 }}
           >
             Настраиваем рекламу в Яндекс и Google так, чтобы каждый рубль приносил максимум заявок. Снижаем CPL, увеличиваем ROI
-          </motion.p>
+          </m.p>
 
           {/* CTA Buttons */}
-          <motion.div
+          <m.div
             className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -180,12 +180,12 @@ export function HeroContextAdsMarquee() {
                 className="group-hover:translate-x-1 transition-transform duration-150"
               />
             </button>
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
 
         {/* Bottom Marquee - Right to Left */}
         <div className="absolute bottom-20 left-0 right-0 w-full overflow-hidden">
-          <motion.div
+          <m.div
             className="flex gap-12 whitespace-nowrap"
             animate={{ x: [-1500, 0] }}
             transition={{
@@ -206,7 +206,7 @@ export function HeroContextAdsMarquee() {
                 {item}
               </span>
             ))}
-          </motion.div>
+          </m.div>
         </div>
       </div>
     </section>

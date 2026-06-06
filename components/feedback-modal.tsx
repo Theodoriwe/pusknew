@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { X, CheckCircle2, Loader2 } from "lucide-react";
 import { useModalStore } from "@/lib/store";
 
@@ -42,7 +42,7 @@ export function FeedbackModal() {
       {isFeedbackOpen && (
         <>
           {/* Overlay */}
-          <motion.div
+          <m.div
             key="overlay"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -52,7 +52,7 @@ export function FeedbackModal() {
           />
 
           {/* Modal */}
-          <motion.div
+          <m.div
             key="modal"
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -74,7 +74,7 @@ export function FeedbackModal() {
               <div className="p-10 md:p-12">
                 <AnimatePresence mode="wait">
                   {done ? (
-                    <motion.div
+                    <m.div
                       key="done"
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
@@ -92,9 +92,9 @@ export function FeedbackModal() {
                       <p className="text-muted-foreground text-lg">
                         Ваше сообщение отправлено. Мы ответим вам в ближайшее время.
                       </p>
-                    </motion.div>
+                    </m.div>
                   ) : loading ? (
-                    <motion.div
+                    <m.div
                       key="loading"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -104,9 +104,9 @@ export function FeedbackModal() {
                       <p className="text-lg font-medium text-foreground">
                         Отправка сообщения...
                       </p>
-                    </motion.div>
+                    </m.div>
                   ) : (
-                    <motion.div
+                    <m.div
                       key="form"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -189,12 +189,12 @@ export function FeedbackModal() {
                           Отправить
                         </button>
                       </form>
-                    </motion.div>
+                    </m.div>
                   )}
                 </AnimatePresence>
               </div>
             </div>
-          </motion.div>
+          </m.div>
         </>
       )}
     </AnimatePresence>

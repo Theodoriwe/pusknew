@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { X, ArrowLeft, ArrowRight, Loader2, CheckCircle2, Check, Phone, MessageCircle, Send } from "lucide-react";
 import { useModalStore } from "@/lib/store";
 
@@ -280,7 +280,7 @@ export function QuizModal() {
       {isQuizOpen && (
         <>
           {/* Overlay */}
-          <motion.div
+          <m.div
             key="overlay"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -290,7 +290,7 @@ export function QuizModal() {
           />
 
           {/* Modal */}
-          <motion.div
+          <m.div
             key="modal"
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -313,7 +313,7 @@ export function QuizModal() {
                 <AnimatePresence mode="wait">
                   {/* Done */}
                   {done ? (
-                    <motion.div
+                    <m.div
                       key="done"
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
@@ -331,20 +331,20 @@ export function QuizModal() {
                       <p className="text-muted-foreground text-lg">
                         Мы свяжемся с вами в ближайшее время и пришлём расчёт стоимости.
                       </p>
-                    </motion.div>
+                    </m.div>
                   ) : loading ? (
                     /* Loading - no text shown */
-                    <motion.div
+                    <m.div
                       key="loading"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       className="text-center py-16"
                     >
                       <Loader2 className="w-12 h-12 animate-spin text-primary mx-auto mb-6" />
-                    </motion.div>
+                    </m.div>
                   ) : loadingBeforeContact ? (
                     /* Loading before contact step */
-                    <motion.div
+                    <m.div
                       key="loading-before-contact"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -354,10 +354,10 @@ export function QuizModal() {
                       <p className="text-lg font-medium text-foreground">
                         Секундочку просчитываем стоимость вашего проекта...
                       </p>
-                    </motion.div>
+                    </m.div>
                   ) : (
                     /* Steps */
-                    <motion.div
+                    <m.div
                       key={`step-${step}`}
                       initial={{ opacity: 0, x: 30 }}
                       animate={{ opacity: 1, x: 0 }}
@@ -374,7 +374,7 @@ export function QuizModal() {
                             <span className="font-medium">{displayProgress}%</span>
                           </div>
                           <div className="h-2 bg-foreground/8 rounded-full overflow-hidden">
-                            <motion.div
+                            <m.div
                               className="h-full bg-[#6e9bed] rounded-full"
                               animate={{ width: `${displayProgress}%` }}
                               transition={{ duration: 0.4 }}
@@ -738,12 +738,12 @@ export function QuizModal() {
                           </button>
                         )}
                       </div>
-                    </motion.div>
+                    </m.div>
                   )}
                 </AnimatePresence>
               </div>
             </div>
-          </motion.div>
+          </m.div>
         </>
       )}
     </AnimatePresence>
