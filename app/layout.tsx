@@ -257,16 +257,8 @@ export default function RootLayout({
   return (
     <html lang="ru" className={`${inter.variable} ${unbounded.variable} overflow-x-hidden`}>
       <head>
-        {/*
-          ❌ УДАЛЕНО: preconnect к Google Fonts — шрифты грузятся локально через next/font,
-             эти теги только создавали лишние TCP-соединения.
-
-          ❌ УДАЛЕНО: dns-prefetch к Vercel Analytics — сайт на VPS, не используется.
-
-          ❌ УДАЛЕНО: preload og-image.jpg и logo.svg — они не LCP-элементы,
-             но браузер качал их с высоким приоритетом, отнимая полосу у критических ресурсов.
-             Если выяснится что logo — это LCP-элемент hero-секции, верни preload только для него.
-        */}
+         <link rel="preload" href="/_next/static/media/b98cf4dce8130f85-s.p.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+  <link rel="preload" href="/_next/static/media/a4b6c085eda64c4e-s.p.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
 
         {/* JSON-LD Schema */}
         <script
