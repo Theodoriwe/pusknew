@@ -8,19 +8,18 @@ import { FloatingHelpWidget } from "@/components/floating-help-widget";
 
 const inter = localFont({
   src: [
-    { path: "../public/fonts/inter-400.woff2", weight: "400" },
-    { path: "../public/fonts/inter-500.woff2", weight: "500" },
+    { path: "./fonts/inter-400.woff2", weight: "400" },
+    { path: "./fonts/inter-500.woff2", weight: "500" },
   ],
   variable: "--font-inter",
   display: "swap",
   preload: true,
 });
-
 const unbounded = localFont({
   src: [
-    { path: "../public/fonts/unbounded-600.woff2", weight: "600" },
-    { path: "../public/fonts/unbounded-700.woff2", weight: "700" },
-    { path: "../public/fonts/unbounded-900.woff2", weight: "900" },
+    { path: "./fonts/unbounded-600.woff2", weight: "600" },
+    { path: "./fonts/unbounded-700.woff2", weight: "700" },
+    { path: "./fonts/unbounded-900.woff2", weight: "900" },
   ],
   variable: "--font-unbounded",
   display: "swap",
