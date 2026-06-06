@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ModalProvider } from "@/components/modal-provider";
 import { Toaster } from "@/components/ui/sonner";
-import { FloatingHelpWidget } from "@/components/floating-help-widget";
+import { ClientWidgets } from "./client-widgets";
 import { MotionProvider } from "@/components/motion-provider";
 
 
@@ -273,7 +273,7 @@ export default function RootLayout({
     <ModalProvider>
       <div className="noise" />
       {children}
-      <FloatingHelpWidget />
+      <ClientWidgets />
     </ModalProvider>
     <Toaster position="top-center" />
   </MotionProvider>
