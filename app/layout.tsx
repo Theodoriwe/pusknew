@@ -14,7 +14,7 @@ const inter = localFont({
   ],
   variable: "--font-inter",
   display: "swap",
-  preload: true,
+  preload: false,
 });
 const unbounded = localFont({
   src: [
@@ -24,7 +24,7 @@ const unbounded = localFont({
   ],
   variable: "--font-unbounded",
   display: "swap",
-  preload: true,
+  preload: false,
 });
 
 export const metadata: Metadata = {
