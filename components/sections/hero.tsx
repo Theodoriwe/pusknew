@@ -291,20 +291,20 @@ export function HeroSection() {
           <div className="flex flex-col lg:flex-row lg:items-end gap-8 lg:gap-16 mt-10 sm:mt-14 pb-14 lg:pb-16">
 
             {/* Left */}
-            <div className="flex flex-col gap-7 max-w-[440px] hero-left">
-              <p
-                className="leading-[1.7] text-base sm:text-lg"
-                style={{ 
-                  fontSize: "clamp(0.95rem, 1.8vw, 1.1rem)", 
-                  color: "var(--muted-foreground)",
-                }}
-              >
-                Разрабатываем сайты, запускаем рекламу и выстраиваем
-                продажи в Сочи. Берём все продвижение под ключ —
-                вы занимаетесь бизнесом.
-              </p>
+          <div className="flex flex-col gap-7 max-w-[440px]">
+  <p
+    className="leading-[1.7] text-base sm:text-lg"
+    style={{
+      fontSize: "clamp(0.95rem, 1.8vw, 1.1rem)",
+      color: "var(--muted-foreground)",
+    }}
+  >
+    Разрабатываем сайты, запускаем рекламу и выстраиваем
+    продажи в Сочи. Берём все продвижение под ключ —
+    вы занимаетесь бизнесом.
+  </p>
 
-              <div className="flex flex-col sm:flex-row gap-3">
+               <div className="flex flex-col sm:flex-row gap-3 hero-left">
                 <button
                   onClick={() => openContact()}
                   aria-label="Обсудить проект с агентством"
