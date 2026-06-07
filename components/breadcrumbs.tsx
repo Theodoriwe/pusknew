@@ -23,13 +23,13 @@ export function Breadcrumbs({ items, white }: BreadcrumbsProps) {
         "@type": "ListItem",
         position: 1,
         name: "Главная",
-        item: "https://pusk.agency",
+        item: "https://agencypusk.ru",
       },
       ...items.map((item, index) => ({
         "@type": "ListItem",
         position: index + 2,
         name: item.label,
-        item: item.href ? `https://pusk.agency${item.href}` : undefined,
+        item: item.href ? `https://agencypusk.ru${item.href}` : undefined,
       })),
     ],
   };

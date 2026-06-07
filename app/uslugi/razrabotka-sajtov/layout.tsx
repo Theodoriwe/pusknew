@@ -13,14 +13,14 @@ export const metadata: Metadata = {
     "корпоративный сайт",
     "разработка сайта Москва",
   ],
-  metadataBase: new URL("https://pusk.agency"),
+  metadataBase: new URL("https://agencypusk.ru"),
   alternates: {
-    canonical: "https://pusk.agency/uslugi/razrabotka-sajtov",
+    canonical: "https://agencypusk.ru/uslugi/razrabotka-sajtov",
   },
   openGraph: {
     title: "Разработка сайтов | ПУСК",
     description: "Создаём современные сайты и интернет-магазины с конверсией выше рынка в 2-3 раза",
-    url: "https://pusk.agency/uslugi/razrabotka-sajtov",
+    url: "https://agencypusk.ru/uslugi/razrabotka-sajtov",
     type: "website",
   },
 };

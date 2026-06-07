@@ -4,14 +4,14 @@ export const generateMetadata = (title: string, description: string, path: strin
   return {
     title: `${title} | ПУСК`,
     description: description,
-    metadataBase: new URL("https://pusk.agency"),
+    metadataBase: new URL("https://agencypusk.ru"),
     alternates: {
-      canonical: `https://pusk.agency${path}`,
+      canonical: `https://agencypusk.ru${path}`,
     },
     openGraph: {
       title: title,
       description: description,
-      url: `https://pusk.agency${path}`,
+      url: `https://agencypusk.ru${path}`,
       type: "website",
       images: [
         {
@@ -44,7 +44,7 @@ export const generateServiceSchema = (
   provider: {
     "@type": "Organization",
     name: provider,
-    url: "https://pusk.agency",
+    url: "https://agencypusk.ru",
     telephone: "+7-900-123-45-67",
   },
   serviceType: serviceName,
@@ -53,7 +53,7 @@ export const generateServiceSchema = (
     name: "Москва",
   },
   priceRange: "₽₽",
-  image: "https://pusk.agency/og-image.jpg",
+  image: "https://agencypusk.ru/og-image.jpg",
 });
 
 // Breadcrumb Schema generator

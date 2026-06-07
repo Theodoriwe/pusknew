@@ -1,4 +1,4 @@
-# robots.txt для pusk.agency
+# robots.txt для agencypusk.ru
 User-agent: *
 Allow: /
 Disallow: /admin
@@ -16,5 +16,5 @@ User-agent: Googlebot
 Allow: /
 Crawl-delay: 0
 
-Sitemap: https://pusk.agency/sitemap.xml
-Host: https://pusk.agency
+Sitemap: https://agencypusk.ru/sitemap.xml
+Host: https://agencypusk.ru

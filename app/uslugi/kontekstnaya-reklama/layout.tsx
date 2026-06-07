@@ -15,10 +15,10 @@ export const metadata: Metadata = {
     title: "Контекстная реклама | ПУСК",
     description:
       "Настраиваем Яндекс.Директ и Google Ads с максимальной эффективностью.",
-    url: "https://pusk.agency/uslugi/kontekstnaya-reklama",
+    url: "https://agencypusk.ru/uslugi/kontekstnaya-reklama",
   },
   alternates: {
-    canonical: "https://pusk.agency/uslugi/kontekstnaya-reklama",
+    canonical: "https://agencypusk.ru/uslugi/kontekstnaya-reklama",
   },
 };
 
