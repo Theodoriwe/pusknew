@@ -90,13 +90,15 @@ export default async function CasePage({ params }: PageProps) {
   return (
     <>
       <Header />
-      <div className="max-w-[1280px] mx-auto px-6 lg:px-8 pt-24 lg:pt-28 pb-6">
-        <Breadcrumbs
-          items={[
-            { label: "Кейсы", href: "/kejsy" },
-            { label: caseData.title },
-          ]}
-        />
+      <div className="max-w-[1280px] mx-auto px-6 lg:px-8 pt-32">
+        <div className="mb-20">
+          <Breadcrumbs
+            items={[
+              { label: "Кейсы", href: "/kejsy" },
+              { label: caseData.title },
+            ]}
+          />
+        </div>
       </div>
       <main className="pt-0 lg:pt-0">
         <CasePageClient caseData={caseDataForClient} />

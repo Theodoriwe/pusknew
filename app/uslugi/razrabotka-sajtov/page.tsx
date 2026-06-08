@@ -70,19 +70,30 @@ export default function RazrabotkaSajtovPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const { openQuiz } = useModalStore();
   const prefersReducedMotion = useReducedMotion();
+  const [isMobile, setIsMobile] = useState(false);
   const leftColRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const cardWrapperRef = useRef<HTMLDivElement>(null);
 
-  // Animation config based on reduced motion preference
+  // Animation config based on reduced motion preference and device
   const animConfig = useMemo(
     () => ({
-      enabled: !prefersReducedMotion,
-      duration: prefersReducedMotion ? 0 : 0.6,
-      delay: prefersReducedMotion ? 0 : 0.1,
+      enabled: !prefersReducedMotion && !isMobile,
+      duration: prefersReducedMotion || isMobile ? 0.2 : 0.6,
+      delay: prefersReducedMotion || isMobile ? 0 : 0.1,
     }),
-    [prefersReducedMotion]
+    [prefersReducedMotion, isMobile]
   );
+
+  // Check if mobile on mount
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(min-width: 1024px)");
@@ -158,10 +169,10 @@ export default function RazrabotkaSajtovPage() {
       <Header />
       <main className="min-h-screen">
       {/* HERO */}
-      <section className="relative pt-20 sm:pt-32 pb-24 overflow-hidden bg-background">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative pt-32 pb-24 overflow-hidden bg-background">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Breadcrumbs */}
-          <div className="max-w-7xl mx-auto mb-8 sm:mb-12">
+          <div className="mb-20">
             <Breadcrumbs
               items={[
                 { label: "Услуги", href: "/uslugi" },
@@ -170,18 +181,17 @@ export default function RazrabotkaSajtovPage() {
             />
           </div>
 
-          <div className="max-w-7xl mx-auto">
-            <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 items-center">
-              {/* Left column - Content */}
-              <div>
-                {/* Title */}
-                <motion.h1
-                  initial={{ opacity: 0, y: 40, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
-                  className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 text-balance leading-[1.05]"
-                  style={{ fontFamily: "var(--font-display)" }}
-                >
+          <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 items-center">
+            {/* Left column - Content */}
+            <div>
+              {/* Title */}
+              <motion.h1
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
+                className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 text-balance leading-[1.05]"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
                   Разработка
                   <br />
                   <motion.span 
@@ -196,13 +206,13 @@ export default function RazrabotkaSajtovPage() {
 
                 {/* Offer */}
                 <motion.div
-                  initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
+                  initial={isMobile ? { opacity: 0 } : { opacity: 0, y: 30, scale: 0.95 }}
+                  animate={{ opacity: 1, y: isMobile ? 0 : 0, scale: isMobile ? 1 : 1 }}
+                  transition={{ duration: animConfig.duration, delay: animConfig.delay * 3, ease: "easeOut" }}
                   className="relative inline-block mb-8"
                 >
                   <div
-                    className="absolute inset-0 rounded-2xl blur-xl opacity-20"
+                    className={isMobile ? "hidden" : "absolute inset-0 rounded-2xl blur-xl opacity-20"}
                     style={{ background: "#549AF2", willChange: "transform" }}
                   />
                   <div className="relative px-4 sm:px-6 py-4 rounded-2xl border-2 border-primary/30 bg-background">
@@ -215,9 +225,9 @@ export default function RazrabotkaSajtovPage() {
 
                 {/* Trust indicators - Компактно на одной строке */}
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.7, delay: 0.35, ease: "easeOut" }}
+                  initial={isMobile ? { opacity: 0 } : { opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: isMobile ? 0 : 0 }}
+                  transition={{ duration: animConfig.duration, delay: animConfig.delay * 3.5, ease: "easeOut" }}
                   className="flex flex-wrap gap-2 sm:gap-3 mb-8"
                 >
                   {[
@@ -228,9 +238,9 @@ export default function RazrabotkaSajtovPage() {
                   ].map((item, i) => (
                     <motion.div
                       key={i}
-                      initial={{ opacity: 0, scale: 0.8 }}
+                      initial={isMobile ? { opacity: 0 } : { opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.4, delay: 0.4 + i * 0.08 }}
+                      transition={{ duration: animConfig.duration * 0.5, delay: animConfig.delay * (0.4 + i * 0.08) }}
                       className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-primary/5 border border-primary/20 hover:bg-primary/10 hover:border-primary/40 transition-all"
                     >
                       <item.icon className="w-3 h-3 sm:w-4 sm:h-4 text-primary shrink-0" strokeWidth={2} />
@@ -241,16 +251,16 @@ export default function RazrabotkaSajtovPage() {
 
                 {/* CTA */}
                 <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.7, delay: 0.4, ease: "easeOut" }}
+                  initial={isMobile ? { opacity: 0 } : { opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: isMobile ? 0 : 0 }}
+                  transition={{ duration: animConfig.duration, delay: animConfig.delay * 4, ease: "easeOut" }}
                   className="flex flex-col sm:flex-row items-start gap-4 mb-8"
                 >
                   <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
+                    initial={isMobile ? { opacity: 0 } : { opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.6, delay: 0.5 }}
-                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: animConfig.duration * 0.6, delay: animConfig.delay * 5 }}
+                    whileHover={isMobile ? undefined : { scale: 1.05 }}
                   >
                     <Link
                       href="/kontakty"
@@ -281,9 +291,9 @@ export default function RazrabotkaSajtovPage() {
 
               {/* Right column - SVG */}
               <motion.div
-                initial={{ opacity: 0, x: 60, scale: 0.9 }}
-                animate={{ opacity: 1, x: 0, scale: 1 }}
-                transition={{ duration: 0.8, delay: 0.35, ease: "easeOut" }}
+                initial={isMobile ? { opacity: 0 } : { opacity: 0, x: 60, scale: 0.9 }}
+                animate={{ opacity: 1, x: isMobile ? 0 : 0, scale: isMobile ? 1 : 1 }}
+                transition={{ duration: animConfig.duration, delay: animConfig.delay * 3.5, ease: "easeOut" }}
                 className="relative flex items-center justify-center hidden sm:flex"
               >
                 <Image 
@@ -291,14 +301,12 @@ export default function RazrabotkaSajtovPage() {
                   alt="Website development illustration"
                   width={500}
                   height={500}
-                  priority
                   quality={85}
                   className="w-full h-auto max-w-md"
                 />
               </motion.div>
             </div>
           </div>
-        </div>
 
         {/* Optimized background decorations - static or reduced motion */}
         <div
@@ -330,10 +338,10 @@ export default function RazrabotkaSajtovPage() {
               className="text-center mb-12 lg:mb-16"
             >
               <motion.div
-                initial={animConfig.enabled ? { opacity: 0, scale: 0.9 } : false}
-                whileInView={animConfig.enabled ? { opacity: 1, scale: 1 } : false}
+                initial={animConfig.enabled ? { opacity: 0 } : false}
+                whileInView={animConfig.enabled ? { opacity: 1 } : false}
                 viewport={{ once: true }}
-                transition={animConfig.enabled ? { duration: 0.6, delay: 0.1 } : {}}
+                transition={animConfig.enabled ? { duration: 0.5, delay: 0.05 } : {}}
                 className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-muted border border-[#549AF2]/20 text-xs sm:text-sm font-medium text-foreground/70 mb-6"
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
@@ -354,10 +362,10 @@ export default function RazrabotkaSajtovPage() {
 
             {/* Highlighted card */}
             <motion.div
-              initial={{ opacity: 0, y: 40, scale: 0.95 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+              transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
               className="relative mb-16 group"
             >
               {/* Background with glow effect */}
@@ -613,8 +621,8 @@ export default function RazrabotkaSajtovPage() {
                         : ""
                     }`}
                     style={!plan.featured ? { backgroundColor: "#d5ed5d", color: "#000000" } : {}}
-                    whileHover={animConfig.enabled ? { scale: 1.02 } : false}
-                    whileTap={animConfig.enabled ? { scale: 0.98 } : false}
+                    whileHover={animConfig.enabled ? { opacity: 0.9 } : false}
+                    whileTap={animConfig.enabled ? { opacity: 0.85 } : false}
                   >
                     <Calculator className="w-4 h-4 sm:w-5 sm:h-5" />
                     Калькулятор

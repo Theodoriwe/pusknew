@@ -72,13 +72,13 @@ export default function ServicesPage() {
     <>
       <Header />
       <main className="overflow-x-hidden bg-background">
-        <section className="relative overflow-hidden pt-24 pb-8 sm:pb-10">
+        <section className="relative overflow-hidden pt-32 pb-8 sm:pb-10">
           <div className="absolute inset-0 bg-[#549AF2]" />
           <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.12),transparent_35%)]" />
           <div className="absolute -top-20 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-white/10 blur-3xl" />
           <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="mb-8">
+            <div className="mb-20">
               <Breadcrumbs items={[{ label: "Услуги" }]} white />
             </div>
 

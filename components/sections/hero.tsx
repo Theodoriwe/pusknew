@@ -305,8 +305,7 @@ export function HeroSection() {
   </p>
 
                <div className="flex flex-col sm:flex-row gap-3 hero-left">
-                <button
-                  onClick={() => openContact()}
+                <button type="button" onClick={() => openContact()}
                   aria-label="Обсудить проект с агентством"
                   className="group inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-semibold rounded-xl transition-colors duration-200 text-white hover:opacity-90"
                   style={{ backgroundColor: "#549AF2" }}
@@ -318,8 +317,7 @@ export function HeroSection() {
                     className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-150"
                   />
                 </button>
-                <button
-                  onClick={() => openQuiz()}
+                <button type="button" onClick={() => openQuiz()}
                   aria-label="Узнать стоимость услуг"
                   className="group inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-semibold rounded-xl transition-all duration-200 hover:opacity-90"
                   style={{ backgroundColor: "#d0ef4c", color: "#000000" }}
@@ -391,6 +389,7 @@ export function HeroSection() {
 
       {/* Ticker */}
       <div
+        aria-hidden="true"
         className="relative shrink-0 overflow-hidden"
         style={{
           borderTop: "1px solid var(--border)",

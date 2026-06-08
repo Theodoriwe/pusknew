@@ -251,27 +251,27 @@ export function ChatModal() {
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: 400 }}
           transition={{ duration: 0.3, ease: "easeOut" }}
-          className="fixed bottom-8 right-8 z-50 w-full max-w-sm bg-card rounded-2xl shadow-2xl overflow-hidden flex flex-col h-96 sm:h-[500px]"
+          className="fixed bottom-3 right-3 sm:bottom-6 sm:right-6 lg:bottom-8 lg:right-8 z-50 w-[calc(100%-24px)] sm:w-full max-w-sm bg-card rounded-2xl shadow-2xl overflow-hidden flex flex-col h-96 sm:h-[430px] lg:h-[500px]"
         >
-          <div className="flex items-center justify-between p-5 border-b border-border bg-card sticky top-0 z-10">
-            <div>
-              <h2 className="text-lg font-semibold" style={{ fontFamily: "var(--font-display)" }}>
+          <div className="flex items-center justify-between p-3 sm:p-5 border-b border-border bg-card sticky top-0 z-10 gap-2">
+            <div className="flex-1 min-w-0">
+              <h2 className="text-base sm:text-lg font-semibold truncate" style={{ fontFamily: "var(--font-display)" }}>
                 Чат поддержки
               </h2>
-              <p className="text-xs text-muted-foreground mt-0.5">
+              <p className="text-xs text-muted-foreground mt-0.5 truncate">
                 Обычно отвечаем за 2 минуты
               </p>
             </div>
             <button
               onClick={closeChat}
-              className="p-2 rounded-full hover:bg-muted transition-colors"
+              className="p-2 rounded-full hover:bg-muted transition-colors flex-shrink-0"
               aria-label="Закрыть"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+          <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 sm:space-y-4">
             {messages.map((message) => (
               <m.div
                 key={message.id}
@@ -281,12 +281,12 @@ export function ChatModal() {
                 className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
               >
                 <div
-                  className={`max-w-xs rounded-xl px-4 py-2.5 ${
+                  className={`max-w-[85%] sm:max-w-xs rounded-xl px-3 sm:px-4 py-2 ${
                     message.sender === "user" ? "" : "bg-muted text-foreground"
                   }`}
                   style={message.sender === "user" ? { backgroundColor: "#d5ed5d", color: "#1a1a1a" } : {}}
                 >
-                  <p className="text-sm break-words">{message.text}</p>
+                  <p className="text-xs sm:text-sm break-words">{message.text}</p>
                   <p className={`text-xs mt-1 ${message.sender === "user" ? "text-current/70" : "text-muted-foreground"}`}>
                     {toDate(message.timestamp).toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" })}
                   </p>
@@ -296,7 +296,7 @@ export function ChatModal() {
 
             {isLoading && (
               <m.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex justify-start">
-                <div className="bg-muted rounded-xl px-4 py-2.5">
+                <div className="bg-muted rounded-xl px-3 sm:px-4 py-2">
                   <div className="flex gap-1">
                     {[0, 150, 300].map((delay) => (
                       <div
@@ -312,23 +312,23 @@ export function ChatModal() {
             <div ref={messagesEndRef} />
           </div>
 
-          <form onSubmit={handleSendMessage} className="p-4 border-t border-border bg-card">
+          <form onSubmit={handleSendMessage} className="p-3 sm:p-4 border-t border-border bg-card flex-shrink-0">
             <div className="flex gap-2">
               <input
                 type="text"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 disabled={isLoading}
-                placeholder="Напишите сообщение..."
-                className="flex-1 px-4 py-2 rounded-lg border border-border bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
+                placeholder="Сообщение..."
+                className="flex-1 min-w-0 px-3 sm:px-4 py-2 rounded-lg border border-border bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 text-sm"
               />
               <button
                 type="submit"
                 disabled={isLoading || !inputValue.trim()}
-                className="p-2 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center"
+                className="p-2 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center flex-shrink-0"
                 style={{ backgroundColor: "#d5ed5d", color: "#1a1a1a" }}
               >
-                <Send className="w-5 h-5" />
+                <Send className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
             </div>
           </form>

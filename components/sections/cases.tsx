@@ -258,114 +258,135 @@ function CaseCard({
 }) {
   const [hovered, setHovered] = useState(false);
 
-  return (
-    <m.button
-      onClick={onClick}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      whileTap={{ scale: 0.985 }}
-      className="relative w-full text-left rounded-[20px] overflow-hidden transition-all duration-300 outline-none cursor-pointer"
-      style={{
-        background: isActive ? ACCENT : "white",
-        border: isActive ? `2px solid transparent` : `2px solid ${ACCENT}`,
-        boxShadow: isActive
-          ? `0 10px 36px ${ACCENT}45`
-          : hovered
-          ? "0 4px 20px rgba(84,154,242,0.18)"
-          : "0 2px 10px rgba(0,0,0,0.07)",
-      }}
-    >
-      <div className="px-5 pt-4 pb-5">
-        {/* Category pill */}
-        <span
-          className="inline-block text-[9px] font-black tracking-[0.14em] uppercase px-2.5 py-[5px] rounded-full mb-3"
-          style={{
-            background: isActive ? "rgba(255,255,255,0.22)" : `${ACCENT}15`,
-            color: isActive ? "white" : ACCENT,
-          }}
-        >
-          {c.category}
-        </span>
+  const cardContent = (
+    <div className="px-5 pt-4 pb-5">
+      {/* Category pill */}
+      <span
+        className="inline-block text-[9px] font-black tracking-[0.14em] uppercase px-2.5 py-[5px] rounded-full mb-3"
+        style={{
+          background: isActive ? "rgba(255,255,255,0.22)" : `${ACCENT}15`,
+          color: isActive ? "white" : ACCENT,
+        }}
+      >
+        {c.category}
+      </span>
 
-        {/* Title + Arrow */}
-        <div className="flex items-start justify-between gap-3">
-          <div className="flex-1">
-            <h3
-              className="font-black leading-tight"
-              style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "clamp(1rem, 1.6vw, 1.3rem)",
-                letterSpacing: "-0.03em",
-                color: isActive ? "white" : "#0d1526",
-              }}
-            >
-              {c.title}
-            </h3>
-            <p
-              className="text-[0.8rem] leading-tight mt-1.5"
-              style={{
-                color: isActive ? "rgba(255,255,255,0.7)" : "#96a8c0",
-              }}
-            >
-              {c.description}
-            </p>
-          </div>
-
-          {/* Arrow with animation from original component */}
-          <m.div
-            animate={{
-              scale: hovered || isActive ? 1.2 : 1,
-              rotate: hovered || isActive ? 45 : 0,
-              opacity: isActive ? 1 : hovered ? 0.9 : 0.5,
-            }}
-            transition={{ duration: 0.25 }}
-            className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center"
+      {/* Title + Arrow */}
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex-1">
+          <h3
+            className="font-black leading-tight"
             style={{
-              border: `2px solid ${isActive ? "rgba(255,255,255,0.55)" : ACCENT}`,
-              background: isActive ? "rgba(255,255,255,0.18)" : `${ACCENT}10`,
-              boxShadow: isActive ? `0 0 18px rgba(255,255,255,0.2)` : "none",
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(1rem, 1.6vw, 1.3rem)",
+              letterSpacing: "-0.03em",
+              color: isActive ? "white" : "#0d1526",
             }}
           >
-            <ArrowUpRight
-              className="w-4 h-4"
-              style={{ color: isActive ? "white" : ACCENT }}
-            />
-          </m.div>
+            {c.title}
+          </h3>
+          <p
+            className="text-[0.8rem] leading-tight mt-1.5"
+            style={{
+              color: isActive ? "rgba(255,255,255,0.7)" : "#96a8c0",
+            }}
+          >
+            {c.description}
+          </p>
         </div>
 
-        {/* Mini stats */}
-        <div
-          className="flex items-end gap-5 mt-4 pt-3.5"
+        <m.div
+          animate={{
+            scale: hovered || isActive ? 1.2 : 1,
+            rotate: hovered || isActive ? 45 : 0,
+            opacity: isActive ? 1 : hovered ? 0.9 : 0.5,
+          }}
+          transition={{ duration: 0.25 }}
+          className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center"
           style={{
-            borderTop: isActive
-              ? "1px solid rgba(255,255,255,0.22)"
-              : "1px solid #edf2fa",
+            border: `2px solid ${isActive ? "rgba(255,255,255,0.55)" : ACCENT}`,
+            background: isActive ? "rgba(255,255,255,0.18)" : `${ACCENT}10`,
+            boxShadow: isActive ? `0 0 18px rgba(255,255,255,0.2)` : "none",
           }}
         >
-          {c.stats.map((s) => (
-            <div key={s.label} className="text-center">
-              <p
-                className="font-black leading-none"
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontSize: "1.05rem",
-                  letterSpacing: "-0.02em",
-                  color: isActive ? "white" : ACCENT,
-                }}
-              >
-                {s.value}
-              </p>
-              <p
-                className="text-[8.5px] font-bold tracking-wider mt-0.5 uppercase"
-                style={{ color: isActive ? "rgba(255,255,255,0.55)" : "#b0bcd4" }}
-              >
-                {s.label}
-              </p>
-            </div>
-          ))}
-        </div>
+          <ArrowUpRight
+            className="w-4 h-4"
+            style={{ color: isActive ? "white" : ACCENT }}
+          />
+        </m.div>
       </div>
-    </m.button>
+
+      {/* Mini stats */}
+      <div
+        className="flex items-end gap-5 mt-4 pt-3.5"
+        style={{
+          borderTop: isActive
+            ? "1px solid rgba(255,255,255,0.22)"
+            : "1px solid #edf2fa",
+        }}
+      >
+        {c.stats.map((s) => (
+          <div key={s.label} className="text-center">
+            <p
+              className="font-black leading-none"
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "1.05rem",
+                letterSpacing: "-0.02em",
+                color: isActive ? "white" : ACCENT,
+              }}
+            >
+              {s.value}
+            </p>
+            <p
+              className="text-[8.5px] font-bold tracking-wider mt-0.5 uppercase"
+              style={{ color: isActive ? "rgba(255,255,255,0.55)" : "#b0bcd4" }}
+            >
+              {s.label}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  const sharedStyle = {
+    background: isActive ? ACCENT : "white",
+    border: isActive ? `2px solid transparent` : `2px solid ${ACCENT}`,
+    boxShadow: isActive
+      ? `0 10px 36px ${ACCENT}45`
+      : hovered
+      ? "0 4px 20px rgba(84,154,242,0.18)"
+      : "0 2px 10px rgba(0,0,0,0.07)",
+  };
+
+  return (
+    <>
+      {/* Desktop — кнопка с открытием детальной панели */}
+      <m.button
+        onClick={onClick}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        whileTap={{ scale: 0.985 }}
+        className="relative w-full text-left rounded-[20px] overflow-hidden transition-all duration-300 outline-none cursor-pointer hidden lg:block"
+        style={sharedStyle}
+      >
+        {cardContent}
+      </m.button>
+
+      {/* Mobile — сразу переход на страницу кейса */}
+      <m.div
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        whileTap={{ scale: 0.985 }}
+        className="relative w-full rounded-[20px] overflow-hidden transition-all duration-300 lg:hidden"
+        style={sharedStyle}
+      >
+        <Link href={c.href} className="block">
+          {cardContent}
+        </Link>
+      </m.div>
+    </>
   );
 }
 
@@ -376,14 +397,12 @@ export function CasesSection({ title }: { title?: string } = {}) {
   const activeCase = cases.find((c) => c.id === activeId)!;
   const displayTitle = title || "Результаты,\nкоторые работают";
 
-  // Refs for sticky card logic
   const sectionRef = useRef<HTMLDivElement>(null);
   const leftColRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const cardWrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Only apply JS sticky logic on lg+ screens (>=1024px)
     const mediaQuery = window.matchMedia("(min-width: 1024px)");
 
     const updateCardPosition = () => {
@@ -395,31 +414,25 @@ export function CasesSection({ title }: { title?: string } = {}) {
 
       if (!leftCol || !card || !cardWrapper) return;
 
-      const TOP_OFFSET = 128; // lg:top-32 = 8rem = 128px
+      const TOP_OFFSET = 128;
 
       const leftColRect = leftCol.getBoundingClientRect();
       const cardHeight = card.offsetHeight;
-
-      // The card should stop when its bottom aligns with the left column's bottom
       const leftColBottom = leftColRect.bottom;
       const leftColTop = leftColRect.top;
 
       if (leftColTop > TOP_OFFSET) {
-        // Haven't reached sticky point yet — natural flow
         card.style.position = "relative";
         card.style.top = "0px";
         card.style.left = "";
         card.style.width = "";
       } else if (leftColBottom > cardHeight + TOP_OFFSET) {
-        // Within scroll range — fix the card
         card.style.position = "fixed";
-        // Align card horizontally to its wrapper
         const wrapperRect = cardWrapper.getBoundingClientRect();
         card.style.top = `${TOP_OFFSET}px`;
         card.style.left = `${wrapperRect.left}px`;
         card.style.width = `${wrapperRect.width}px`;
       } else {
-        // Past the bottom — pin card to the bottom of the left column
         card.style.position = "absolute";
         card.style.top = `${leftCol.offsetHeight - cardHeight}px`;
         card.style.left = "0px";
@@ -429,7 +442,6 @@ export function CasesSection({ title }: { title?: string } = {}) {
 
     const handleResize = () => {
       if (!mediaQuery.matches) {
-        // Reset styles on mobile
         const card = cardRef.current;
         if (card) {
           card.style.position = "";
@@ -444,8 +456,6 @@ export function CasesSection({ title }: { title?: string } = {}) {
 
     window.addEventListener("scroll", updateCardPosition, { passive: true });
     window.addEventListener("resize", handleResize, { passive: true });
-
-    // Initial call
     updateCardPosition();
 
     return () => {
@@ -514,7 +524,7 @@ export function CasesSection({ title }: { title?: string } = {}) {
 
         <div className="grid lg:grid-cols-2 gap-5 lg:gap-6 items-start">
 
-          {/* ── LEFT PANEL ── */}
+          {/* ── LEFT PANEL — карточки кейсов ── */}
           <div
             ref={leftColRef}
             className="rounded-[28px] p-5 md:p-7"
@@ -543,20 +553,16 @@ export function CasesSection({ title }: { title?: string } = {}) {
             </div>
           </div>
 
-          {/* ── RIGHT PANEL ── */}
+          {/* ── RIGHT PANEL — детальная панель, только desktop ── */}
           <div
             ref={cardWrapperRef}
             className="relative hidden lg:block"
-            style={{
-              minHeight: "560px",
-            }}
+            style={{ minHeight: "560px" }}
           >
             <div
               ref={cardRef}
               className="rounded-[28px] overflow-hidden"
-              style={{
-                minHeight: "560px",
-              }}
+              style={{ minHeight: "560px" }}
             >
               <Link
                 href={activeCase.href}
@@ -570,345 +576,133 @@ export function CasesSection({ title }: { title?: string } = {}) {
                     minHeight: "560px",
                   }}
                 >
-            {/* Animated content */}
-            <AnimatePresence mode="wait">
-              <m.div
-                key={activeId}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                className="flex flex-col gap-9 flex-1"
-              >
-                {/* PROJECT DESCRIPTION SECTION */}
-                <div className="flex gap-6 items-start">
-                  {/* Description Text */}
-                  <div className="flex-1">
-                    <h3
-                      className="font-black leading-tight mb-2"
-                      style={{
-                        fontFamily: "var(--font-display)",
-                        fontSize: "1.4rem",
-                        letterSpacing: "-0.03em",
-                        color: "#0d1526",
-                      }}
-                    >
-                      {activeCase.title}
-                    </h3>
-                    <p
-                      className="text-sm leading-relaxed"
-                      style={{
-                        color: "#5a6b7f",
-                        lineHeight: 1.6,
-                      }}
-                    >
-                      {activeCase.description}
-                    </p>
-                  </div>
-
-                  {/* Arrow Icon */}
-                  <m.div
-                    animate={{ 
-                      opacity: 0.7,
-                      scale: 1,
-                      rotate: 0,
-                    }}
-                    whileHover={{
-                      opacity: 1,
-                      scale: 1.3,
-                      rotate: 45,
-                    }}
-                    transition={{ duration: 0.3 }}
-                    className="flex-shrink-0 w-16 h-16 rounded-2xl flex items-center justify-center border-2 cursor-pointer"
-                    style={{
-                      borderColor: ACCENT,
-                      background: `${ACCENT}10`,
-                    }}
-                  >
-                    <ArrowUpRight className="w-7 h-7" style={{ color: ACCENT }} />
-                  </m.div>
-                </div>
-
-                {/* ЗАДАЧИ */}
-                <div>
-                  <p
-                    className="font-black uppercase tracking-[0.2em] mb-5"
-                    style={{
-                      fontSize: "0.78rem",
-                      color: ACCENT,
-                      fontFamily: "var(--font-display)",
-                    }}
-                  >
-                    Задачи
-                  </p>
-
-                  <div className="flex flex-col gap-3.5">
-                    {activeCase.tasks.map(({ Icon, label }, i) => (
-                      <m.div
-                        key={label}
-                        initial={{ opacity: 0, x: 14 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.26, delay: i * 0.06 }}
-                        className="flex items-center gap-4"
-                      >
-                        {/* Icon tile */}
-                        <div
-                          className="w-[54px] h-[54px] rounded-2xl flex items-center justify-center flex-shrink-0"
-                          style={{
-                            background: `${ACCENT}15`,
-                            color: ACCENT,
-                          }}
-                        >
-                          <Icon />
-                        </div>
-
-                        <p
-                          className="font-semibold leading-tight"
-                          style={{
-                            fontSize: "1rem",
-                            color: "#031a4b",
-                            letterSpacing: "-0.01em",
-                          }}
-                        >
-                          {label}
-                        </p>
-                      </m.div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* РЕЗУЛЬТАТЫ */}
-                <div>
-                  <p
-                    className="font-black uppercase tracking-[0.2em] mb-5"
-                    style={{
-                      fontSize: "0.78rem",
-                      color: ACCENT,
-                      fontFamily: "var(--font-display)",
-                    }}
-                  >
-                    Результаты
-                  </p>
-
-                  <div className="grid grid-cols-3 gap-3">
-                    {activeCase.results.map((r, i) => (
-                      <m.div
-                        key={r.label}
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.28, delay: i * 0.07 }}
-                        className="rounded-2xl p-4 border-2"
-                        style={{ 
-                          background: "white",
-                          borderColor: "#6e9bee",
-                        }}
-                      >
-                        <p
-                          className="font-black leading-none mb-1.5"
-                          style={{
-                            fontFamily: "var(--font-display)",
-                            fontSize: "clamp(1.2rem, 2vw, 1.6rem)",
-                            color: "#6e9bee",
-                            letterSpacing: "-0.03em",
-                          }}
-                        >
-                          {r.value}
-                        </p>
-                        <p
-                          className="text-xs font-bold leading-tight mb-0.5"
-                          style={{ color: "#6e9bee" }}
-                        >
-                          {r.label}
-                        </p>
-                        <p
-                          className="text-[11px] leading-tight"
-                          style={{ color: "#96a8c0" }}
-                        >
-                          {r.sub}
-                        </p>
-                      </m.div>
-                    ))}
-                  </div>
-                </div>
-              </m.div>
-            </AnimatePresence>
-                </div>
-              </Link>
-            </div>
-          </div>
-
-          {/* Mobile-only card (no sticky logic needed) */}
-          <div className="lg:hidden">
-            <div
-              className="rounded-[28px] p-5 md:p-7 flex flex-col"
-              style={{
-                background: "rgba(255,255,255,0.97)",
-                border: "1.5px solid rgba(255,255,255,0.9)",
-                minHeight: "560px",
-              }}
-            >
-              {/* Animated content */}
-              <AnimatePresence mode="wait">
-                <m.div
-                  key={activeId}
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -16 }}
-                  transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                  className="flex flex-col gap-9 flex-1"
-                >
-                  {/* PROJECT DESCRIPTION SECTION */}
-                  <div className="flex gap-6 items-start">
-                    {/* Description Text */}
-                    <div className="flex-1">
-                      <h3
-                        className="font-black leading-tight mb-2"
-                        style={{
-                          fontFamily: "var(--font-display)",
-                          fontSize: "1.4rem",
-                          letterSpacing: "-0.03em",
-                          color: "#0d1526",
-                        }}
-                      >
-                        {activeCase.title}
-                      </h3>
-                      <p
-                        className="text-sm leading-relaxed"
-                        style={{
-                          color: "#5a6b7f",
-                          lineHeight: 1.6,
-                        }}
-                      >
-                        {activeCase.description}
-                      </p>
-                    </div>
-
-                    {/* Arrow Icon */}
+                  <AnimatePresence mode="wait">
                     <m.div
-                      animate={{ 
-                        opacity: 0.7,
-                        scale: 1,
-                        rotate: 0,
-                      }}
-                      whileHover={{
-                        opacity: 1,
-                        scale: 1.3,
-                        rotate: 45,
-                      }}
-                      transition={{ duration: 0.3 }}
-                      className="flex-shrink-0 w-16 h-16 rounded-2xl flex items-center justify-center border-2 cursor-pointer"
-                      style={{
-                        borderColor: ACCENT,
-                        background: `${ACCENT}10`,
-                      }}
+                      key={activeId}
+                      initial={{ opacity: 0, y: 16 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -16 }}
+                      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                      className="flex flex-col gap-9 flex-1"
                     >
-                      <ArrowUpRight className="w-7 h-7" style={{ color: ACCENT }} />
-                    </m.div>
-                  </div>
-
-                  {/* ЗАДАЧИ */}
-                  <div>
-                    <p
-                      className="font-black uppercase tracking-[0.2em] mb-5"
-                      style={{
-                        fontSize: "0.78rem",
-                        color: ACCENT,
-                        fontFamily: "var(--font-display)",
-                      }}
-                    >
-                      Задачи
-                    </p>
-
-                    <div className="flex flex-col gap-3.5">
-                      {activeCase.tasks.map(({ Icon, label }, i) => (
-                        <m.div
-                          key={label}
-                          initial={{ opacity: 0, x: 14 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.26, delay: i * 0.06 }}
-                          className="flex items-center gap-4"
-                        >
-                          {/* Icon tile */}
-                          <div
-                            className="w-[54px] h-[54px] rounded-2xl flex items-center justify-center flex-shrink-0"
-                            style={{
-                              background: `${ACCENT}15`,
-                              color: ACCENT,
-                            }}
-                          >
-                            <Icon />
-                          </div>
-
-                          <p
-                            className="font-semibold leading-tight"
-                            style={{
-                              fontSize: "1rem",
-                              color: "#031a4b",
-                              letterSpacing: "-0.01em",
-                            }}
-                          >
-                            {label}
-                          </p>
-                        </m.div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* РЕЗУЛЬТАТЫ */}
-                  <div>
-                    <p
-                      className="font-black uppercase tracking-[0.2em] mb-5"
-                      style={{
-                        fontSize: "0.78rem",
-                        color: ACCENT,
-                        fontFamily: "var(--font-display)",
-                      }}
-                    >
-                      Результаты
-                    </p>
-
-                    <div className="grid grid-cols-3 gap-3">
-                      {activeCase.results.map((r, i) => (
-                        <m.div
-                          key={r.label}
-                          initial={{ opacity: 0, scale: 0.9 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ duration: 0.28, delay: i * 0.07 }}
-                          className="rounded-2xl p-4 border-2"
-                          style={{ 
-                            background: "white",
-                            borderColor: "#6e9bee",
-                          }}
-                        >
-                          <p
-                            className="font-black leading-none mb-1.5"
+                      {/* PROJECT DESCRIPTION */}
+                      <div className="flex gap-6 items-start">
+                        <div className="flex-1">
+                          <h3
+                            className="font-black leading-tight mb-2"
                             style={{
                               fontFamily: "var(--font-display)",
-                              fontSize: "clamp(1.2rem, 2vw, 1.6rem)",
-                              color: "#6e9bee",
+                              fontSize: "1.4rem",
                               letterSpacing: "-0.03em",
+                              color: "#0d1526",
                             }}
                           >
-                            {r.value}
-                          </p>
+                            {activeCase.title}
+                          </h3>
                           <p
-                            className="text-xs font-bold leading-tight mb-0.5"
-                            style={{ color: "#6e9bee" }}
+                            className="text-sm leading-relaxed"
+                            style={{ color: "#5a6b7f", lineHeight: 1.6 }}
                           >
-                            {r.label}
+                            {activeCase.description}
                           </p>
-                          <p
-                            className="text-[11px] leading-tight"
-                            style={{ color: "#96a8c0" }}
-                          >
-                            {r.sub}
-                          </p>
+                        </div>
+
+                        <m.div
+                          animate={{ opacity: 0.7, scale: 1, rotate: 0 }}
+                          whileHover={{ opacity: 1, scale: 1.3, rotate: 45 }}
+                          transition={{ duration: 0.3 }}
+                          className="flex-shrink-0 w-16 h-16 rounded-2xl flex items-center justify-center border-2 cursor-pointer"
+                          style={{ borderColor: ACCENT, background: `${ACCENT}10` }}
+                        >
+                          <ArrowUpRight className="w-7 h-7" style={{ color: ACCENT }} />
                         </m.div>
-                      ))}
-                    </div>
-                  </div>
-                </m.div>
-              </AnimatePresence>
+                      </div>
+
+                      {/* ЗАДАЧИ */}
+                      <div>
+                        <p
+                          className="font-black uppercase tracking-[0.2em] mb-5"
+                          style={{
+                            fontSize: "0.78rem",
+                            color: ACCENT,
+                            fontFamily: "var(--font-display)",
+                          }}
+                        >
+                          Задачи
+                        </p>
+                        <div className="flex flex-col gap-3.5">
+                          {activeCase.tasks.map(({ Icon, label }, i) => (
+                            <m.div
+                              key={label}
+                              initial={{ opacity: 0, x: 14 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ duration: 0.26, delay: i * 0.06 }}
+                              className="flex items-center gap-4"
+                            >
+                              <div
+                                className="w-[54px] h-[54px] rounded-2xl flex items-center justify-center flex-shrink-0"
+                                style={{ background: `${ACCENT}15`, color: ACCENT }}
+                              >
+                                <Icon />
+                              </div>
+                              <p
+                                className="font-semibold leading-tight"
+                                style={{ fontSize: "1rem", color: "#031a4b", letterSpacing: "-0.01em" }}
+                              >
+                                {label}
+                              </p>
+                            </m.div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* РЕЗУЛЬТАТЫ */}
+                      <div>
+                        <p
+                          className="font-black uppercase tracking-[0.2em] mb-5"
+                          style={{
+                            fontSize: "0.78rem",
+                            color: ACCENT,
+                            fontFamily: "var(--font-display)",
+                          }}
+                        >
+                          Результаты
+                        </p>
+                        <div className="grid grid-cols-3 gap-3">
+                          {activeCase.results.map((r, i) => (
+                            <m.div
+                              key={r.label}
+                              initial={{ opacity: 0, scale: 0.9 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              transition={{ duration: 0.28, delay: i * 0.07 }}
+                              className="rounded-2xl p-4 border-2"
+                              style={{ background: "white", borderColor: "#6e9bee" }}
+                            >
+                              <p
+                                className="font-black leading-none mb-1.5"
+                                style={{
+                                  fontFamily: "var(--font-display)",
+                                  fontSize: "clamp(1.2rem, 2vw, 1.6rem)",
+                                  color: "#6e9bee",
+                                  letterSpacing: "-0.03em",
+                                }}
+                              >
+                                {r.value}
+                              </p>
+                              <p className="text-xs font-bold leading-tight mb-0.5" style={{ color: "#6e9bee" }}>
+                                {r.label}
+                              </p>
+                              <p className="text-[11px] leading-tight" style={{ color: "#96a8c0" }}>
+                                {r.sub}
+                              </p>
+                            </m.div>
+                          ))}
+                        </div>
+                      </div>
+                    </m.div>
+                  </AnimatePresence>
+                </div>
+              </Link>
             </div>
           </div>
 

@@ -802,10 +802,10 @@ export default function KontekstnayaReklamaPage() {
 
           {/* Main content */}
           <motion.div style={{ opacity: heroOpacity, scale: heroScale }} className="relative z-10 w-full min-h-[100svh] flex items-start">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-40 sm:pt-20 lg:pt-28 pb-20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20">
               
               {/* Breadcrumbs */}
-              <div className="mb-12">
+              <div className="mb-20">
                 <Breadcrumbs
                   items={[
                     { label: "Услуги", href: "/uslugi" },

@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     "Telegram боты",
     "геосервисы",
     "SEO оптимизация",
-    "веб-разработка Сочи",
+    
     "интернет реклама",
     "маркетинговое агентство Сочи",
   ],
@@ -113,8 +113,8 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: "ЗАМЕНИ_НА_РЕАЛЬНЫЙ_КОД",
-    yandex: "ЗАМЕНИ_НА_РЕАЛЬНЫЙ_КОД",
+    google: "abcd1234efgh5678",
+    yandex: "494123ac49291935",
   },
   icons: {
     icon: [
@@ -169,7 +169,9 @@ const jsonLd = {
         "contactType": "customer service",
         "availableLanguage": "Russian",
       },
-      "sameAs": [],
+      "sameAs": [
+        "https://t.me/pusk_agency"
+      ],
     },
     {
       "@type": "WebSite",
@@ -179,14 +181,7 @@ const jsonLd = {
       "description": "Агентство цифрового маркетинга в Сочи",
       "publisher": { "@id": "https://agencypusk.ru/#organization" },
       "inLanguage": "ru-RU",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": {
-          "@type": "EntryPoint",
-          "urlTemplate": "https://agencypusk.ru/search?q={search_term_string}",
-        },
-        "query-input": "required name=search_term_string",
-      },
+      
     },
     {
       "@type": "WebPage",
@@ -223,14 +218,16 @@ const jsonLd = {
         "addressCountry": "RU",
       },
       "geo": {
-        "@type": "GeoCoordinates",
-      },
+  "@type": "GeoCoordinates",
+  "latitude": 43.673027, 
+  "longitude": 40.198450,
+},
       "openingHoursSpecification": [
         {
           "@type": "OpeningHoursSpecification",
-          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-          "opens": "09:00",
-          "closes": "18:00",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+          "opens": "08:00",
+          "closes": "00:00",
         },
       ],
       "hasOfferCatalog": {

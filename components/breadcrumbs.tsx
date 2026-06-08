@@ -42,23 +42,23 @@ export function Breadcrumbs({ items, white }: BreadcrumbsProps) {
       />
 
       <nav aria-label="Breadcrumb" className="mb-6">
-        <ol className="flex flex-wrap items-center gap-2 text-sm">
+        <ol className="flex flex-nowrap items-center gap-2 text-sm overflow-hidden">
           <li>
             <Link
               href="/"
               style={{
                 color: white ? "white" : "var(--muted-foreground)"
               }}
-              className="flex items-center gap-1 hover:opacity-80 transition-opacity"
+              className="flex items-center gap-1 hover:opacity-80 transition-opacity shrink-0"
             >
               <Home className="w-4 h-4" />
               <span className="sr-only">Главная</span>
             </Link>
           </li>
           {items.map((item, index) => (
-            <li key={index} className="flex items-center gap-2">
+            <li key={index} className="flex items-center gap-2 min-w-0">
               <ChevronRight 
-                className="w-4 h-4"
+                className="w-4 h-4 shrink-0"
                 style={{
                   color: white ? "rgba(255, 255, 255, 0.5)" : "var(--muted-foreground)"
                 }}
@@ -69,7 +69,7 @@ export function Breadcrumbs({ items, white }: BreadcrumbsProps) {
                   style={{
                     color: white ? "white" : "var(--muted-foreground)"
                   }}
-                  className="hover:opacity-80 transition-opacity"
+                  className="hover:opacity-80 transition-opacity truncate"
                 >
                   {item.label}
                 </Link>
@@ -78,7 +78,7 @@ export function Breadcrumbs({ items, white }: BreadcrumbsProps) {
                   style={{
                     color: white ? "white" : "var(--foreground)"
                   }}
-                  className="font-medium"
+                  className="font-medium truncate"
                 >
                   {item.label}
                 </span>

@@ -113,10 +113,12 @@ export function QuizModal() {
   const [loadingBeforeContact, setLoadingBeforeContact] = useState(false);
   const [done, setDone] = useState(false);
   const [phoneError, setPhoneError] = useState("");
+  const [timeLeft, setTimeLeft] = useState(30 * 60); // 30 minutes in seconds
 
   useEffect(() => {
     if (isQuizOpen) {
       document.body.style.overflow = "hidden";
+      setTimeLeft(30 * 60); // Reset timer when modal opens
     } else {
       document.body.style.overflow = "";
     }
@@ -124,6 +126,23 @@ export function QuizModal() {
       document.body.style.overflow = "";
     };
   }, [isQuizOpen]);
+
+  // Timer effect
+  useEffect(() => {
+    if (!isQuizOpen || done) return;
+
+    const interval = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          closeQuiz();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [isQuizOpen, done, closeQuiz]);
 
   useEffect(() => {
     if (!isQuizOpen) {
@@ -225,7 +244,7 @@ export function QuizModal() {
     }));
   }
 
- async function handleSubmit() {
+async function handleSubmit() {
   if (!answers.phone.trim()) {
     setPhoneError("Введите номер телефона");
     return;
@@ -237,36 +256,29 @@ export function QuizModal() {
   }
   
   setPhoneError("");
-  setLoading(true);
+  setDone(true); // ← сразу показываем успех
 
-  try {
-    await fetch("https://pusknew.theodoriwe.workers.dev/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        type: "quiz",
-        phone: answers.phone,
-        contactMethods: answers.contactMethods,
-        answers: {
-          services: answers.services,
-          siteType: answers.siteType,
-          hasBrand: answers.hasBrand,
-          urgency: answers.urgency,
-          needAds: answers.needAds,
-          siteActivity: answers.siteActivity,
-          productType: answers.productType,
-          trafficDest: answers.trafficDest,
-          audience: answers.audience,
-          budget: answers.budget,
-        },
-      }),
-    });
-  } catch (e) {
-    console.error(e);
-  }
-
-  setLoading(false);
-  setDone(true);
+  fetch("https://pusknew.theodoriwe.workers.dev/", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      type: "quiz",
+      phone: answers.phone,
+      contactMethods: answers.contactMethods,
+      answers: {
+        services: answers.services,
+        siteType: answers.siteType,
+        hasBrand: answers.hasBrand,
+        urgency: answers.urgency,
+        needAds: answers.needAds,
+        siteActivity: answers.siteActivity,
+        productType: answers.productType,
+        trafficDest: answers.trafficDest,
+        audience: answers.audience,
+        budget: answers.budget,
+      },
+    }),
+  }).catch(console.error);
 }
 
   // Recompute real total after step 0 is completed
@@ -300,14 +312,16 @@ export function QuizModal() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-card rounded-3xl shadow-2xl border border-border">
-              {/* Close */}
-              <button
-                onClick={closeQuiz}
-                className="absolute top-5 right-5 z-10 w-9 h-9 rounded-full bg-foreground/6 flex items-center justify-center hover:bg-foreground/12 transition-colors"
-                aria-label="Закрыть"
-              >
-                <X className="w-4 h-4" />
-              </button>
+              {/* Close and Timer */}
+              <div className="absolute top-5 right-5 z-10">
+                <button
+                  onClick={closeQuiz}
+                  className="w-9 h-9 rounded-full bg-foreground/6 flex items-center justify-center hover:bg-foreground/12 transition-colors"
+                  aria-label="Закрыть"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
 
               <div className="p-10 md:p-12">
                 <AnimatePresence mode="wait">
@@ -607,18 +621,37 @@ export function QuizModal() {
                         <>
                           <div className="mb-8">
                             <h3
-                              className="text-xl md:text-2xl font-bold text-foreground mb-4"
+                              className="text-lg sm:text-xl md:text-2xl font-bold text-foreground mb-5"
                               style={{ fontFamily: "var(--font-display)" }}
                             >
                               Как удобнее получить расчёт?
                             </h3>
-                            <div className="p-5 rounded-2xl bg-gradient-to-r from-accent/15 to-accent/10 border border-accent/40 shadow-lg shadow-accent/10">
-                              <p className="text-lg font-semibold text-accent">Отправим расчёт и промокод на скидку 10 000 ₽</p>
+                            <div className="relative overflow-hidden p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-accent to-accent/80 border border-accent/60 shadow-2xl">
+                              <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_1px_1px,white_1px,transparent_1px)] bg-[length:20px_20px]" />
+                              <div className="absolute top-4 right-4 flex items-center gap-2 px-3 py-2 rounded-lg bg-white/20">
+                                <div className="text-xs font-bold text-white">
+                                  {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, "0")}
+                                </div>
+                              </div>
+                              <div className="relative flex flex-col items-center text-center">
+                                <div className="w-8 h-8 rounded-lg bg-white/25 flex items-center justify-center mb-4">
+                                  <div className="w-1.5 h-1.5 rounded-full bg-white" />
+                                </div>
+                                <div className="mb-1">
+                                  <p className="text-xs sm:text-sm font-semibold text-white/80 uppercase tracking-wide">Специальное предложение</p>
+                                </div>
+                                <p className="text-xl sm:text-2xl md:text-3xl font-bold text-white leading-snug">
+                                  Получите расчёт<br/> и промокод на скидку
+                                </p>
+                                <div className="mt-3 inline-block bg-white/20 px-4 py-1.5 rounded-full">
+                                  <p className="text-lg sm:text-xl font-bold text-white">10 000₽</p>
+                                </div>
+                              </div>
                             </div>
                           </div>
 
                           {/* Messenger buttons — visual cards, not text inputs */}
-                          <div className="grid grid-cols-3 gap-3 mb-8">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 mb-8">
                             {contactOptions.map((opt) => {
                               const selected = answers.contactMethods.includes(opt.value);
                               return (
@@ -626,7 +659,7 @@ export function QuizModal() {
                                   key={opt.value}
                                   type="button"
                                   onClick={() => toggleContact(opt.value)}
-                                  className={`relative flex flex-col items-center gap-3 p-5 rounded-2xl border-2 transition-all duration-200 ${
+                                  className={`relative flex flex-col items-center justify-center gap-3 p-5 sm:p-6 rounded-2xl border-2 transition-all duration-200 ${
                                     selected
                                       ? "border-transparent"
                                       : "border-border hover:border-border/60 bg-card"
@@ -638,15 +671,15 @@ export function QuizModal() {
                                   }
                                 >
                                   <div
-                                    className="w-11 h-11 rounded-xl flex items-center justify-center text-white"
+                                    className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-white"
                                     style={{ background: opt.color }}
                                   >
                                     {opt.icon}
                                   </div>
-                                  <span className="text-sm font-semibold text-foreground">
+                                  <span className="text-sm sm:text-base font-semibold text-foreground text-center">
                                     {opt.label}
                                   </span>
-                                  <span className="text-xs text-muted-foreground text-center leading-snug hidden sm:block">
+                                  <span className="text-xs sm:text-sm text-muted-foreground text-center leading-snug">
                                     {opt.desc}
                                   </span>
                                   {selected && (

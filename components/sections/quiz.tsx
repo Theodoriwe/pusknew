@@ -135,14 +135,14 @@ export function QuizSection() {
                         className="group"
                       >
                         <div 
-                          className={`flex items-start gap-5 p-5 rounded-2xl transition-all duration-300 ${
+                          className={`flex items-start gap-4 sm:gap-5 p-4 sm:p-5 rounded-2xl transition-all duration-300 ${
                             item.featured 
                               ? "bg-white/20 border-2 border-white/60 shadow-lg" 
                               : "hover:bg-white/10"
                           }`}
                         >
                           <m.div
-                            className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:scale-110"
+                            className="w-12 sm:w-14 h-12 sm:h-14 rounded-2xl flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:scale-110"
                             style={{
                               background: item.featured 
                                 ? "rgba(255, 255, 255, 0.3)" 
@@ -154,18 +154,18 @@ export function QuizSection() {
                             }}
                             whileHover={{ rotateZ: 10 }}
                           >
-                            <Icon className="w-6 h-6 text-white" />
+                            <Icon className="w-5 sm:w-6 h-5 sm:h-6 text-white" />
                           </m.div>
-                          <div className="flex-1">
-                            <p className={`font-black leading-tight ${
+                          <div className="flex-1 min-w-0">
+                            <p className={`font-black leading-tight text-balance ${
                               item.featured 
-                                ? "text-xl text-white" 
-                                : "text-lg text-white"
+                                ? "text-base sm:text-xl text-white" 
+                                : "text-base sm:text-lg text-white"
                             }`}>{item.title}</p>
-                            <p className={`leading-relaxed mt-2 font-medium ${
+                            <p className={`leading-relaxed mt-2 font-medium text-balance ${
                               item.featured 
-                                ? "text-sm text-white" 
-                                : "text-sm text-white/80"
+                                ? "text-xs sm:text-sm text-white" 
+                                : "text-xs sm:text-sm text-white/80"
                             }`}>{item.desc}</p>
                           </div>
                         </div>

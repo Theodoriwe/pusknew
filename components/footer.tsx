@@ -63,22 +63,22 @@ export function Footer() {
               Расскажите о вашем проекте — мы подготовим индивидуальное предложение за 24 часа
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <div className="flex flex-col gap-3 sm:flex-row sm:gap-4 justify-center items-stretch sm:items-center w-full sm:w-auto">
               <button
                 onClick={() => openQuiz()}
-                className="group inline-flex items-center gap-4 px-10 py-5 bg-primary text-primary-foreground font-bold text-lg rounded-full hover:bg-primary-hover hover:scale-105 transition-transform hover-shine"
+                className="group inline-flex items-center justify-center gap-3 px-6 sm:px-10 py-4 sm:py-5 bg-primary text-primary-foreground font-bold text-base sm:text-lg rounded-full hover:bg-primary-hover hover:scale-105 transition-transform hover-shine"
                 data-magnetic
               >
-                <span>Рассчитать стоимость</span>
-                <ArrowUpRight className="w-6 h-6 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                <span>Рассчитать</span>
+                <ArrowUpRight className="w-5 h-5 sm:w-6 sm:h-6 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
               </button>
               <button
                 onClick={() => openContact()}
-                className="group inline-flex items-center gap-4 px-10 py-5 border-2 border-primary text-primary font-bold text-lg rounded-full hover:bg-primary/10 hover:scale-105 transition-transform"
+                className="group inline-flex items-center justify-center gap-3 px-6 sm:px-10 py-4 sm:py-5 border-2 border-primary text-primary font-bold text-base sm:text-lg rounded-full hover:bg-primary/10 hover:scale-105 transition-transform"
                 data-magnetic
               >
-                <span>Обсудить проект</span>
-                <ArrowUpRight className="w-6 h-6 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                <span>Обсудить</span>
+                <ArrowUpRight className="w-5 h-5 sm:w-6 sm:h-6 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
               </button>
             </div>
           </m.div>
@@ -86,15 +86,15 @@ export function Footer() {
       </div>
 
       {/* Main footer */}
-      <div className="relative max-w-[1400px] mx-auto px-6 lg:px-8 py-16 lg:py-20">
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10 lg:gap-8">
+      <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 sm:gap-6 md:gap-8 lg:gap-8 items-start">
           {/* Brand */}
-          <div className="col-span-2 lg:col-span-2">
+          <div className="col-span-1 sm:col-span-2 lg:col-span-2">
             <div className="mb-6">
               <Logo height={30} />
             </div>
             
-            <p className="text-muted-foreground leading-relaxed mb-8 max-w-sm">
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-8 max-w-sm">
               Агентство цифрового-маркетинга. Создаём сайты, запускаем рекламу и помогаем бизнесу расти в интернете с 2022 года.
             </p>
             
@@ -119,16 +119,16 @@ export function Footer() {
           {/* Services */}
           <div>
             <h3 
-              className="font-semibold mb-6 text-sm uppercase tracking-wider text-muted-foreground"
+              className="font-semibold mb-4 text-sm sm:text-base uppercase tracking-wider text-muted-foreground"
             >
               Услуги
             </h3>
-            <ul className="space-y-4">
+            <ul className="space-y-3 sm:space-y-4">
               {footerLinks.services.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-foreground/70 hover:text-foreground transition-colors hover-line"
+                    className="text-sm sm:text-base text-foreground/70 hover:text-foreground transition-colors hover-line line-clamp-2"
                   >
                     {link.label}
                   </Link>
@@ -139,15 +139,15 @@ export function Footer() {
 
           {/* Company */}
           <div>
-            <h3 className="font-semibold mb-6 text-sm uppercase tracking-wider text-muted-foreground">
+            <h3 className="font-semibold mb-4 text-sm sm:text-base uppercase tracking-wider text-muted-foreground">
               Компания
             </h3>
-            <ul className="space-y-4">
+            <ul className="space-y-3 sm:space-y-4">
               {footerLinks.company.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-foreground/70 hover:text-foreground transition-colors hover-line"
+                    className="text-sm sm:text-base text-foreground/70 hover:text-foreground transition-colors hover-line line-clamp-2"
                   >
                     {link.label}
                   </Link>
@@ -157,27 +157,35 @@ export function Footer() {
           </div>
 
           {/* Contact */}
-          <div>
-            <h3 className="font-semibold mb-6 text-sm uppercase tracking-wider text-muted-foreground">
+          <div className="col-span-1 sm:col-span-2 md:col-span-2 lg:col-span-2 lg:-mt-6 bg-gradient-to-br from-primary/5 to-primary/[0.02] rounded-2xl p-4 sm:p-6 border border-primary/10 backdrop-blur-sm">
+            <h3 className="font-semibold mb-4 sm:mb-6 text-sm sm:text-base uppercase tracking-wider text-muted-foreground">
               Контакты
             </h3>
-            <ul className="space-y-4">
+            <ul className="space-y-3 sm:space-y-4">
               <li>
                 <a
                   href="tel:+79282428240"
-                  className="flex items-center gap-3 text-foreground/70 hover:text-foreground transition-colors"
+                  className="flex items-center gap-3 text-foreground/80 hover:text-primary transition-colors group"
                 >
-                  <Phone className="w-4 h-4 flex-shrink-0 text-primary" />
-                  +7 (928) 242-82-40
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center bg-primary/10 group-hover:bg-primary/20 transition-colors flex-shrink-0">
+                    <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+                  </div>
+                  <span className="text-sm sm:text-base font-medium">
+                    +7 (928) 242-82-40
+                  </span>
                 </a>
               </li>
               <li>
                 <a
                   href="mailto:agencypusk@yandex.ru"
-                  className="flex items-center gap-3 text-foreground/70 hover:text-foreground transition-colors"
+                  className="flex items-center gap-3 text-foreground/80 hover:text-primary transition-colors group"
                 >
-                  <Mail className="w-4 h-4 flex-shrink-0 text-primary" />
-                  agencypusk@yandex.ru
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center bg-primary/10 group-hover:bg-primary/20 transition-colors flex-shrink-0">
+                    <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+                  </div>
+                  <span className="text-sm sm:text-base font-medium truncate">
+                    agencypusk@yandex.ru
+                  </span>
                 </a>
               </li>
               <li>
@@ -185,27 +193,31 @@ export function Footer() {
                   href="https://t.me/pusk_agency"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 text-foreground/70 hover:text-foreground transition-colors"
+                  className="flex items-center gap-3 text-foreground/80 hover:text-primary transition-colors group"
                 >
-                  <Send className="w-4 h-4 flex-shrink-0 text-primary" />
-                  @pusk_agency
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center bg-primary/10 group-hover:bg-primary/20 transition-colors flex-shrink-0">
+                    <Send className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+                  </div>
+                  <span className="text-sm sm:text-base font-medium">@pusk_agency</span>
                 </a>
               </li>
-              <li className="flex items-start gap-3 text-foreground/70">
-                <MapPin className="w-4 h-4 flex-shrink-0 mt-1 text-primary" />
-                <span>Сочи</span>
+              <li className="flex items-start gap-3 text-foreground/80 group">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center bg-primary/10 group-hover:bg-primary/20 transition-colors flex-shrink-0 mt-0">
+                  <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+                </div>
+                <span className="text-sm sm:text-base font-medium pt-1.5 sm:pt-2">Сочи</span>
               </li>
             </ul>
           </div>
         </div>
 
         {/* Bottom */}
-        <div className="mt-16 pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="text-sm text-muted-foreground text-center md:text-left">
+        <div className="mt-12 sm:mt-16 pt-6 sm:pt-8 border-t border-border flex flex-col gap-4 text-center">
+          <div className="text-xs sm:text-sm text-muted-foreground">
             <p>&copy; {currentYear} ПУСК. Все права защищены.</p>
           </div>
           
-          <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
+          <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs sm:text-sm text-muted-foreground">
             <Link href="/privacy" className="hover:text-foreground transition-colors">
               Политика конфиденциальности
             </Link>

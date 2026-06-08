@@ -124,11 +124,13 @@ export default function CasesPage() {
       <Header />
       <main>
         {/* Hero */}
-        <section className="pt-24 lg:pt-32 pb-16 bg-background relative overflow-hidden">
+        <section className="pt-32 pb-16 bg-background relative overflow-hidden">
           <div className="absolute inset-0 gradient-mesh opacity-50" />
           <div className="max-w-[1400px] mx-auto px-6 lg:px-8 relative">
-            <Breadcrumbs items={[{ label: "Кейсы" }]} />
-            
+            <div className="mb-20">
+              <Breadcrumbs items={[{ label: "Кейсы" }]} />
+            </div>
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

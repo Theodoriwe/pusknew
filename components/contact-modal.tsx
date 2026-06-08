@@ -108,28 +108,22 @@ export function ContactModal() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
   e.preventDefault();
   if (!validate()) return;
-  setFormState("loading");
-
-  try {
-    await fetch("https://pusknew.theodoriwe.workers.dev/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        type: "contact",
-        name: formData.name,
-        contact: formData.contact,
-        service: services.find(s => s.value === formData.service)?.label || formData.service,
-        comment: formData.comment,
-      }),
-    });
-  } catch (e) {
-    console.error(e);
-  }
-
   setFormState("success");
+
+  fetch("https://pusknew.theodoriwe.workers.dev/", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      type: "contact",
+      name: formData.name,
+      contact: formData.contact,
+      service: services.find(s => s.value === formData.service)?.label || formData.service,
+      comment: formData.comment,
+    }),
+   }).catch(console.error);
 };
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {

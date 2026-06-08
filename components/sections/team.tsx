@@ -1,9 +1,10 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { m, useInView } from "framer-motion";
 import { ArrowUpRight, Sparkles, TrendingUp, Eye, Handshake, Users, Palette, BarChart3, MessageSquare, Code2 } from "lucide-react";
 import Link from "next/link";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 const team = [
   {
@@ -71,6 +72,18 @@ const memberColors = ["#549AF2", "#7B5AF5", "#00C48C", "#F0643C", "#E63946"];
 export function TeamSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const prefersReducedMotion = useReducedMotion();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    // Check if mobile on mount
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    
+    const handleResize = () => checkMobile();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <section className="py-24 lg:py-32 relative overflow-hidden bg-background">
@@ -133,13 +146,13 @@ export function TeamSection() {
                   href={`https://t.me/${member.telegram.slice(1)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
+                  initial={{ opacity: 0, scale: isMobile ? 1 : 0.9 }}
+                  animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: isMobile ? 1 : 0.9 }}
                   transition={{ 
-                    duration: 0.5, 
-                    delay: 0.3 + member.index * 0.08 
+                    duration: isMobile || prefersReducedMotion ? 0.3 : 0.5, 
+                    delay: prefersReducedMotion ? 0 : (0.3 + member.index * 0.08)
                   }}
-                  whileHover={{ y: -4 }}
+                  whileHover={isMobile ? {} : { y: -4 }}
                   className={`
                     group relative rounded-3xl border-2 overflow-hidden
                     transition-all duration-300 cursor-pointer backdrop-blur-sm
@@ -149,17 +162,21 @@ export function TeamSection() {
                   `}
                   style={{
                     background: `linear-gradient(135deg, ${accentColor}18, ${accentColor}08)`,
-                    borderColor: accentColor,
-                    borderOpacity: 0.4,
+                    borderColor: accentColor + "66",
+                    willChange: isInView ? "transform, opacity" : "auto",
                   }}
                 >
                   {/* Background SVG Icon */}
                   <svg
-                    className="absolute -right-12 -top-12 w-48 h-48 opacity-10 group-hover:opacity-15 transition-opacity duration-500 pointer-events-none"
+                    className="absolute -right-12 -top-12 w-48 h-48 pointer-events-none"
+                    style={{ 
+                      opacity: isMobile ? 0.06 : 0.1,
+                      color: accentColor,
+                      transition: isMobile ? "none" : "opacity 0.5s"
+                    }}
                     viewBox="0 0 200 200"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    style={{ color: accentColor }}
                   >
                     {member.index === 0 && (
                       <>
@@ -194,18 +211,22 @@ export function TeamSection() {
                   </svg>
 
                   {/* Corner glow */}
-                  <m.div 
-                    className="absolute -top-16 -right-16 w-32 h-32 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                    style={{ background: accentColor }}
-                  />
+                  {!isMobile && (
+                    <m.div 
+                      className="absolute -top-16 -right-16 w-32 h-32 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                      style={{ background: accentColor }}
+                    />
+                  )}
 
                   {/* Border glow on hover */}
-                  <m.div
-                    className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                    style={{
-                      background: `radial-gradient(circle at 100% 0%, ${accentColor}30, transparent 80%)`,
-                    }}
-                  />
+                  {!isMobile && (
+                    <m.div
+                      className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                      style={{
+                        background: `radial-gradient(circle at 100% 0%, ${accentColor}30, transparent 80%)`,
+                      }}
+                    />
+                  )}
 
                   <div className={`relative z-10 h-full flex flex-col ${isLarge ? "p-8 lg:p-10" : "p-6 lg:p-8"}`}>
                     {/* Top accent */}
@@ -247,7 +268,7 @@ export function TeamSection() {
                           borderColor: accentColor,
                           background: `${accentColor}12`,
                         }}
-                        whileHover={{ rotate: -45, scale: 1.15 }}
+                        whileHover={isMobile ? {} : { rotate: -45, scale: 1.15 }}
                       >
                         <ArrowUpRight className="w-4 h-4 lg:w-5 lg:h-5" style={{ color: accentColor }} />
                       </m.div>

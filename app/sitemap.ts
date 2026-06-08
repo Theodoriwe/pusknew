@@ -1,7 +1,15 @@
 import type { MetadataRoute } from 'next';
+import { casesData } from '@/lib/cases';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://agencypusk.ru';
+  
+  const casePages = Object.keys(casesData).map((slug) => ({
+    url: `${baseUrl}/kejsy/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.8,
+  }));
   
   const pages = [
     // Main pages
@@ -49,6 +57,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly' as const,
       priority: 0.85,
     },
+    ...casePages,
     {
       url: `${baseUrl}/blog`,
       lastModified: new Date(),
