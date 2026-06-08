@@ -445,6 +445,7 @@ export default function KontekstnayaReklamaPage() {
 
   // ── Длина одного блока текста для анимации ──
   const [textLoopLength, setTextLoopLength] = useState<number>(0);
+  const loopLenRef = useRef<number>(0);
   const textMeasuredRef = useRef<SVGTextElement>(null);
   const lastTimeRef = useRef<number>(0);
   const animationFrameIdRef = useRef<number | null>(null);
@@ -480,12 +481,20 @@ export default function KontekstnayaReklamaPage() {
   useEffect(() => {
     let attempts = 0;
     const maxAttempts = 10;
+    let measured = false;
     
     const measureText = () => {
+      if (measured) return; // Измеряем только один раз!
+      
       if (textMeasuredRef.current) {
         const total = textMeasuredRef.current.getComputedTextLength();
+        console.log("[measureText] total =", total, "calculated =", total / 5);
         if (total > 0) {
-          setTextLoopLength(total / 5);
+          const newLen = total / 5;
+          loopLenRef.current = newLen; // Сразу обновляем ref
+          setTextLoopLength(newLen);
+          measured = true;
+          console.log("[MEASURED_ONCE] locked measurement to:", newLen);
           return;
         }
       }
@@ -495,6 +504,7 @@ export default function KontekstnayaReklamaPage() {
       }
     };
     
+    console.log("[MEASURE_TEXT] Starting measurement");
     measureText();
     window.addEventListener("resize", measureText, { passive: true });
     
@@ -505,15 +515,18 @@ export default function KontekstnayaReklamaPage() {
 
   // ── Анимация (отдельный эффект чтобы не сбрасываться при textLoopLength) ──
   useEffect(() => {
+    console.log("[ANIMATION_EFFECT] textLoopLength changed to:", textLoopLength);
+    
     const animateText = (time: number) => {
       // Инициируем время только один раз
       if (lastTimeRef.current === 0) {
         lastTimeRef.current = time;
+        console.log("[ANIMATION_STARTED] at time", time);
       }
       const elapsed = (time - lastTimeRef.current) / 1000;
       
       const speed = isMobileRef.current ? 50 : 30;
-      const loopLen = textLoopLength || 1000;
+      const loopLen = loopLenRef.current || 1000; // Используем REF, а не state!
       const offset = -((elapsed * speed) % loopLen);
       
       const textPaths = document.querySelectorAll('textPath[href*="arcPath"]');
@@ -528,12 +541,16 @@ export default function KontekstnayaReklamaPage() {
     if (textLoopLength > 0) {
       // Если анимация уже идет, не сбрасываем time
       if (!animationFrameIdRef.current) {
+        console.log("[ANIMATION_LAUNCH] Starting animation with loopLen", textLoopLength);
         lastTimeRef.current = 0; // Сбрасываем только при ПЕРВОМ запуске
         animationFrameIdRef.current = requestAnimationFrame(animateText);
+      } else {
+        console.log("[ANIMATION_RUNNING] Animation already running, continuing");
       }
     } else {
       // Если textLoopLength еще не готов, отменяем анимацию
       if (animationFrameIdRef.current) {
+        console.log("[ANIMATION_CANCEL] Canceling animation, textLoopLength =", textLoopLength);
         cancelAnimationFrame(animationFrameIdRef.current);
         animationFrameIdRef.current = null;
       }
