@@ -19,10 +19,6 @@ function Counter({ value, suffix = "", prefix = "" }: { value: number; suffix?: 
   const springValue = useSpring(motionValue, { damping: 50, stiffness: 100 });
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [displayValue, setDisplayValue] = useState(0);
- 
-
-
-  
 
   useEffect(() => {
     if (isInView) {
@@ -235,7 +231,7 @@ function IconComponent({ name }: { name: string }) {
 }
 
 // ============================================================================
-// SVG STYLES HELPER — вызывается синхронно, без useEffect
+// SVG STYLES HELPER
 // ============================================================================
 interface SvgStyles {
   strip1: { bottom: string; right: string; width: string; height: string };
@@ -424,14 +420,15 @@ function DirectCycleFull() {
 // MARQUEE
 // ============================================================================
 const BASE_TEXT = " ★ ЯНДЕКС.ДИРЕКТ ★ GOOGLE ADS ★ ROI 300%+ ★ СНИЖАЕМ CPL ★ МАСШТАБИРУЕМ ★ A/B ТЕСТЫ";
-const REPEATED_TEXT = `${BASE_TEXT}${BASE_TEXT}${BASE_TEXT}`;
+const REPEATED_TEXT = `${BASE_TEXT}${BASE_TEXT}${BASE_TEXT}${BASE_TEXT}${BASE_TEXT}`;
 
 // ============================================================================
 // PAGE
 // ============================================================================
 export default function KontekstnayaReklamaPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-     const [mounted, setMounted] = useState(false); 
+  const [mounted, setMounted] = useState(false); 
+
   // ── Sticky card refs (FAQ секция) ──
   const faqSectionRef = useRef<HTMLDivElement>(null);
   const leftColRef = useRef<HTMLDivElement>(null);
@@ -442,6 +439,11 @@ export default function KontekstnayaReklamaPage() {
   const [styles, setStyles] = useState<SvgStyles>(getSvgStylesForWidth(typeof window !== "undefined" ? window.innerWidth : 1920));
   const [isMobileDevice, setIsMobileDevice] = useState(false);
 
+  // ── Длина одного блока текста для анимации ──
+  const [textLoopLength, setTextLoopLength] = useState<number>(0);
+  const textMeasuredRef = useRef<SVGTextElement>(null);
+  const currentOffsetRef = useRef<number>(0);
+
   // Hero scroll
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress: heroProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
@@ -449,12 +451,11 @@ export default function KontekstnayaReklamaPage() {
   const heroScale = useTransform(heroProgress, [0, 0.8], [1, 0.95]);
 
   useEffect(() => {
-  setMounted(true);
-  setStyles(getSvgStylesForWidth(window.innerWidth));
-  // Определяем мобильное устройство более надежно
-  const isMobile = window.matchMedia("(max-width: 768px)").matches || window.innerWidth < 768;
-  setIsMobileDevice(isMobile);
-}, []);
+    setMounted(true);
+    setStyles(getSvgStylesForWidth(window.innerWidth));
+    const isMobile = window.matchMedia("(max-width: 768px)").matches || window.innerWidth < 768;
+    setIsMobileDevice(isMobile);
+  }, []);
 
   // ── Resize: обновляем стили при изменении размера окна ──
   useEffect(() => {
@@ -467,7 +468,72 @@ export default function KontekstnayaReklamaPage() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // ── Измеряем длину текста надежным способом для всех браузеров ──
+  useEffect(() => {
+    let attempts = 0;
+    let timeoutId: NodeJS.Timeout;
+    const maxAttempts = 10;
+    
+    const measureText = () => {
+      if (textMeasuredRef.current) {
+        // Замеряем исключительно скрытый BASE_TEXT без textPath
+        const total = textMeasuredRef.current.getComputedTextLength();
+        if (total > 0) {
+          setTextLoopLength(total); // Без деления на 5, т.к. измеряется ровно один цикл
+          return;
+        }
+      }
+      attempts++;
+      if (attempts < maxAttempts) {
+        timeoutId = setTimeout(measureText, 100);
+      }
+    };
+    
+    measureText();
+    window.addEventListener("resize", measureText, { passive: true });
+    
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener("resize", measureText);
+    };
+  }, []);
 
+  // ── Исправленная анимация с корректной очисткой и дельта-таймом ──
+  useEffect(() => {
+    let frameId: number;
+    let localLastTime = performance.now();
+    
+    const animateText = (time: number) => {
+      // Считаем точную дельту прошедшего времени с прошлого кадра (dt)
+      const dt = (time - localLastTime) / 1000;
+      localLastTime = time;
+      
+      const speed = isMobileDevice ? 50 : 30;
+      const loopLen = textLoopLength || 1000;
+      
+      // Сдвигаем текущий offset плавно и сбрасываем только по бесшовному модулю
+      currentOffsetRef.current -= (speed * dt);
+      currentOffsetRef.current = currentOffsetRef.current % loopLen;
+      
+      const textPaths = document.querySelectorAll('textPath[href*="arcPath"]');
+      textPaths.forEach((tp) => {
+        tp.setAttribute('startOffset', `${currentOffsetRef.current}`);
+      });
+      
+      frameId = requestAnimationFrame(animateText);
+    };
+    
+    if (textLoopLength > 0) {
+      frameId = requestAnimationFrame(animateText);
+    }
+    
+    // Обязательная очистка старого фрейма во избежание наслаивания
+    return () => {
+      if (frameId) {
+        cancelAnimationFrame(frameId);
+      }
+    };
+  }, [isMobileDevice, textLoopLength]);
 
   // ── Sticky card (FAQ) ──
   useEffect(() => {
@@ -527,7 +593,7 @@ export default function KontekstnayaReklamaPage() {
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
             {mounted && (
               <>
-            {/* Strip 1 */}
+            {/* Strip 1 + Hidden Measurement Text */}
             <svg
               className="absolute"
               style={{
@@ -545,6 +611,18 @@ export default function KontekstnayaReklamaPage() {
               <defs>
                 <path id="arcPath1" d="M 380,790 A 395,395 0 0,1 790,380" />
               </defs>
+              
+              {/* СКРЫТЫЙ ТЕКСТ: Нужен для точного обхода бага урезания длины textPath в Safari/iOS */}
+              <text
+                ref={textMeasuredRef}
+                fontSize={styles.fontSize}
+                fontWeight="800"
+                letterSpacing="3"
+                visibility="hidden"
+              >
+                {BASE_TEXT}
+              </text>
+
               <path d="M 380,790 A 395,395 0 0,1 790,380" fill="none" stroke="#549AF2" strokeWidth={styles.strokeWidth} strokeLinecap="butt" />
               <text
                 fontSize={styles.fontSize}
@@ -552,9 +630,9 @@ export default function KontekstnayaReklamaPage() {
                 fill="white"
                 letterSpacing="3"
                 dy="0.35em"
+                style={{ visibility: textLoopLength > 0 ? "visible" : "hidden" }}
               >
-                <textPath href="#arcPath1" startOffset="0%">
-                  <animate attributeName="startOffset" from="0%" to="-100%" dur="20s" repeatCount="indefinite" />
+                <textPath href="#arcPath1" startOffset="0">
                   {REPEATED_TEXT}
                 </textPath>
               </text>
@@ -585,9 +663,9 @@ export default function KontekstnayaReklamaPage() {
                 fill="white"
                 letterSpacing="3"
                 dy="0.35em"
+                style={{ visibility: textLoopLength > 0 ? "visible" : "hidden" }}
               >
-                <textPath href="#arcPath2" startOffset="0%">
-                  <animate attributeName="startOffset" from="0%" to="-100%" dur="20s" repeatCount="indefinite" />
+                <textPath href="#arcPath2" startOffset="0">
                   {REPEATED_TEXT}
                 </textPath>
               </text>
@@ -618,9 +696,9 @@ export default function KontekstnayaReklamaPage() {
                 fill="white"
                 letterSpacing="3"
                 dy="0.35em"
+                style={{ visibility: textLoopLength > 0 ? "visible" : "hidden" }}
               >
-                <textPath href="#arcPath3" startOffset="-100%">
-                  <animate attributeName="startOffset" from="-100%" to="0%" dur="20s" repeatCount="indefinite" />
+                <textPath href="#arcPath3" startOffset="0">
                   {REPEATED_TEXT}
                 </textPath>
               </text>
