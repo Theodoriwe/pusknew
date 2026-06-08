@@ -99,9 +99,9 @@ export function TeamSection() {
           className="mb-20 text-center"
         >
           <m.div
-            initial={{ scale: 0 }}
-            animate={isInView ? { scale: 1 } : { scale: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted border text-sm font-medium text-foreground/70 mb-6"
             style={{ borderColor: `${memberColors[0]}20` }}
           >
@@ -323,8 +323,8 @@ export function TeamSection() {
                 {/* Dot accent */}
                 <m.div
                   className="absolute -top-4 right-0 w-3 h-3 rounded-full bg-blue-500/40"
-                  animate={{ opacity: [0.3, 0.8, 0.3] }}
-                  transition={{ duration: 4, repeat: Infinity }}
+                  animate={isMobile || prefersReducedMotion ? {} : { opacity: [0.3, 0.8, 0.3] }}
+                  transition={isMobile || prefersReducedMotion ? {} : { duration: 4, repeat: Infinity }}
                 />
 
                 <div className="relative z-10">
@@ -339,9 +339,9 @@ export function TeamSection() {
                   {/* Divider line */}
                   <m.div
                     className="w-12 h-1 bg-gradient-to-r from-blue-500 to-transparent"
-                    initial={{ scaleX: 0 }}
-                    animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
-                    transition={{ delay: 0.7, duration: 0.6 }}
+                    initial={{ opacity: 0, width: 0 }}
+                    animate={isInView ? { opacity: 1, width: 48 } : { opacity: 0, width: 0 }}
+                    transition={{ delay: isMobile ? 0.3 : 0.7, duration: isMobile ? 0.4 : 0.6 }}
                   />
                 </div>
               </m.div>
@@ -380,9 +380,9 @@ export function TeamSection() {
                   <m.div
                     className="w-12 h-1 to-transparent"
                     style={{ background: "linear-gradient(to right, #F76C6C, transparent)" }}
-                    initial={{ scaleX: 0 }}
-                    animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
-                    transition={{ delay: 0.8, duration: 0.6 }}
+                    initial={{ opacity: 0, width: 0 }}
+                    animate={isInView ? { opacity: 1, width: 48 } : { opacity: 0, width: 0 }}
+                    transition={{ delay: isMobile ? 0.4 : 0.8, duration: isMobile ? 0.4 : 0.6 }}
                   />
                 </div>
               </m.div>
@@ -392,18 +392,18 @@ export function TeamSection() {
             <m.div
               className="mt-24 h-px to-transparent"
               style={{ background: "linear-gradient(to right, rgba(84, 154, 242, 0.2), rgba(247, 108, 108, 0.2), transparent)" }}
-              initial={{ scaleX: 0 }}
-              animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
-              transition={{ delay: 1, duration: 0.8 }}
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+              transition={{ delay: isMobile ? 0.5 : 1, duration: isMobile ? 0.4 : 0.8 }}
             />
           </div>
         </m.div>
 
         {/* CTA */}
         <m.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
-          transition={{ delay: 0.5 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ delay: 0.4, duration: 0.5 }}
           className="text-center"
         >
           <Link
@@ -411,7 +411,7 @@ export function TeamSection() {
             className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 transition-all group font-bold text-base"
           >
             <span>Обсудить проект</span>
-            <m.div whileHover={{ rotate: 45 }}>
+            <m.div whileHover={isMobile ? {} : { rotate: 45 }}>
               <ArrowUpRight className="w-5 h-5" />
             </m.div>
           </Link>

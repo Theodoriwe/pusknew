@@ -169,10 +169,10 @@ export default function RazrabotkaSajtovPage() {
       <Header />
       <main className="min-h-screen">
       {/* HERO */}
-      <section className="relative pt-32 pb-24 overflow-hidden bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative flex flex-col pt-32 pb-20 overflow-hidden bg-background" style={{ maxHeight: "100vh" }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-1 flex flex-col">
           {/* Breadcrumbs */}
-          <div className="mb-20">
+          <div className="mb-6">
             <Breadcrumbs
               items={[
                 { label: "Услуги", href: "/uslugi" },
@@ -189,8 +189,13 @@ export default function RazrabotkaSajtovPage() {
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
-                className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 text-balance leading-[1.05]"
-                style={{ fontFamily: "var(--font-display)" }}
+                className="font-bold mb-6 text-balance"
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "clamp(3rem, 10vw, 8rem)",
+                  lineHeight: 0.95,
+                  letterSpacing: "-0.04em",
+                }}
               >
                   Разработка
                   <br />
@@ -216,7 +221,7 @@ export default function RazrabotkaSajtovPage() {
                     style={{ background: "#549AF2", willChange: "transform" }}
                   />
                   <div className="relative px-4 sm:px-6 py-4 rounded-2xl border-2 border-primary/30 bg-background">
-                    <p className="text-sm sm:text-base lg:text-lg font-semibold">
+                    <p className="text-sm sm:text-base lg:text-lg font-bold text-center sm:text-left">
                       Сайт, который приносит заявки —{" "}
                       <span className="text-primary whitespace-nowrap">от 7 дней и <span className="whitespace-nowrap">35 000 ₽</span></span>
                     </p>
@@ -331,17 +336,17 @@ export default function RazrabotkaSajtovPage() {
           <div className="max-w-6xl mx-auto">
             {/* Section header */}
             <motion.div
-              initial={animConfig.enabled ? { opacity: 0, y: 40 } : false}
-              whileInView={animConfig.enabled ? { opacity: 1, y: 0 } : false}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={animConfig.enabled ? { duration: 0.8, ease: "easeOut" } : {}}
+              transition={{ duration: animConfig.enabled ? 0.8 : 0.4, ease: "easeOut" }}
               className="text-center mb-12 lg:mb-16"
             >
               <motion.div
-                initial={animConfig.enabled ? { opacity: 0 } : false}
-                whileInView={animConfig.enabled ? { opacity: 1 } : false}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
-                transition={animConfig.enabled ? { duration: 0.5, delay: 0.05 } : {}}
+                transition={{ duration: animConfig.enabled ? 0.5 : 0.3, delay: animConfig.enabled ? 0.05 : 0 }}
                 className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-muted border border-[#549AF2]/20 text-xs sm:text-sm font-medium text-foreground/70 mb-6"
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
@@ -511,9 +516,10 @@ export default function RazrabotkaSajtovPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
           <motion.div
-            initial={animConfig.enabled ? { opacity: 0, y: 40 } : false}
-            whileInView={animConfig.enabled ? { opacity: 1, y: 0 } : false}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            transition={{ duration: animConfig.enabled ? 0.8 : 0.4, ease: "easeOut" }}
             className="text-center mb-16 lg:mb-20"
           >
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted border border-primary/10 text-sm font-medium text-foreground/70 mb-6">
@@ -559,10 +565,10 @@ export default function RazrabotkaSajtovPage() {
             ].map((plan, i) => (
               <motion.div
                 key={i}
-                initial={animConfig.enabled ? { opacity: 0, y: 40 } : false}
-                whileInView={animConfig.enabled ? { opacity: 1, y: 0 } : false}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={animConfig.enabled ? { duration: 0.6, delay: i * 0.1 } : {}}
+                transition={{ duration: animConfig.enabled ? 0.6 : 0.3, delay: animConfig.enabled ? i * 0.1 : 0 }}
                 className={`relative p-8 sm:p-10 rounded-3xl flex flex-col ${
                   plan.featured
                     ? "bg-foreground text-background lg:scale-105 lg:-my-4"
