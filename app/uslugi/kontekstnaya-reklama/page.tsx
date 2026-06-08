@@ -473,14 +473,27 @@ export default function KontekstnayaReklamaPage() {
 
   // ── Измеряем длину текста для точной анимации ──
   useEffect(() => {
+    let attempts = 0;
+    const maxAttempts = 10;
+    
     const measureText = () => {
       if (textMeasuredRef.current) {
         const total = textMeasuredRef.current.getComputedTextLength();
-        if (total > 0) setTextLoopLength(total / 5);
+        if (total > 0) {
+          setTextLoopLength(total / 5);
+          return;
+        }
+      }
+      // Если текст еще не загрузился, пытаемся еще раз
+      attempts++;
+      if (attempts < maxAttempts) {
+        setTimeout(measureText, 100);
       }
     };
-    const timer = setTimeout(measureText, isMobileDevice ? 250 : 60);
+    
+    const timer = setTimeout(measureText, isMobileDevice ? 300 : 100);
     window.addEventListener("resize", measureText, { passive: true });
+    
     return () => {
       clearTimeout(timer);
       window.removeEventListener("resize", measureText);
@@ -575,11 +588,10 @@ export default function KontekstnayaReklamaPage() {
                 fill="white"
                 letterSpacing="3"
                 dy="0.35em"
+                style={{ visibility: textLoopLength > 0 ? "visible" : "hidden" }}
               >
                 <textPath href="#arcPath1" startOffset="0">
-                  {textLoopLength > 0 && (
-                    <animate key="anim1" attributeName="startOffset" from="0" to={`-${textLoopLength}`} dur={animDuration1} repeatCount="indefinite" />
-                  )}
+                  <animate attributeName="startOffset" from="0" to={textLoopLength > 0 ? `-${textLoopLength}` : "0"} dur={animDuration1} repeatCount="indefinite" fill="freeze" restart="always" />
                   {REPEATED_TEXT}
                 </textPath>
               </text>
@@ -613,9 +625,7 @@ export default function KontekstnayaReklamaPage() {
                 style={{ visibility: textLoopLength > 0 ? "visible" : "hidden" }}
               >
                 <textPath href="#arcPath2" startOffset="0">
-                  {textLoopLength > 0 && (
-                    <animate key="anim2" attributeName="startOffset" from="0" to={`-${textLoopLength}`} dur={animDuration2} repeatCount="indefinite" />
-                  )}
+                  <animate attributeName="startOffset" from="0" to={textLoopLength > 0 ? `-${textLoopLength}` : "0"} dur={animDuration2} repeatCount="indefinite" fill="freeze" restart="always" />
                   {REPEATED_TEXT}
                 </textPath>
               </text>
@@ -649,9 +659,7 @@ export default function KontekstnayaReklamaPage() {
                 style={{ visibility: textLoopLength > 0 ? "visible" : "hidden" }}
               >
                 <textPath href="#arcPath3" startOffset="0">
-                  {textLoopLength > 0 && (
-                    <animate key="anim3" attributeName="startOffset" from={`-${textLoopLength}`} to="0" dur={animDuration3} repeatCount="indefinite" />
-                  )}
+                  <animate attributeName="startOffset" from={textLoopLength > 0 ? `-${textLoopLength}` : "0"} to="0" dur={animDuration3} repeatCount="indefinite" fill="freeze" restart="always" />
                   {REPEATED_TEXT}
                 </textPath>
               </text>
