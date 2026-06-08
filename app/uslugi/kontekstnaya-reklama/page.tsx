@@ -471,10 +471,12 @@ export default function KontekstnayaReklamaPage() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // ── Измеряем длину текста для точной анимации ──
+  // ── Измеряем длину текста и управляем анимацией через requestAnimationFrame ──
   useEffect(() => {
     let attempts = 0;
     const maxAttempts = 10;
+    let animationFrameId: number | null = null;
+    let lastTime = 0;
     
     const measureText = () => {
       if (textMeasuredRef.current) {
@@ -484,21 +486,45 @@ export default function KontekstnayaReklamaPage() {
           return;
         }
       }
-      // Если текст еще не загрузился, пытаемся еще раз
       attempts++;
       if (attempts < maxAttempts) {
         setTimeout(measureText, 100);
       }
     };
     
+    const animateText = (time: number) => {
+      if (lastTime === 0) lastTime = time;
+      const elapsed = (time - lastTime) / 1000; // в секундах
+      
+      // Определяем скорость анимации в пикселях в секунду
+      const speed = isMobileDevice ? 50 : 30; // пиксели/сек
+      const offset = -((elapsed * speed) % (textLoopLength || 1000));
+      
+      // Обновляем все textPath элементы
+      const textPaths = document.querySelectorAll('textPath[href*="arcPath"]');
+      textPaths.forEach((tp) => {
+        tp.setAttribute('startOffset', `${offset}`);
+      });
+      
+      animationFrameId = requestAnimationFrame(animateText);
+    };
+    
     const timer = setTimeout(measureText, isMobileDevice ? 300 : 100);
+    
+    // Запускаем анимацию после измерения текста
+    const startAnimDelay = setTimeout(() => {
+      animationFrameId = requestAnimationFrame(animateText);
+    }, isMobileDevice ? 400 : 200);
+    
     window.addEventListener("resize", measureText, { passive: true });
     
     return () => {
       clearTimeout(timer);
+      clearTimeout(startAnimDelay);
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
       window.removeEventListener("resize", measureText);
     };
-  }, [isMobileDevice]);
+  }, [isMobileDevice, textLoopLength]);
 
   // ── Sticky card (FAQ) ──
   useEffect(() => {
@@ -547,10 +573,6 @@ export default function KontekstnayaReklamaPage() {
     };
   }, []);
 
-  const animDuration1 = isMobileDevice ? "10s" : "22s";
-  const animDuration2 = isMobileDevice ? "10s" : "22s";
-  const animDuration3 = isMobileDevice ? "14s" : "28s";
-
   return (
     <>
       <Header />
@@ -591,7 +613,6 @@ export default function KontekstnayaReklamaPage() {
                 style={{ visibility: textLoopLength > 0 ? "visible" : "hidden" }}
               >
                 <textPath href="#arcPath1" startOffset="0">
-                  <animate attributeName="startOffset" from="0" to={textLoopLength > 0 ? `-${textLoopLength}` : "0"} dur={animDuration1} repeatCount="indefinite" fill="freeze" restart="always" />
                   {REPEATED_TEXT}
                 </textPath>
               </text>
@@ -625,7 +646,6 @@ export default function KontekstnayaReklamaPage() {
                 style={{ visibility: textLoopLength > 0 ? "visible" : "hidden" }}
               >
                 <textPath href="#arcPath2" startOffset="0">
-                  <animate attributeName="startOffset" from="0" to={textLoopLength > 0 ? `-${textLoopLength}` : "0"} dur={animDuration2} repeatCount="indefinite" fill="freeze" restart="always" />
                   {REPEATED_TEXT}
                 </textPath>
               </text>
@@ -659,7 +679,6 @@ export default function KontekstnayaReklamaPage() {
                 style={{ visibility: textLoopLength > 0 ? "visible" : "hidden" }}
               >
                 <textPath href="#arcPath3" startOffset="0">
-                  <animate attributeName="startOffset" from={textLoopLength > 0 ? `-${textLoopLength}` : "0"} to="0" dur={animDuration3} repeatCount="indefinite" fill="freeze" restart="always" />
                   {REPEATED_TEXT}
                 </textPath>
               </text>
