@@ -471,13 +471,13 @@ export default function KontekstnayaReklamaPage() {
         if (total > 0) setTextLoopLength(total / 5);
       }
     };
-    const timer = setTimeout(measureText, 60);
+    const timer = setTimeout(measureText, styles.isMobile ? 200 : 60);
     window.addEventListener("resize", measureText, { passive: true });
     return () => {
       clearTimeout(timer);
       window.removeEventListener("resize", measureText);
     };
-  }, [styles.strokeWidth]);
+  }, [styles.isMobile]);
 
   // ── Sticky card (FAQ) ──
   useEffect(() => {
@@ -567,11 +567,10 @@ export default function KontekstnayaReklamaPage() {
                 fill="white"
                 letterSpacing="3"
                 dy="0.35em"
-                style={{ visibility: textLoopLength > 0 ? "visible" : "hidden" }}
               >
                 <textPath href="#arcPath1" startOffset="0">
                   {textLoopLength > 0 && (
-                    <animate key={`a1-${textLoopLength}`} attributeName="startOffset" from="0" to={`-${textLoopLength}`} dur={animDuration1} repeatCount="indefinite" />
+                    <animate key="anim1" attributeName="startOffset" from="0" to={`-${textLoopLength}`} dur={animDuration1} repeatCount="indefinite" />
                   )}
                   {REPEATED_TEXT}
                 </textPath>
@@ -607,7 +606,7 @@ export default function KontekstnayaReklamaPage() {
               >
                 <textPath href="#arcPath2" startOffset="0">
                   {textLoopLength > 0 && (
-                    <animate key={`a2-${textLoopLength}`} attributeName="startOffset" from="0" to={`-${textLoopLength}`} dur={animDuration2} repeatCount="indefinite" />
+                    <animate key="anim2" attributeName="startOffset" from="0" to={`-${textLoopLength}`} dur={animDuration2} repeatCount="indefinite" />
                   )}
                   {REPEATED_TEXT}
                 </textPath>
@@ -643,7 +642,7 @@ export default function KontekstnayaReklamaPage() {
               >
                 <textPath href="#arcPath3" startOffset="0">
                   {textLoopLength > 0 && (
-                    <animate key={`a3-${textLoopLength}`} attributeName="startOffset" from={`-${textLoopLength}`} to="0" dur={animDuration3} repeatCount="indefinite" />
+                    <animate key="anim3" attributeName="startOffset" from={`-${textLoopLength}`} to="0" dur={animDuration3} repeatCount="indefinite" />
                   )}
                   {REPEATED_TEXT}
                 </textPath>
