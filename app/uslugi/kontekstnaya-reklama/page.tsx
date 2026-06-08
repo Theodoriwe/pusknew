@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform, useInView, useMotionValue, useSpring } from "framer-motion";
 import { Header } from "@/components/header";
@@ -484,17 +484,17 @@ export default function KontekstnayaReklamaPage() {
     let measured = false;
     
     const measureText = () => {
-      if (measured) return; // Измеряем только один раз!
+      if (measured) {
+        return;
+      }
       
       if (textMeasuredRef.current) {
         const total = textMeasuredRef.current.getComputedTextLength();
-        console.log("[measureText] total =", total, "calculated =", total / 5);
         if (total > 0) {
           const newLen = total / 5;
-          loopLenRef.current = newLen; // Сразу обновляем ref
+          loopLenRef.current = newLen;
           setTextLoopLength(newLen);
           measured = true;
-          console.log("[MEASURED_ONCE] locked measurement to:", newLen);
           return;
         }
       }
@@ -503,8 +503,6 @@ export default function KontekstnayaReklamaPage() {
         setTimeout(measureText, 100);
       }
     };
-    
-    console.log("[MEASURE_TEXT] Starting measurement");
     measureText();
     window.addEventListener("resize", measureText, { passive: true });
     
@@ -515,50 +513,20 @@ export default function KontekstnayaReklamaPage() {
 
   // ── Анимация (отдельный эффект чтобы не сбрасываться при textLoopLength) ──
   useEffect(() => {
-    console.log("[ANIMATION_EFFECT] textLoopLength changed to:", textLoopLength);
+    if (textLoopLength <= 0) return;
     
-    const animateText = (time: number) => {
-      // Инициируем время только один раз
-      if (lastTimeRef.current === 0) {
-        lastTimeRef.current = time;
-        console.log("[ANIMATION_STARTED] at time", time);
-      }
-      const elapsed = (time - lastTimeRef.current) / 1000;
-      
-      const speed = isMobileRef.current ? 50 : 30;
-      const loopLen = loopLenRef.current || 1000; // Используем REF, а не state!
-      const offset = -((elapsed * speed) % loopLen);
-      
-      const textPaths = document.querySelectorAll('textPath[href*="arcPath"]');
-      textPaths.forEach((tp) => {
-        tp.setAttribute('startOffset', `${offset}`);
-      });
-      
-      animationFrameIdRef.current = requestAnimationFrame(animateText);
-    };
-    
-    // Запускаем только если текст измерен
-    if (textLoopLength > 0) {
-      // Если анимация уже идет, не сбрасываем time
-      if (!animationFrameIdRef.current) {
-        console.log("[ANIMATION_LAUNCH] Starting animation with loopLen", textLoopLength);
-        lastTimeRef.current = 0; // Сбрасываем только при ПЕРВОМ запуске
-        animationFrameIdRef.current = requestAnimationFrame(animateText);
-      } else {
-        console.log("[ANIMATION_RUNNING] Animation already running, continuing");
-      }
-    } else {
-      // Если textLoopLength еще не готов, отменяем анимацию
-      if (animationFrameIdRef.current) {
-        console.log("[ANIMATION_CANCEL] Canceling animation, textLoopLength =", textLoopLength);
-        cancelAnimationFrame(animationFrameIdRef.current);
-        animationFrameIdRef.current = null;
-      }
+    // Отменяем старую анимацию при необходимости
+    if (animationFrameIdRef.current) {
+      cancelAnimationFrame(animationFrameIdRef.current);
+      animationFrameIdRef.current = null;
     }
-    
-    return () => {
-      // НЕ отменяем анимацию при размонтировании эффекта!
-    };
+  }, [textLoopLength]);
+
+  // Вычисляем duration для SVG animate
+  const animDuration = useMemo(() => {
+    const len = loopLenRef.current || 1000;
+    const speed = isMobileRef.current ? 50 : 30;
+    return `${len / speed}s`;
   }, [textLoopLength]);
 
   // ── Sticky card (FAQ) ──
@@ -648,6 +616,7 @@ export default function KontekstnayaReklamaPage() {
                 style={{ visibility: textLoopLength > 0 ? "visible" : "hidden" }}
               >
                 <textPath href="#arcPath1" startOffset="0">
+                  <animate attributeName="startOffset" from="0" to={textLoopLength > 0 ? `-${loopLenRef.current}` : "0"} dur={animDuration} repeatCount="indefinite" />
                   {REPEATED_TEXT}
                 </textPath>
               </text>
@@ -681,6 +650,7 @@ export default function KontekstnayaReklamaPage() {
                 style={{ visibility: textLoopLength > 0 ? "visible" : "hidden" }}
               >
                 <textPath href="#arcPath2" startOffset="0">
+                  <animate attributeName="startOffset" from="0" to={textLoopLength > 0 ? `-${loopLenRef.current}` : "0"} dur={animDuration} repeatCount="indefinite" />
                   {REPEATED_TEXT}
                 </textPath>
               </text>
@@ -714,6 +684,7 @@ export default function KontekstnayaReklamaPage() {
                 style={{ visibility: textLoopLength > 0 ? "visible" : "hidden" }}
               >
                 <textPath href="#arcPath3" startOffset="0">
+                  <animate attributeName="startOffset" from={textLoopLength > 0 ? `-${loopLenRef.current}` : "0"} to="0" dur={animDuration} repeatCount="indefinite" />
                   {REPEATED_TEXT}
                 </textPath>
               </text>
