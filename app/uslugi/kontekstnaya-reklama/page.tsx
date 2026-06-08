@@ -441,10 +441,13 @@ export default function KontekstnayaReklamaPage() {
   // ── SVG стили: ленивая инициализация — читаем window сразу, без эффекта ──
   const [styles, setStyles] = useState<SvgStyles>(getSvgStylesForWidth(typeof window !== "undefined" ? window.innerWidth : 1920));
   const [isMobileDevice, setIsMobileDevice] = useState(false);
+  const isMobileRef = useRef(false);
 
   // ── Длина одного блока текста для анимации ──
   const [textLoopLength, setTextLoopLength] = useState<number>(0);
   const textMeasuredRef = useRef<SVGTextElement>(null);
+  const lastTimeRef = useRef<number>(0);
+  const animationFrameIdRef = useRef<number | null>(null);
 
   // Hero scroll
   const heroRef = useRef<HTMLDivElement>(null);
@@ -458,6 +461,7 @@ export default function KontekstnayaReklamaPage() {
   // Определяем мобильное устройство более надежно
   const isMobile = window.matchMedia("(max-width: 768px)").matches || window.innerWidth < 768;
   setIsMobileDevice(isMobile);
+  isMobileRef.current = isMobile;
 }, []);
 
   // ── Resize: обновляем стили при изменении размера окна ──
@@ -466,6 +470,7 @@ export default function KontekstnayaReklamaPage() {
       setStyles(getSvgStylesForWidth(window.innerWidth));
       const isMobile = window.matchMedia("(max-width: 768px)").matches || window.innerWidth < 768;
       setIsMobileDevice(isMobile);
+      isMobileRef.current = isMobile;
     };
     window.addEventListener("resize", handleResize, { passive: true });
     return () => window.removeEventListener("resize", handleResize);
@@ -475,8 +480,6 @@ export default function KontekstnayaReklamaPage() {
   useEffect(() => {
     let attempts = 0;
     const maxAttempts = 10;
-    let animationFrameId: number | null = null;
-    let lastTime = 0;
     
     const measureText = () => {
       if (textMeasuredRef.current) {
@@ -492,39 +495,54 @@ export default function KontekstnayaReklamaPage() {
       }
     };
     
+    measureText();
+    window.addEventListener("resize", measureText, { passive: true });
+    
+    return () => {
+      window.removeEventListener("resize", measureText);
+    };
+  }, []);
+
+  // ── Анимация (отдельный эффект чтобы не сбрасываться при textLoopLength) ──
+  useEffect(() => {
     const animateText = (time: number) => {
-      if (lastTime === 0) lastTime = time;
-      const elapsed = (time - lastTime) / 1000; // в секундах
+      // Инициируем время только один раз
+      if (lastTimeRef.current === 0) {
+        lastTimeRef.current = time;
+      }
+      const elapsed = (time - lastTimeRef.current) / 1000;
       
-      // Определяем скорость анимации в пикселях в секунду
-      const speed = isMobileDevice ? 50 : 30; // пиксели/сек
-      const offset = -((elapsed * speed) % (textLoopLength || 1000));
+      const speed = isMobileRef.current ? 50 : 30;
+      const loopLen = textLoopLength || 1000;
+      const offset = -((elapsed * speed) % loopLen);
       
-      // Обновляем все textPath элементы
       const textPaths = document.querySelectorAll('textPath[href*="arcPath"]');
       textPaths.forEach((tp) => {
         tp.setAttribute('startOffset', `${offset}`);
       });
       
-      animationFrameId = requestAnimationFrame(animateText);
+      animationFrameIdRef.current = requestAnimationFrame(animateText);
     };
     
-    const timer = setTimeout(measureText, isMobileDevice ? 300 : 100);
-    
-    // Запускаем анимацию после измерения текста
-    const startAnimDelay = setTimeout(() => {
-      animationFrameId = requestAnimationFrame(animateText);
-    }, isMobileDevice ? 400 : 200);
-    
-    window.addEventListener("resize", measureText, { passive: true });
+    // Запускаем только если текст измерен
+    if (textLoopLength > 0) {
+      // Если анимация уже идет, не сбрасываем time
+      if (!animationFrameIdRef.current) {
+        lastTimeRef.current = 0; // Сбрасываем только при ПЕРВОМ запуске
+        animationFrameIdRef.current = requestAnimationFrame(animateText);
+      }
+    } else {
+      // Если textLoopLength еще не готов, отменяем анимацию
+      if (animationFrameIdRef.current) {
+        cancelAnimationFrame(animationFrameIdRef.current);
+        animationFrameIdRef.current = null;
+      }
+    }
     
     return () => {
-      clearTimeout(timer);
-      clearTimeout(startAnimDelay);
-      if (animationFrameId) cancelAnimationFrame(animationFrameId);
-      window.removeEventListener("resize", measureText);
+      // НЕ отменяем анимацию при размонтировании эффекта!
     };
-  }, [isMobileDevice, textLoopLength]);
+  }, [textLoopLength]);
 
   // ── Sticky card (FAQ) ──
   useEffect(() => {
