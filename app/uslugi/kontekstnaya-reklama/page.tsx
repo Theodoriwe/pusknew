@@ -420,7 +420,8 @@ function DirectCycleFull() {
 // MARQUEE
 // ============================================================================
 const BASE_TEXT = " ★ ЯНДЕКС.ДИРЕКТ ★ GOOGLE ADS ★ ROI 300%+ ★ СНИЖАЕМ CPL ★ МАСШТАБИРУЕМ ★ A/B ТЕСТЫ";
-const REPEATED_TEXT = `${BASE_TEXT}${BASE_TEXT}${BASE_TEXT}${BASE_TEXT}${BASE_TEXT}`;
+// Делаем огромный запас прочности (10 повторений), чтобы текст гарантированно перекрывал любой путь
+const REPEATED_TEXT = Array(10).fill(BASE_TEXT).join(""); 
 
 // ============================================================================
 // PAGE
@@ -435,7 +436,7 @@ export default function KontekstnayaReklamaPage() {
   const cardRef = useRef<HTMLDivElement>(null);
   const cardWrapperRef = useRef<HTMLDivElement>(null);
 
-  // ── SVG стили: ленивая инициализация — читаем window сразу, без эффекта ──
+  // ── SVG стили ──
   const [styles, setStyles] = useState<SvgStyles>(getSvgStylesForWidth(typeof window !== "undefined" ? window.innerWidth : 1920));
   const [isMobileDevice, setIsMobileDevice] = useState(false);
 
@@ -457,7 +458,6 @@ export default function KontekstnayaReklamaPage() {
     setIsMobileDevice(isMobile);
   }, []);
 
-  // ── Resize: обновляем стили при изменении размера окна ──
   useEffect(() => {
     const handleResize = () => {
       setStyles(getSvgStylesForWidth(window.innerWidth));
@@ -468,24 +468,27 @@ export default function KontekstnayaReklamaPage() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // ── Измеряем длину текста надежным способом для всех браузеров ──
+  // ── Измеряем длину текста (ФИКС ДЛЯ SAFARI) ──
   useEffect(() => {
     let attempts = 0;
     let timeoutId: NodeJS.Timeout;
-    const maxAttempts = 10;
     
     const measureText = () => {
       if (textMeasuredRef.current) {
-        // Замеряем исключительно скрытый BASE_TEXT без textPath
+        // У Safari ломается getComputedTextLength если стоит visibility: hidden
+        // Поэтому в компоненте стоит opacity: 0
         const total = textMeasuredRef.current.getComputedTextLength();
         if (total > 0) {
-          setTextLoopLength(total); // Без деления на 5, т.к. измеряется ровно один цикл
+          setTextLoopLength(total);
           return;
         }
       }
       attempts++;
-      if (attempts < maxAttempts) {
+      if (attempts < 20) {
         timeoutId = setTimeout(measureText, 100);
+      } else {
+        // Запасной план, если браузер намертво отказывается отдавать ширину
+        setTextLoopLength(1000); 
       }
     };
     
@@ -496,24 +499,34 @@ export default function KontekstnayaReklamaPage() {
       clearTimeout(timeoutId);
       window.removeEventListener("resize", measureText);
     };
-  }, []);
+  }, [styles]);
 
-  // ── Исправленная анимация с корректной очисткой и дельта-таймом ──
+  // ── Анимация (БЕСШОВНАЯ + ЗАЩИТА ОТ ТРОТТЛИНГА) ──
   useEffect(() => {
     let frameId: number;
-    let localLastTime = performance.now();
+    let lastTime: number | null = null;
     
     const animateText = (time: number) => {
-      // Считаем точную дельту прошедшего времени с прошлого кадра (dt)
-      const dt = (time - localLastTime) / 1000;
-      localLastTime = time;
+      if (lastTime === null) lastTime = time;
+      
+      // КРИТИЧЕСКИЙ ФИКС ДЛЯ МОБИЛОК: 
+      // Safari ставит rAF на паузу при скролле. Без лимита dt текст совершал огромный прыжок.
+      let dt = (time - lastTime) / 1000;
+      if (dt > 0.05) dt = 0.05; // Капим лаг до 50 миллисекунд
+      
+      lastTime = time;
       
       const speed = isMobileDevice ? 50 : 30;
       const loopLen = textLoopLength || 1000;
       
-      // Сдвигаем текущий offset плавно и сбрасываем только по бесшовному модулю
+      // Идем в минус для сдвига
       currentOffsetRef.current -= (speed * dt);
-      currentOffsetRef.current = currentOffsetRef.current % loopLen;
+      
+      // Вместо оператора `%` (с отрицательными числами он работает багованно),
+      // мы мягко добавляем длину петли, когда уходим слишком далеко в минус
+      while (currentOffsetRef.current <= -loopLen) {
+        currentOffsetRef.current += loopLen;
+      }
       
       const textPaths = document.querySelectorAll('textPath[href*="arcPath"]');
       textPaths.forEach((tp) => {
@@ -527,7 +540,6 @@ export default function KontekstnayaReklamaPage() {
       frameId = requestAnimationFrame(animateText);
     }
     
-    // Обязательная очистка старого фрейма во избежание наслаивания
     return () => {
       if (frameId) {
         cancelAnimationFrame(frameId);
@@ -612,13 +624,15 @@ export default function KontekstnayaReklamaPage() {
                 <path id="arcPath1" d="M 380,790 A 395,395 0 0,1 790,380" />
               </defs>
               
-              {/* СКРЫТЫЙ ТЕКСТ: Нужен для точного обхода бага урезания длины textPath в Safari/iOS */}
+              {/* СКРЫТЫЙ ТЕКСТ: opacity="0" обязательно, иначе Safari выдает 0 ширины */}
               <text
                 ref={textMeasuredRef}
                 fontSize={styles.fontSize}
                 fontWeight="800"
                 letterSpacing="3"
-                visibility="hidden"
+                opacity="0"
+                x="0"
+                y="0"
               >
                 {BASE_TEXT}
               </text>
