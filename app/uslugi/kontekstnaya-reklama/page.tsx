@@ -439,7 +439,8 @@ export default function KontekstnayaReklamaPage() {
   const cardWrapperRef = useRef<HTMLDivElement>(null);
 
   // ── SVG стили: ленивая инициализация — читаем window сразу, без эффекта ──
-  const [styles, setStyles] = useState<SvgStyles>(getSvgStylesForWidth(1920));
+  const [styles, setStyles] = useState<SvgStyles>(getSvgStylesForWidth(typeof window !== "undefined" ? window.innerWidth : 1920));
+  const [isMobileDevice, setIsMobileDevice] = useState(false);
 
   // ── Длина одного блока текста для анимации ──
   const [textLoopLength, setTextLoopLength] = useState<number>(0);
@@ -454,11 +455,18 @@ export default function KontekstnayaReklamaPage() {
   useEffect(() => {
   setMounted(true);
   setStyles(getSvgStylesForWidth(window.innerWidth));
+  // Определяем мобильное устройство более надежно
+  const isMobile = window.matchMedia("(max-width: 768px)").matches || window.innerWidth < 768;
+  setIsMobileDevice(isMobile);
 }, []);
 
   // ── Resize: обновляем стили при изменении размера окна ──
   useEffect(() => {
-    const handleResize = () => setStyles(getSvgStylesForWidth(window.innerWidth));
+    const handleResize = () => {
+      setStyles(getSvgStylesForWidth(window.innerWidth));
+      const isMobile = window.matchMedia("(max-width: 768px)").matches || window.innerWidth < 768;
+      setIsMobileDevice(isMobile);
+    };
     window.addEventListener("resize", handleResize, { passive: true });
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -471,13 +479,13 @@ export default function KontekstnayaReklamaPage() {
         if (total > 0) setTextLoopLength(total / 5);
       }
     };
-    const timer = setTimeout(measureText, styles.isMobile ? 200 : 60);
+    const timer = setTimeout(measureText, isMobileDevice ? 250 : 60);
     window.addEventListener("resize", measureText, { passive: true });
     return () => {
       clearTimeout(timer);
       window.removeEventListener("resize", measureText);
     };
-  }, [styles.isMobile]);
+  }, [isMobileDevice]);
 
   // ── Sticky card (FAQ) ──
   useEffect(() => {
@@ -526,9 +534,9 @@ export default function KontekstnayaReklamaPage() {
     };
   }, []);
 
-  const animDuration1 = styles.isMobile ? "12s" : "22s";
-  const animDuration2 = styles.isMobile ? "12s" : "22s";
-  const animDuration3 = styles.isMobile ? "16s" : "28s";
+  const animDuration1 = isMobileDevice ? "10s" : "22s";
+  const animDuration2 = isMobileDevice ? "10s" : "22s";
+  const animDuration3 = isMobileDevice ? "14s" : "28s";
 
   return (
     <>
