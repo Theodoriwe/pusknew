@@ -156,7 +156,7 @@ const afterSteps: Step[] = [
     tagline: "Каждый рубль работает на результат",
     detail: [
       "Корректировка ставок по ключевым фразам на основе конверсий",
-      "Управление ставками по устройствам, полу, возрасту и времени",
+      "Управление ставок по устройствам, полу, возрасту и времени",
       "Перераспределение бюджета в пользу работающих кампаний",
       "Контроль позиций в аукционе Яндекс Директ",
     ],
@@ -451,19 +451,29 @@ export default function KontekstnayaReklamaPage() {
   const heroOpacity = useTransform(heroProgress, [0, 0.8], [1, 0]);
   const heroScale = useTransform(heroProgress, [0, 0.8], [1, 0.95]);
 
+  // ── КРИТИЧЕСКИЙ ФИКС ДЛЯ МОБИЛОК ──
+  // Пересчитываем стили только при изменении ШИРИНЫ экрана. 
+  // На телефонах высота меняется при каждом скролле (прячется адресная строка), 
+  // из-за чего анимация постоянно сбрасывалась.
   useEffect(() => {
     setMounted(true);
-    setStyles(getSvgStylesForWidth(window.innerWidth));
-    const isMobile = window.matchMedia("(max-width: 768px)").matches || window.innerWidth < 768;
+    let currentWidth = window.innerWidth;
+    
+    setStyles(getSvgStylesForWidth(currentWidth));
+    const isMobile = window.matchMedia("(max-width: 768px)").matches || currentWidth < 768;
     setIsMobileDevice(isMobile);
-  }, []);
 
-  useEffect(() => {
     const handleResize = () => {
-      setStyles(getSvgStylesForWidth(window.innerWidth));
-      const isMobile = window.matchMedia("(max-width: 768px)").matches || window.innerWidth < 768;
-      setIsMobileDevice(isMobile);
+      const newWidth = window.innerWidth;
+      // Если изменилась только высота (скролл на телефоне) - игнорируем!
+      if (newWidth !== currentWidth) {
+        currentWidth = newWidth;
+        setStyles(getSvgStylesForWidth(currentWidth));
+        const newIsMobile = window.matchMedia("(max-width: 768px)").matches || currentWidth < 768;
+        setIsMobileDevice(newIsMobile);
+      }
     };
+    
     window.addEventListener("resize", handleResize, { passive: true });
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -475,8 +485,6 @@ export default function KontekstnayaReklamaPage() {
     
     const measureText = () => {
       if (textMeasuredRef.current) {
-        // У Safari ломается getComputedTextLength если стоит visibility: hidden
-        // Поэтому в компоненте стоит opacity: 0
         const total = textMeasuredRef.current.getComputedTextLength();
         if (total > 0) {
           setTextLoopLength(total);
@@ -487,17 +495,16 @@ export default function KontekstnayaReklamaPage() {
       if (attempts < 20) {
         timeoutId = setTimeout(measureText, 100);
       } else {
-        // Запасной план, если браузер намертво отказывается отдавать ширину
         setTextLoopLength(1000); 
       }
     };
     
     measureText();
-    window.addEventListener("resize", measureText, { passive: true });
+    // Убрали window.addEventListener("resize"), так как useEffect сам 
+    // перезапустится при изменении styles (а styles теперь меняются только при смене ширины).
     
     return () => {
       clearTimeout(timeoutId);
-      window.removeEventListener("resize", measureText);
     };
   }, [styles]);
 
@@ -509,8 +516,6 @@ export default function KontekstnayaReklamaPage() {
     const animateText = (time: number) => {
       if (lastTime === null) lastTime = time;
       
-      // КРИТИЧЕСКИЙ ФИКС ДЛЯ МОБИЛОК: 
-      // Safari ставит rAF на паузу при скролле. Без лимита dt текст совершал огромный прыжок.
       let dt = (time - lastTime) / 1000;
       if (dt > 0.05) dt = 0.05; // Капим лаг до 50 миллисекунд
       
@@ -519,11 +524,8 @@ export default function KontekstnayaReklamaPage() {
       const speed = isMobileDevice ? 50 : 30;
       const loopLen = textLoopLength || 1000;
       
-      // Идем в минус для сдвига
       currentOffsetRef.current -= (speed * dt);
       
-      // Вместо оператора `%` (с отрицательными числами он работает багованно),
-      // мы мягко добавляем длину петли, когда уходим слишком далеко в минус
       while (currentOffsetRef.current <= -loopLen) {
         currentOffsetRef.current += loopLen;
       }
