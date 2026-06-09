@@ -436,6 +436,11 @@ export default function KontekstnayaReklamaPage() {
   const cardRef = useRef<HTMLDivElement>(null);
   const cardWrapperRef = useRef<HTMLDivElement>(null);
 
+  // ── Refs для SVG TextPaths (Мгновенный доступ для анимации) ──
+  const tp1Ref = useRef<SVGTextPathElement>(null);
+  const tp2Ref = useRef<SVGTextPathElement>(null);
+  const tp3Ref = useRef<SVGTextPathElement>(null);
+
   // ── SVG стили ──
   const [styles, setStyles] = useState<SvgStyles>(getSvgStylesForWidth(typeof window !== "undefined" ? window.innerWidth : 1920));
   const [isMobileDevice, setIsMobileDevice] = useState(false);
@@ -452,9 +457,6 @@ export default function KontekstnayaReklamaPage() {
   const heroScale = useTransform(heroProgress, [0, 0.8], [1, 0.95]);
 
   // ── КРИТИЧЕСКИЙ ФИКС ДЛЯ МОБИЛОК ──
-  // Пересчитываем стили только при изменении ШИРИНЫ экрана. 
-  // На телефонах высота меняется при каждом скролле (прячется адресная строка), 
-  // из-за чего анимация постоянно сбрасывалась.
   useEffect(() => {
     setMounted(true);
     let currentWidth = window.innerWidth;
@@ -500,15 +502,13 @@ export default function KontekstnayaReklamaPage() {
     };
     
     measureText();
-    // Убрали window.addEventListener("resize"), так как useEffect сам 
-    // перезапустится при изменении styles (а styles теперь меняются только при смене ширины).
     
     return () => {
       clearTimeout(timeoutId);
     };
   }, [styles]);
 
-  // ── Анимация (БЕСШОВНАЯ + ЗАЩИТА ОТ ТРОТТЛИНГА) ──
+  // ── Анимация (ОПТИМИЗИРОВАННАЯ ДЛЯ МОБИЛОК И ПК) ──
   useEffect(() => {
     let frameId: number;
     let lastTime: number | null = null;
@@ -530,10 +530,10 @@ export default function KontekstnayaReklamaPage() {
         currentOffsetRef.current += loopLen;
       }
       
-      const textPaths = document.querySelectorAll('textPath[href*="arcPath"]');
-      textPaths.forEach((tp) => {
-        tp.setAttribute('startOffset', `${currentOffsetRef.current}`);
-      });
+      // Прямое и мгновенное обновление DOM без React re-renders и без querySelectorAll
+      if (tp1Ref.current) tp1Ref.current.setAttribute('startOffset', `${currentOffsetRef.current}`);
+      if (tp2Ref.current) tp2Ref.current.setAttribute('startOffset', `${currentOffsetRef.current}`);
+      if (tp3Ref.current) tp3Ref.current.setAttribute('startOffset', `${currentOffsetRef.current}`);
       
       frameId = requestAnimationFrame(animateText);
     };
@@ -648,7 +648,7 @@ export default function KontekstnayaReklamaPage() {
                 dy="0.35em"
                 style={{ visibility: textLoopLength > 0 ? "visible" : "hidden" }}
               >
-                <textPath href="#arcPath1" startOffset="0">
+                <textPath href="#arcPath1" ref={tp1Ref}>
                   {REPEATED_TEXT}
                 </textPath>
               </text>
@@ -681,7 +681,7 @@ export default function KontekstnayaReklamaPage() {
                 dy="0.35em"
                 style={{ visibility: textLoopLength > 0 ? "visible" : "hidden" }}
               >
-                <textPath href="#arcPath2" startOffset="0">
+                <textPath href="#arcPath2" ref={tp2Ref}>
                   {REPEATED_TEXT}
                 </textPath>
               </text>
@@ -714,7 +714,7 @@ export default function KontekstnayaReklamaPage() {
                 dy="0.35em"
                 style={{ visibility: textLoopLength > 0 ? "visible" : "hidden" }}
               >
-                <textPath href="#arcPath3" startOffset="0">
+                <textPath href="#arcPath3" ref={tp3Ref}>
                   {REPEATED_TEXT}
                 </textPath>
               </text>
