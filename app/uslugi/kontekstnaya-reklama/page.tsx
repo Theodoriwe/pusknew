@@ -278,15 +278,6 @@ function getSvgStylesForWidth(width: number): SvgStyles {
 // DIRECT CYCLE FULL
 // ============================================================================
 function DirectCycleFull() {
-  const [isMobile, setIsMobile] = useState(false);
-  
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
   const cardColors = [
     { bg: "#549AF2", text: "#ffffff" },
     { bg: "#d0ef4c", text: "#000000" },
@@ -300,10 +291,10 @@ function DirectCycleFull() {
     <section className="py-32 lg:py-48 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div 
-          initial={{ opacity: 0, y: isMobile ? 0 : 40 }} 
+          initial={{ opacity: 0, y: 40 }} 
           whileInView={{ opacity: 1, y: 0 }} 
-          viewport={{ once: true }}
-          transition={{ duration: isMobile ? 0.3 : 0.5 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="max-w-4xl mb-20"
         >
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted border border-primary/10 text-sm font-medium text-foreground/70 mb-6">
@@ -319,13 +310,7 @@ function DirectCycleFull() {
         </motion.div>
 
         {/* BEFORE PHASE */}
-        <motion.div 
-          initial={{ opacity: 0, y: isMobile ? 0 : 30 }} 
-          whileInView={{ opacity: 1, y: 0 }} 
-          viewport={{ once: true }}
-          transition={{ duration: isMobile ? 0.3 : 0.4 }}
-          className="mb-32"
-        >
+        <div className="mb-32">
           <div className="mb-12 flex items-start gap-3">
             <div className="w-3 h-3 rounded-full mt-2" style={{ background: "#549AF2" }} />
             <div>
@@ -339,13 +324,13 @@ function DirectCycleFull() {
               return (
                 <motion.div 
                   key={idx} 
-                  initial={{ opacity: 0, y: isMobile ? 0 : 20 }} 
-                  whileInView={{ opacity: 1, y: 0 }} 
-                  viewport={{ once: true }}
+                  initial={{ opacity: 0, y: 50 }} 
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-80px" }}
                   transition={{ 
-                    duration: isMobile ? 0.25 : 0.35,
-                    delay: isMobile ? 0 : idx * 0.05,
-                    ease: "easeOut"
+                    duration: 0.6,
+                    delay: idx * 0.08,
+                    ease: [0.22, 1, 0.36, 1]
                   }}
                   className={`group p-6 lg:p-8 rounded-2xl border-2 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${idx < 3 ? "lg:col-span-2" : "lg:col-span-3"}`}
                   style={{ background: colors.bg, borderColor: idx === 2 || idx === 3 ? "#549AF2" : colors.bg }}
@@ -375,27 +360,16 @@ function DirectCycleFull() {
               );
             })}
           </div>
-        </motion.div>
+        </div>
 
         {/* DIVIDER */}
-        <motion.div 
-          initial={{ opacity: 0 }} 
-          whileInView={{ opacity: 1 }} 
-          viewport={{ once: true }}
-          transition={{ duration: isMobile ? 0.2 : 0.4 }}
-          className="flex items-center gap-6 my-12 lg:my-16"
-        >
+        <div className="flex items-center gap-6 my-12 lg:my-16">
           <div className="flex-1 h-px bg-border" />
           <div className="flex-1 h-px bg-border" />
-        </motion.div>
+        </div>
 
         {/* AFTER PHASE */}
-        <motion.div 
-          initial={{ opacity: 0, y: isMobile ? 0 : 30 }} 
-          whileInView={{ opacity: 1, y: 0 }} 
-          viewport={{ once: true }}
-          transition={{ duration: isMobile ? 0.3 : 0.4, delay: isMobile ? 0 : 0.05 }}
-        >
+        <div>
           <div className="mb-12 flex items-start gap-3">
             <div className="w-3 h-3 rounded-full mt-2" style={{ background: "#549AF2" }} />
             <div>
@@ -409,13 +383,13 @@ function DirectCycleFull() {
               return (
                 <motion.div 
                   key={idx} 
-                  initial={{ opacity: 0, y: isMobile ? 0 : 20 }} 
-                  whileInView={{ opacity: 1, y: 0 }} 
-                  viewport={{ once: true }}
+                  initial={{ opacity: 0, y: 50 }} 
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-80px" }}
                   transition={{ 
-                    duration: isMobile ? 0.25 : 0.35,
-                    delay: isMobile ? 0 : idx * 0.05,
-                    ease: "easeOut"
+                    duration: 0.6,
+                    delay: idx * 0.08,
+                    ease: [0.22, 1, 0.36, 1]
                   }}
                   className={`group p-6 lg:p-8 rounded-2xl border-2 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${idx < 3 ? "lg:col-span-2" : idx === 5 ? "lg:col-span-6" : "lg:col-span-3"}`}
                   style={{ background: colors.bg, borderColor: idx === 2 || idx === 3 ? "#549AF2" : colors.bg }}
@@ -445,14 +419,14 @@ function DirectCycleFull() {
               );
             })}
           </div>
-        </motion.div>
+        </div>
 
         {/* BOTTOM NOTE */}
         <motion.div 
-          initial={{ opacity: 0, y: isMobile ? 0 : 20 }} 
+          initial={{ opacity: 0, y: 50 }} 
           whileInView={{ opacity: 1, y: 0 }} 
-          viewport={{ once: true }}
-          transition={{ duration: isMobile ? 0.3 : 0.4 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="mt-8 p-6 lg:p-8 rounded-2xl border flex flex-col sm:flex-row items-start sm:items-center gap-4"
           style={{ borderColor: "rgba(84,154,242,0.3)", background: "rgba(84,154,242,0.05)" }}
         >
