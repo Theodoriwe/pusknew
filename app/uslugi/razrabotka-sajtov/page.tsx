@@ -220,11 +220,40 @@ export default function RazrabotkaSajtovPage() {
                     className={isMobile ? "hidden" : "absolute inset-0 rounded-2xl blur-xl opacity-20"}
                     style={{ background: "#549AF2", willChange: "transform" }}
                   />
-                  <div className="relative px-4 sm:px-6 py-4 rounded-2xl border-2 border-primary/30 bg-background">
-                    <p className="text-sm sm:text-base lg:text-lg font-bold text-center sm:text-left">
-                      Сайт, который приносит заявки —{" "}
-                      <span className="text-primary whitespace-nowrap">от 7 дней и <span className="whitespace-nowrap">35 000 ₽</span></span>
-                    </p>
+                  <div className="relative rounded-2xl border-2 border-primary/30 bg-background overflow-hidden">
+                    {/* Browser chrome */}
+                    <div
+                      className="flex items-center gap-3 px-4 py-3"
+                      style={{ background: "#F0F2F5", borderBottom: "1px solid #E4E6EA" }}
+                    >
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-2.5 h-2.5 rounded-full" style={{ background: "#FF5F57" }} />
+                        <span className="w-2.5 h-2.5 rounded-full" style={{ background: "#FFBD2E" }} />
+                        <span className="w-2.5 h-2.5 rounded-full" style={{ background: "#28CA41" }} />
+                      </div>
+                      <div
+                        className="flex-1 flex items-center gap-2 px-3 py-1 rounded text-xs"
+                        style={{
+                          background: "#fff",
+                          border: "1px solid #D1D5DB",
+                          color: "#6B7280",
+                        }}
+                      >
+                        <span className="text-green-500">
+                          <svg width="8" height="8" viewBox="0 0 10 10" fill="currentColor">
+                            <path d="M5 0C3.3 0 2 1.3 2 3v.5H1C.4 3.5 0 4 0 4.5v5c0 .6.4 1 1 1h8c.6 0 1-.4 1-1v-5c0-.6-.4-1-1-1H8V3c0-1.7-1.3-3-3-3zm2 3.5H3V3c0-1.1.9-2 2-2s2 .9 2 2v.5z" />
+                          </svg>
+                        </span>
+                        ПУСК
+                      </div>
+                    </div>
+                    {/* Content */}
+                    <div className="px-4 sm:px-6 py-4">
+                      <p className="text-sm sm:text-base lg:text-lg font-bold text-center sm:text-left">
+                        Сайт, который приносит заявки —{" "}
+                        <span className="text-primary whitespace-nowrap">от 7 дней и <span className="whitespace-nowrap">35 000 ₽</span></span>
+                      </p>
+                    </div>
                   </div>
                 </motion.div>
 

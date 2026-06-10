@@ -278,6 +278,15 @@ function getSvgStylesForWidth(width: number): SvgStyles {
 // DIRECT CYCLE FULL
 // ============================================================================
 function DirectCycleFull() {
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   const cardColors = [
     { bg: "#549AF2", text: "#ffffff" },
     { bg: "#d0ef4c", text: "#000000" },
@@ -290,7 +299,13 @@ function DirectCycleFull() {
   return (
     <section className="py-32 lg:py-48 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-4xl mb-20">
+        <motion.div 
+          initial={{ opacity: 0, y: isMobile ? 0 : 40 }} 
+          whileInView={{ opacity: 1, y: 0 }} 
+          viewport={{ once: true }}
+          transition={{ duration: isMobile ? 0.3 : 0.5 }}
+          className="max-w-4xl mb-20"
+        >
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted border border-primary/10 text-sm font-medium text-foreground/70 mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-primary" />
             Полный цикл
@@ -304,7 +319,13 @@ function DirectCycleFull() {
         </motion.div>
 
         {/* BEFORE PHASE */}
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-32">
+        <motion.div 
+          initial={{ opacity: 0, y: isMobile ? 0 : 30 }} 
+          whileInView={{ opacity: 1, y: 0 }} 
+          viewport={{ once: true }}
+          transition={{ duration: isMobile ? 0.3 : 0.4 }}
+          className="mb-32"
+        >
           <div className="mb-12 flex items-start gap-3">
             <div className="w-3 h-3 rounded-full mt-2" style={{ background: "#549AF2" }} />
             <div>
@@ -316,7 +337,16 @@ function DirectCycleFull() {
             {beforeSteps.map((step, idx) => {
               const colors = cardColors[idx % cardColors.length];
               return (
-                <motion.div key={idx} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.08 }}
+                <motion.div 
+                  key={idx} 
+                  initial={{ opacity: 0, y: isMobile ? 0 : 20 }} 
+                  whileInView={{ opacity: 1, y: 0 }} 
+                  viewport={{ once: true }}
+                  transition={{ 
+                    duration: isMobile ? 0.25 : 0.35,
+                    delay: isMobile ? 0 : idx * 0.05,
+                    ease: "easeOut"
+                  }}
                   className={`group p-6 lg:p-8 rounded-2xl border-2 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${idx < 3 ? "lg:col-span-2" : "lg:col-span-3"}`}
                   style={{ background: colors.bg, borderColor: idx === 2 || idx === 3 ? "#549AF2" : colors.bg }}
                 >
@@ -348,13 +378,24 @@ function DirectCycleFull() {
         </motion.div>
 
         {/* DIVIDER */}
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="flex items-center gap-6 my-12 lg:my-16">
+        <motion.div 
+          initial={{ opacity: 0 }} 
+          whileInView={{ opacity: 1 }} 
+          viewport={{ once: true }}
+          transition={{ duration: isMobile ? 0.2 : 0.4 }}
+          className="flex items-center gap-6 my-12 lg:my-16"
+        >
           <div className="flex-1 h-px bg-border" />
           <div className="flex-1 h-px bg-border" />
         </motion.div>
 
         {/* AFTER PHASE */}
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}>
+        <motion.div 
+          initial={{ opacity: 0, y: isMobile ? 0 : 30 }} 
+          whileInView={{ opacity: 1, y: 0 }} 
+          viewport={{ once: true }}
+          transition={{ duration: isMobile ? 0.3 : 0.4, delay: isMobile ? 0 : 0.05 }}
+        >
           <div className="mb-12 flex items-start gap-3">
             <div className="w-3 h-3 rounded-full mt-2" style={{ background: "#549AF2" }} />
             <div>
@@ -366,7 +407,16 @@ function DirectCycleFull() {
             {afterSteps.map((step, idx) => {
               const colors = cardColors[idx % cardColors.length];
               return (
-                <motion.div key={idx} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.08 }}
+                <motion.div 
+                  key={idx} 
+                  initial={{ opacity: 0, y: isMobile ? 0 : 20 }} 
+                  whileInView={{ opacity: 1, y: 0 }} 
+                  viewport={{ once: true }}
+                  transition={{ 
+                    duration: isMobile ? 0.25 : 0.35,
+                    delay: isMobile ? 0 : idx * 0.05,
+                    ease: "easeOut"
+                  }}
                   className={`group p-6 lg:p-8 rounded-2xl border-2 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${idx < 3 ? "lg:col-span-2" : idx === 5 ? "lg:col-span-6" : "lg:col-span-3"}`}
                   style={{ background: colors.bg, borderColor: idx === 2 || idx === 3 ? "#549AF2" : colors.bg }}
                 >
@@ -398,7 +448,11 @@ function DirectCycleFull() {
         </motion.div>
 
         {/* BOTTOM NOTE */}
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+        <motion.div 
+          initial={{ opacity: 0, y: isMobile ? 0 : 20 }} 
+          whileInView={{ opacity: 1, y: 0 }} 
+          viewport={{ once: true }}
+          transition={{ duration: isMobile ? 0.3 : 0.4 }}
           className="mt-8 p-6 lg:p-8 rounded-2xl border flex flex-col sm:flex-row items-start sm:items-center gap-4"
           style={{ borderColor: "rgba(84,154,242,0.3)", background: "rgba(84,154,242,0.05)" }}
         >
@@ -419,7 +473,7 @@ function DirectCycleFull() {
 // ============================================================================
 // MARQUEE
 // ============================================================================
-const BASE_TEXT = " ★ ЯНДЕКС.ДИРЕКТ ★ GOOGLE ADS ★ ROI 300%+ ★ СНИЖАЕМ CPL ★ МАСШТАБИРУЕМ ★ A/B ТЕСТЫ";
+const BASE_TEXT = " ★ ЯНДЕКС.ДИРЕКТ ★ РСЯ ★ ROI 300%+ ★ СНИЖАЕМ CPL ★ МАСШТАБИРУЕМ ★ A/B ТЕСТЫ";
 // Делаем огромный запас прочности (10 повторений), чтобы текст гарантированно перекрывал любой путь
 const REPEATED_TEXT = Array(10).fill(BASE_TEXT).join(""); 
 
