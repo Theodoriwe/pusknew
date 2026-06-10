@@ -48,7 +48,6 @@ export const metadata: Metadata = {
     "Telegram боты",
     "геосервисы",
     "SEO оптимизация",
-    
     "интернет реклама",
     "маркетинговое агентство Сочи",
   ],
@@ -182,7 +181,6 @@ const jsonLd = {
       "description": "Агентство цифрового маркетинга в Сочи",
       "publisher": { "@id": "https://agencypusk.ru/#organization" },
       "inLanguage": "ru-RU",
-      
     },
     {
       "@type": "WebPage",
@@ -219,10 +217,10 @@ const jsonLd = {
         "addressCountry": "RU",
       },
       "geo": {
-  "@type": "GeoCoordinates",
-  "latitude": 43.673027, 
-  "longitude": 40.198450,
-},
+        "@type": "GeoCoordinates",
+        "latitude": 43.673027,
+        "longitude": 40.198450,
+      },
       "openingHoursSpecification": [
         {
           "@type": "OpeningHoursSpecification",
@@ -255,20 +253,58 @@ export default function RootLayout({
   return (
     <html lang="ru" className={`${inter.variable} ${unbounded.variable} overflow-x-hidden`}>
       <head>
-        {/* Yandex.Metrika counter */}
+        {/* ─── Prefetch Yandex.Metrika domain ─────────────────────────────────
+            Резолвим DNS и открываем TCP-соединение заранее, чтобы когда скрипт
+            метрики реально запросится — соединение уже было готово.           */}
+        <link rel="dns-prefetch" href="//mc.yandex.ru" />
+        <link rel="preconnect" href="https://mc.yandex.ru" crossOrigin="anonymous" />
+
+        {/* JSON-LD Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+
+        {/* color-scheme hint */}
+        <meta name="color-scheme" content="light dark" />
+      </head>
+      <body className="font-sans antialiased overflow-x-hidden">
+        <MotionProvider>
+          <ModalProvider>
+            <div className="noise" />
+            {children}
+            <ClientWidgets />
+          </ModalProvider>
+          <Toaster position="top-center" />
+        </MotionProvider>
+
         <Script
           id="yandex-metrika"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
-              (function(m,e,t,r,i,k,a){
-                m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-                m[i].l=1*new Date();
-                for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-                k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
-              })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=109768159', 'ym');
+              function initMetrika() {
+                (function(m,e,t,r,i,k,a){
+                  m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+                  m[i].l=1*new Date();
+                  for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+                  k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+                })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=109768159', 'ym');
 
-              ym(109768159, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+                ym(109768159, 'init', {
+                  clickmap:            true,
+                  ecommerce:           "dataLayer",
+                  accurateTrackBounce: true,
+                  trackLinks:          true,
+                  webvisor:            false,
+                });
+              }
+
+              if ('requestIdleCallback' in window) {
+                requestIdleCallback(initMetrika, { timeout: 3000 });
+              } else {
+                setTimeout(initMetrika, 3000);
+              }
             `,
           }}
         />
@@ -281,26 +317,7 @@ export default function RootLayout({
             />
           </div>
         </noscript>
-
-        {/* JSON-LD Schema */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-
-        {/* color-scheme hint */}
-        <meta name="color-scheme" content="light dark" />
-      </head>
-      <body className="font-sans antialiased overflow-x-hidden">
-  <MotionProvider>
-    <ModalProvider>
-      <div className="noise" />
-      {children}
-      <ClientWidgets />
-    </ModalProvider>
-    <Toaster position="top-center" />
-  </MotionProvider>
-</body>
+      </body>
     </html>
   );
 }
