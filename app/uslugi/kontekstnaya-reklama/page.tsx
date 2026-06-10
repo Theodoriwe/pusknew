@@ -278,6 +278,9 @@ function getSvgStylesForWidth(width: number): SvgStyles {
 // DIRECT CYCLE FULL
 // ============================================================================
 function DirectCycleFull() {
+  const [visibleCards, setVisibleCards] = useState<Set<number>>(new Set());
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const cardColors = [
     { bg: "#549AF2", text: "#ffffff" },
     { bg: "#d0ef4c", text: "#000000" },
@@ -287,16 +290,36 @@ function DirectCycleFull() {
     { bg: "#131826", text: "#ffffff" },
   ];
 
+  // Intersection observer для карточек
+  useEffect(() => {
+    if (!containerRef.current) return;
+    
+    const cards = containerRef.current.querySelectorAll("[data-card-id]");
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute("data-card-id");
+          if (id) {
+            setVisibleCards((prev) => new Set([...prev, parseInt(id)]));
+            observer.unobserve(entry.target);
+          }
+        }
+      });
+    }, { rootMargin: "-50px" });
+
+    cards.forEach((card) => observer.observe(card));
+    return () => cards.forEach((card) => observer.unobserve(card));
+  }, []);
+
   return (
     <section className="py-32 lg:py-48 bg-background">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div 
-          initial={{ opacity: 0 }} 
-          whileInView={{ opacity: 1 }} 
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          layout={false}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" ref={containerRef}>
+        <div 
           className="max-w-4xl mb-20"
+          style={{
+            opacity: 1,
+            animation: "fade-in 0.5s ease-out"
+          }}
         >
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted border border-primary/10 text-sm font-medium text-foreground/70 mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-primary" />
@@ -308,7 +331,7 @@ function DirectCycleFull() {
           <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl">
             Реклама - это не одноразовый запуск. Это постоянная работа, которая требует анализа, тестирования и оптимизации. Мы управляем каждым этапом.
           </p>
-        </motion.div>
+        </div>
 
         {/* BEFORE PHASE */}
         <div className="mb-32">
@@ -322,19 +345,18 @@ function DirectCycleFull() {
           <div className="grid md:grid-cols-2 lg:grid-cols-6 gap-6">
             {beforeSteps.map((step, idx) => {
               const colors = cardColors[idx % cardColors.length];
+              const isVisible = visibleCards.has(idx);
               return (
-                <motion.div 
-                  key={idx} 
-                  initial={{ opacity: 0 }} 
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ 
-                    duration: 0.5,
-                    ease: [0.22, 1, 0.36, 1]
-                  }}
-                  layout={false}
+                <div
+                  key={idx}
+                  data-card-id={idx}
                   className={`group p-6 lg:p-8 rounded-2xl border-2 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${idx < 3 ? "lg:col-span-2" : "lg:col-span-3"}`}
-                  style={{ background: colors.bg, borderColor: idx === 2 || idx === 3 ? "#549AF2" : colors.bg }}
+                  style={{
+                    background: colors.bg,
+                    borderColor: idx === 2 || idx === 3 ? "#549AF2" : colors.bg,
+                    opacity: isVisible ? 1 : 0,
+                    animation: isVisible ? "fade-in 0.5s ease-out" : "none",
+                  }}
                 >
                   <div className="flex items-start justify-between mb-6">
                     <div className="w-14 h-14 lg:w-16 lg:h-16 rounded-xl flex items-center justify-center shrink-0" style={{ background: colors.text === "#ffffff" ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.1)" }}>
@@ -357,7 +379,7 @@ function DirectCycleFull() {
                   <div className="mt-5 pt-5" style={{ borderTop: colors.text === "#ffffff" ? "1px solid rgba(255,255,255,0.2)" : "1px solid rgba(0,0,0,0.1)" }}>
                     <p className="text-xs leading-relaxed italic" style={{ color: colors.text === "#ffffff" ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.6)" }}>"{step.why}"</p>
                   </div>
-                </motion.div>
+                </div>
               );
             })}
           </div>
@@ -381,19 +403,19 @@ function DirectCycleFull() {
           <div className="grid md:grid-cols-2 lg:grid-cols-6 gap-6 mb-12">
             {afterSteps.map((step, idx) => {
               const colors = cardColors[idx % cardColors.length];
+              const cardIdx = beforeSteps.length + idx;
+              const isVisible = visibleCards.has(cardIdx);
               return (
-                <motion.div 
-                  key={idx} 
-                  initial={{ opacity: 0 }} 
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ 
-                    duration: 0.5,
-                    ease: [0.22, 1, 0.36, 1]
-                  }}
-                  layout={false}
+                <div
+                  key={idx}
+                  data-card-id={cardIdx}
                   className={`group p-6 lg:p-8 rounded-2xl border-2 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${idx < 3 ? "lg:col-span-2" : idx === 5 ? "lg:col-span-6" : "lg:col-span-3"}`}
-                  style={{ background: colors.bg, borderColor: idx === 2 || idx === 3 ? "#549AF2" : colors.bg }}
+                  style={{
+                    background: colors.bg,
+                    borderColor: idx === 2 || idx === 3 ? "#549AF2" : colors.bg,
+                    opacity: isVisible ? 1 : 0,
+                    animation: isVisible ? "fade-in 0.5s ease-out" : "none",
+                  }}
                 >
                   <div className="flex items-start justify-between mb-6">
                     <div className="w-14 h-14 lg:w-16 lg:h-16 rounded-xl flex items-center justify-center shrink-0" style={{ background: colors.text === "#ffffff" ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.1)" }}>
@@ -416,21 +438,21 @@ function DirectCycleFull() {
                   <div className="mt-5 pt-5" style={{ borderTop: colors.text === "#ffffff" ? "1px solid rgba(255,255,255,0.2)" : "1px solid rgba(0,0,0,0.1)" }}>
                     <p className="text-xs leading-relaxed italic" style={{ color: colors.text === "#ffffff" ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.6)" }}>"{step.why}"</p>
                   </div>
-                </motion.div>
+                </div>
               );
             })}
           </div>
         </div>
 
         {/* BOTTOM NOTE */}
-        <motion.div 
-          initial={{ opacity: 0 }} 
-          whileInView={{ opacity: 1 }} 
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          layout={false}
+        <div
           className="mt-8 p-6 lg:p-8 rounded-2xl border flex flex-col sm:flex-row items-start sm:items-center gap-4"
-          style={{ borderColor: "rgba(84,154,242,0.3)", background: "rgba(84,154,242,0.05)" }}
+          style={{
+            borderColor: "rgba(84,154,242,0.3)",
+            background: "rgba(84,154,242,0.05)",
+            opacity: 1,
+            animation: "fade-in 0.5s ease-out 0.2s both"
+          }}
         >
           <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ background: "rgba(84,154,242,0.2)" }}>
             <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -440,7 +462,7 @@ function DirectCycleFull() {
           <p className="text-sm text-muted-foreground leading-relaxed">
             <span className="text-foreground font-semibold">Рекламный бюджет без присмотра сгорает.</span> Ведение - это не формальность, а ежедневная работа, которая удерживает стоимость заявки на минимуме и защищает каждый рубль вашего бюджета.
           </p>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
