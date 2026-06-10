@@ -11,9 +11,8 @@ export const metadata: Metadata = {
     "интернет-магазин",
     "веб-приложение",
     "корпоративный сайт",
-    "разработка сайта Москва",
+    "разработка сайта Сочи",
   ],
-  metadataBase: new URL("https://agencypusk.ru"),
   alternates: {
     canonical: "https://agencypusk.ru/uslugi/razrabotka-sajtov",
   },
