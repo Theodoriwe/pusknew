@@ -123,6 +123,8 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
   const smmTitleRef = useRef<HTMLSpanElement>(null);
   const smmSubtitleRef = useRef<HTMLSpanElement>(null);
   const [letterSpacing, setLetterSpacing] = useState("0.15em");
+  const featuresContainerRef = useRef<HTMLDivElement>(null);
+  const [visibleFeatures, setVisibleFeatures] = useState<Set<number>>(new Set());
 
   useEffect(() => {
     if (data.slug !== "smm" || !smmTitleRef.current || !smmSubtitleRef.current) return;
@@ -158,6 +160,27 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
 
     return () => window.removeEventListener("resize", calculateSpacing);
   }, [data.slug]);
+
+  // Intersection observer для features карточек
+  useEffect(() => {
+    if (!featuresContainerRef.current) return;
+    
+    const cards = featuresContainerRef.current.querySelectorAll("[data-feature-id]");
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute("data-feature-id");
+          if (id) {
+            setVisibleFeatures((prev) => new Set([...prev, parseInt(id)]));
+            observer.unobserve(entry.target);
+          }
+        }
+      });
+    }, { rootMargin: "-50px" });
+
+    cards.forEach((card) => observer.observe(card));
+    return () => cards.forEach((card) => observer.unobserve(card));
+  }, []);
 
   // Schema.org Service markup
   const serviceSchema = {
@@ -839,16 +862,19 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
             </m.div>
 
             {data.slug === "telegram-bots" ? (
-              <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+              <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6" ref={featuresContainerRef}>
                 {data.features.map((feature, index) => {
                   const IconComponent = iconMap[feature.icon];
+                  const isVisible = visibleFeatures.has(index);
                   return (
-                    <m.div
+                    <div
                       key={feature.title}
-                      initial={{ opacity: 0, y: 24 }}
-                      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-                      transition={{ duration: 0.5, delay: index * 0.08 }}
+                      data-feature-id={index}
                       className="group rounded-[1.75rem] border border-border bg-white p-6 shadow-[0_20px_50px_rgba(15,23,42,0.06)] transition-all hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(84,154,242,0.12)]"
+                      style={{
+                        opacity: isVisible ? 1 : 0,
+                        animation: isVisible ? "fade-in 0.5s ease-out" : "none",
+                      }}
                     >
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
@@ -868,12 +894,12 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                       <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                         {feature.description}
                       </p>
-                    </m.div>
+                    </div>
                   );
                 })}
               </div>
             ) : (
-              <div className="grid md:grid-cols-2 lg:grid-cols-12 gap-6 auto-rows-max">
+              <div className="grid md:grid-cols-2 lg:grid-cols-12 gap-6 auto-rows-max" ref={featuresContainerRef}>
                 {data.features.map((feature, index) => {
                   let gridColSpan = "lg:col-span-3";
                   let gridRowSpan = "";
@@ -883,18 +909,21 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                     gridRowSpan = "lg:row-span-2";
                   }
 
+                  const isVisible = visibleFeatures.has(index);
                   return (
-                    <m.div
+                    <div
                       key={feature.title}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                      transition={{ duration: 0.5, delay: index * 0.08 }}
+                      data-feature-id={index}
                       className={`group ${gridColSpan} ${gridRowSpan} md:col-span-1 p-6 md:p-8 rounded-2xl border transition-all duration-300 ease-out hover:shadow-lg hover:scale-105 cursor-pointer relative overflow-hidden ${
                         data.slug === "smm"
                           ? "border-[#4a8fe7] hover:shadow-lg"
                           : "bg-card border-border hover:border-primary/20 hover:shadow-primary/10"
                       }`}
-                      style={data.slug === "smm" ? { backgroundColor: "#549AF2" } : {}}
+                      style={{
+                        ...(data.slug === "smm" ? { backgroundColor: "#549AF2" } : {}),
+                        opacity: isVisible ? 1 : 0,
+                        animation: isVisible ? "fade-in 0.5s ease-out" : "none",
+                      }}
                     >
                       <div
                         className={`absolute top-0 right-0 w-20 h-20 rounded-full blur-2xl -mr-10 -mt-10 transition-colors duration-300 ${
@@ -907,15 +936,14 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                         {(() => {
                           const IconComponent = iconMap[feature.icon];
                           return (
-                            <m.div
+                            <div
                               className={`w-16 h-16 rounded-xl flex items-center justify-center mb-6 transition-colors duration-300 ${
                                 data.slug === "smm" ? "" : "bg-primary/15 group-hover:bg-primary/20"
                               }`}
                               style={data.slug === "smm" ? { backgroundColor: "rgba(255, 255, 255, 0.2)" } : {}}
-                              whileHover={{ rotate: 5 }}
                             >
                               <IconComponent className={`w-8 h-8 ${data.slug === "smm" ? "text-white" : "text-primary"}`} />
-                            </m.div>
+                            </div>
                           );
                         })()}
 
@@ -943,7 +971,7 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
                           </div>
                         )}
                       </div>
-                    </m.div>
+                    </div>
                   );
                 })}
               </div>
