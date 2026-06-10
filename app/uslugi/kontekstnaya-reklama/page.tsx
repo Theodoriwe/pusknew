@@ -291,10 +291,11 @@ function DirectCycleFull() {
     <section className="py-32 lg:py-48 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div 
-          initial={{ opacity: 0, y: 40 }} 
-          whileInView={{ opacity: 1, y: 0 }} 
+          initial={{ opacity: 0 }} 
+          whileInView={{ opacity: 1 }} 
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          layout={false}
           className="max-w-4xl mb-20"
         >
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted border border-primary/10 text-sm font-medium text-foreground/70 mb-6">
@@ -324,14 +325,14 @@ function DirectCycleFull() {
               return (
                 <motion.div 
                   key={idx} 
-                  initial={{ opacity: 0, y: 50 }} 
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-80px" }}
+                  initial={{ opacity: 0 }} 
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true, margin: "-100px" }}
                   transition={{ 
-                    duration: 0.6,
-                    delay: idx * 0.08,
+                    duration: 0.5,
                     ease: [0.22, 1, 0.36, 1]
                   }}
+                  layout={false}
                   className={`group p-6 lg:p-8 rounded-2xl border-2 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${idx < 3 ? "lg:col-span-2" : "lg:col-span-3"}`}
                   style={{ background: colors.bg, borderColor: idx === 2 || idx === 3 ? "#549AF2" : colors.bg }}
                 >
@@ -383,14 +384,14 @@ function DirectCycleFull() {
               return (
                 <motion.div 
                   key={idx} 
-                  initial={{ opacity: 0, y: 50 }} 
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-80px" }}
+                  initial={{ opacity: 0 }} 
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true, margin: "-100px" }}
                   transition={{ 
-                    duration: 0.6,
-                    delay: idx * 0.08,
+                    duration: 0.5,
                     ease: [0.22, 1, 0.36, 1]
                   }}
+                  layout={false}
                   className={`group p-6 lg:p-8 rounded-2xl border-2 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${idx < 3 ? "lg:col-span-2" : idx === 5 ? "lg:col-span-6" : "lg:col-span-3"}`}
                   style={{ background: colors.bg, borderColor: idx === 2 || idx === 3 ? "#549AF2" : colors.bg }}
                 >
@@ -423,10 +424,11 @@ function DirectCycleFull() {
 
         {/* BOTTOM NOTE */}
         <motion.div 
-          initial={{ opacity: 0, y: 50 }} 
-          whileInView={{ opacity: 1, y: 0 }} 
+          initial={{ opacity: 0 }} 
+          whileInView={{ opacity: 1 }} 
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          layout={false}
           className="mt-8 p-6 lg:p-8 rounded-2xl border flex flex-col sm:flex-row items-start sm:items-center gap-4"
           style={{ borderColor: "rgba(84,154,242,0.3)", background: "rgba(84,154,242,0.05)" }}
         >
