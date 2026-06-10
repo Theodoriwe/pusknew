@@ -289,9 +289,9 @@ export function HeaderClient() {
                 Обсудить проект
               </button>
               <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground">
-                <a href="https://t.me/pusk" className="hover:text-foreground transition-colors">Telegram</a>
+                <a href="https://t.me/pusksupport" className="hover:text-foreground transition-colors">Telegram</a>
                 <a href="https://wa.me/79001234567" className="hover:text-foreground transition-colors">WhatsApp</a>
-                <a href="tel:+79001234567" className="hover:text-foreground transition-colors">Телефон</a>
+                <a href="tel:+79282428240" className="hover:text-foreground transition-colors">Телефон</a>
               </div>
             </motion.div>
           </motion.div>

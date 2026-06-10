@@ -168,7 +168,7 @@ export function ServicePageTemplate({ data }: { data: ServicePageData }) {
     provider: {
       "@type": "Organization",
       name: "ПУСК",
-      url: "https://pusk.agency",
+      url: "https://agencypusk.ru",
     },
     offers: data.prices.map((price) => ({
       "@type": "Offer",

@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ModalProvider } from "@/components/modal-provider";
@@ -93,8 +94,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    site: "@pusk_agency",
-    creator: "@pusk_agency",
+    site: "@pusksupport",
+    creator: "@pusksupport",
     title: "ПУСК — Агентство цифрового маркетинга",
     description:
       "Разрабатываем сайты, запускаем рекламу и продвигаем бизнес в интернете.",
@@ -150,7 +151,7 @@ const jsonLd = {
       "logo": {
         "@type": "ImageObject",
         "@id": "https://agencypusk.ru/#logo",
-        "url": "https://agencypusk.ru/logo.png",
+        "url": "https://agencypusk.ru/logo.svg",
         "width": 200,
         "height": 60,
         "caption": "ПУСК — Агентство цифрового маркетинга",
@@ -158,7 +159,7 @@ const jsonLd = {
       "image": { "@id": "https://agencypusk.ru/#logo" },
       "description":
         "Агентство цифрового маркетинга в Сочи. Разрабатываем сайты, запускаем контекстную рекламу, SMM, SEO-продвижение.",
-      "foundingDate": "2024",
+      "foundingDate": "2022",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Сочи",
@@ -170,7 +171,7 @@ const jsonLd = {
         "availableLanguage": "Russian",
       },
       "sameAs": [
-        "https://t.me/pusk_agency"
+        "https://t.me/pusksupport"
       ],
     },
     {
@@ -226,8 +227,8 @@ const jsonLd = {
         {
           "@type": "OpeningHoursSpecification",
           "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-          "opens": "08:00",
-          "closes": "00:00",
+          "opens": "10:00",
+          "closes": "22:00",
         },
       ],
       "hasOfferCatalog": {
@@ -254,7 +255,32 @@ export default function RootLayout({
   return (
     <html lang="ru" className={`${inter.variable} ${unbounded.variable} overflow-x-hidden`}>
       <head>
-       
+        {/* Yandex.Metrika counter */}
+        <Script
+          id="yandex-metrika"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(m,e,t,r,i,k,a){
+                m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+                m[i].l=1*new Date();
+                for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+                k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+              })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=109768159', 'ym');
+
+              ym(109768159, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+            `,
+          }}
+        />
+        <noscript>
+          <div>
+            <img
+              src="https://mc.yandex.ru/watch/109768159"
+              style={{ position: "absolute", left: "-9999px" }}
+              alt=""
+            />
+          </div>
+        </noscript>
 
         {/* JSON-LD Schema */}
         <script

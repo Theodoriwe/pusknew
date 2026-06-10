@@ -23,8 +23,8 @@ const footerLinks = {
 };
 
 const socialLinks = [
-  { label: "Telegram", href: "https://t.me/pusk_agency", icon: Send },
-  { label: "WhatsApp", href: "https://wa.me/79001234567", icon: () => (
+  { label: "Telegram", href: "https://t.me/pusksupport", icon: Send },
+  { label: "WhatsApp", href: "https://wa.me/79282428240", icon: () => (
     <img src="/wa.svg" alt="WhatsApp" className="w-7 h-7" />
   )},
   { label: "Max", href: "https://max.ru/pusk_agency", icon: () => (
@@ -190,7 +190,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="https://t.me/pusk_agency"
+                  href="https://t.me/pusksupport"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 text-foreground/80 hover:text-primary transition-colors group"
@@ -198,7 +198,7 @@ export function Footer() {
                   <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center bg-primary/10 group-hover:bg-primary/20 transition-colors flex-shrink-0">
                     <Send className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                   </div>
-                  <span className="text-sm sm:text-base font-medium">@pusk_agency</span>
+                  <span className="text-sm sm:text-base font-medium">@pusksupport</span>
                 </a>
               </li>
               <li className="flex items-start gap-3 text-foreground/80 group">

@@ -217,7 +217,7 @@ const articlesData: Record<string, Article> = {
     readTime: "12 мин",
     date: "2026-03-25",
     dateFormatted: "25 марта 2026",
-    image: "https://example.com/og/telegram-mini-apps-guide.jpg",
+    image: "https://agencypusk.ru/og-image.jpg",
     author: {
       name: "Дмитрий Козлов",
       role: "Разработчик",
@@ -380,7 +380,7 @@ const articlesData: Record<string, Article> = {
     readTime: "10 мин",
     date: "2026-03-18",
     dateFormatted: "18 марта 2026",
-    image: "https://example.com/og/smm-content-plan.jpg",
+    image: "https://agencypusk.ru/og-image.jpg",
     author: {
       name: "Мария Волкова",
       role: "SMM-менеджер",
@@ -402,7 +402,7 @@ const articlesData: Record<string, Article> = {
     readTime: "15 мин",
     date: "2026-03-15",
     dateFormatted: "15 марта 2026",
-    image: "https://example.com/og/website-conversion-optimization.jpg",
+    image: "https://agencypusk.ru/og-image.jpg",
     author: {
       name: "Антон Белов",
       role: "UX-дизайнер",
@@ -424,7 +424,7 @@ const articlesData: Record<string, Article> = {
     readTime: "11 мин",
     date: "2026-03-10",
     dateFormatted: "10 марта 2026",
-    image: "https://example.com/og/geo-services-promotion.jpg",
+    image: "https://agencypusk.ru/og-image.jpg",
     author: {
       name: "Елена Новикова",
       role: "Специалист по геомаркетингу",
@@ -481,7 +481,7 @@ export async function generateMetadata({
     return { title: "Статья не найдена" };
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://example.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://agencypusk.ru";
   const canonicalUrl = `${siteUrl}/blog/${slug}`;
 
   return {
@@ -531,7 +531,7 @@ export async function generateMetadata({
 // ─── JSON-LD helper ───────────────────────────────────────────────────────────
 
 function buildJsonLd(article: Article, slug: string) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://example.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://agencypusk.ru";
 
   return {
     "@context": "https://schema.org",
@@ -551,7 +551,7 @@ function buildJsonLd(article: Article, slug: string) {
       name: "Название компании",
       logo: {
         "@type": "ImageObject",
-        url: `${siteUrl}/logo.png`,
+        url: `${siteUrl}/logo.svg`,
       },
     },
     mainEntityOfPage: {

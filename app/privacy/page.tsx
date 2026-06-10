@@ -181,7 +181,7 @@ export default function PrivacyPage() {
                   </li>
                   <li className="text-foreground/80 flex gap-3">
                     <span className="text-primary flex-shrink-0">•</span>
-                    <span>Telegram: @pusk_agency</span>
+                    <span>Telegram: @pusksupport</span>
                   </li>
                 </ul>
               </section>

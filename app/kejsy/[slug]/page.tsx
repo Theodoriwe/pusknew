@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://direktolog.ru";
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://agencypusk.ru"
   const canonicalUrl = `${baseUrl}/kejsy/${slug}`;
 
   return {
@@ -58,7 +58,7 @@ export default async function CasePage({ params }: PageProps) {
     notFound();
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://direktolog.ru";
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://agencypusk.ru";
   const canonicalUrl = `${baseUrl}/kejsy/${slug}`;
 
   // Remove unserializable icon field from results for client component

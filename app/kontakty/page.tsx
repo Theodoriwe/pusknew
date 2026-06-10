@@ -29,7 +29,7 @@ const contactMethods = [
   {
     iconName: "Send" as const,
     label: "Telegram",
-    value: "@pusk_agency",
+    value: "@pusksupport",
     href: "https://t.me/pusksupport",
     description: "Самый быстрый способ связи",
   },

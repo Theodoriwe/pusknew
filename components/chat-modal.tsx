@@ -39,6 +39,7 @@ export function ChatModal() {
   const [lastMessageId, setLastMessageId] = useState("0");
   // Polling запускается только если юзер когда-либо писал
   const [hasUserMessages, setHasUserMessages] = useState(false);
+  const [typingMessageId, setTypingMessageId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const pollingRef = useRef<NodeJS.Timeout | null>(null);
@@ -135,6 +136,18 @@ export function ChatModal() {
           setMessages(prev => {
             const existingIds = new Set(prev.map(m => m.id));
             const unique = newMessages.filter(m => !existingIds.has(m.id));
+            
+            if (unique.length > 0) {
+              // Показываем анимацию набора для первого нового сообщения
+              const firstNewMessage = unique[0];
+              setTypingMessageId(firstNewMessage.id);
+              
+              // Через 1 секунду скрываем анимацию и добавляем все сообщения
+              setTimeout(() => {
+                setTypingMessageId(null);
+              }, 1000);
+            }
+            
             return unique.length > 0 ? [...prev, ...unique] : prev;
           });
 
@@ -251,7 +264,8 @@ export function ChatModal() {
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: 400 }}
           transition={{ duration: 0.3, ease: "easeOut" }}
-          className="fixed bottom-3 right-3 sm:bottom-6 sm:right-6 lg:bottom-8 lg:right-8 z-50 w-[calc(100%-24px)] sm:w-full max-w-sm bg-card rounded-2xl shadow-2xl overflow-hidden flex flex-col h-96 sm:h-[430px] lg:h-[500px]"
+          className="fixed bottom-3 right-3 sm:bottom-6 sm:right-6 lg:bottom-8 lg:right-8 z-50 w-[calc(100%-24px)] sm:w-full max-w-sm bg-card rounded-2xl shadow-2xl overflow-hidden flex flex-col h-96 sm:h-[430px] lg:h-[500px] border-2"
+          style={{ borderColor: "#549AF2" }}
         >
           <div className="flex items-center justify-between p-3 sm:p-5 border-b border-border bg-card sticky top-0 z-10 gap-2">
             <div className="flex-1 min-w-0">
@@ -294,7 +308,7 @@ export function ChatModal() {
               </m.div>
             ))}
 
-            {isLoading && (
+            {typingMessageId && (
               <m.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex justify-start">
                 <div className="bg-muted rounded-xl px-3 sm:px-4 py-2">
                   <div className="flex gap-1">
@@ -309,6 +323,27 @@ export function ChatModal() {
                 </div>
               </m.div>
             )}
+
+            {hasUserMessages && messages.filter(m => m.sender === "operator" && m.id !== "welcome").length === 0 && (
+              <m.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex justify-center py-4"
+              >
+                <div className="flex items-center gap-2 px-4 py-2 rounded-full" style={{ backgroundColor: "#549AF2", color: "white" }}>
+                  <div className="flex gap-1">
+                    {[0, 150, 300].map((delay) => (
+                      <div
+                        key={delay}
+                        className="w-1.5 h-1.5 bg-white rounded-full animate-bounce"
+                        style={{ animationDelay: `${delay}ms` }}
+                      />
+                    ))}
+                  </div>
+                  <p className="text-xs sm:text-sm font-medium">Подключаем оператора</p>
+                </div>
+              </m.div>
+            )}
             <div ref={messagesEndRef} />
           </div>
 
@@ -320,7 +355,8 @@ export function ChatModal() {
                 onChange={(e) => setInputValue(e.target.value)}
                 disabled={isLoading}
                 placeholder="Сообщение..."
-                className="flex-1 min-w-0 px-3 sm:px-4 py-2 rounded-lg border border-border bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 text-sm"
+                className="flex-1 min-w-0 px-3 sm:px-4 py-2 rounded-lg border border-border bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 text-sm sm:text-base"
+                style={{ fontSize: "16px" }}
               />
               <button
                 type="submit"
