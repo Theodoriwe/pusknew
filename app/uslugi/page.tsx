@@ -156,7 +156,7 @@ export default function ServicesPage() {
               </p>
             </div>
 
-            <div className="grid gap-4 lg:grid-cols-2">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
               {services.map((service, index) => {
                 const Icon = service.icon;
                 const isDark = service.dark;
