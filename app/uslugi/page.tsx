@@ -135,8 +135,8 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        <section id="services-list" className="pt-2 pb-20 sm:pb-24 w-full">
-          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section id="services-list" className="pt-2 pb-20 sm:pb-24">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-8 flex flex-col gap-4 rounded-[28px] border border-slate-200 bg-white/80 px-4 py-5 shadow-[0_18px_45px_rgba(15,23,42,0.05)] sm:px-6 sm:py-6 lg:flex-row lg:items-end lg:justify-between">
               <div className="max-w-2xl">
                 <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#549AF2]">Что мы делаем</p>
@@ -149,7 +149,7 @@ export default function ServicesPage() {
               </p>
             </div>
 
-            <div className="w-full grid gap-4 lg:grid-cols-2">
+            <div className="grid gap-4 lg:grid-cols-2">
               {services.map((service, index) => {
                 const Icon = service.icon;
                 const isDark = service.dark;
