@@ -132,7 +132,7 @@
   }
 
   /* CSS Containment for performance */
-  article { contain: content; }
+  article { contain: style; }
 }
 
 /* ─── Keyframes ─────────────────────────────────────────────────────────────── */

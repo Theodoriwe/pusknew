@@ -70,6 +70,24 @@ export function HeaderClient() {
 
             {/* Center nav */}
             <nav className="hidden lg:flex items-center gap-1" role="navigation" aria-label="Основная навигация">
+              {/* Главная */}
+              <Link
+                href="/"
+                className={`relative px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                  pathname === "/"
+                    ? "text-foreground bg-muted/60"
+                    : "text-foreground/60 hover:text-foreground hover:bg-muted/60"
+                }`}
+              >
+                Главная
+                {pathname === "/" && (
+                  <m.span
+                    layoutId="nav-active"
+                    className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary"
+                  />
+                )}
+              </Link>
+
               {/* Services dropdown */}
               <div
                 className="relative"
@@ -225,6 +243,21 @@ export function HeaderClient() {
             </div>
 
             <div className="flex-1 overflow-y-auto px-6 py-6 flex flex-col gap-1">
+              {/* Главная */}
+              <m.div
+                initial={{ opacity: 0, x: -16 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <Link
+                  href="/"
+                  className="block py-3 text-2xl font-bold text-foreground hover:text-primary transition-colors"
+                  style={{ fontFamily: "var(--font-display)" }}
+                >
+                  Главная
+                </Link>
+              </m.div>
+
               <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2 mt-4">
                 Услуги
               </p>
