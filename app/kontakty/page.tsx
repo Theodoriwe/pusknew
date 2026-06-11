@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Phone, Mail, Send, Clock, MessageSquare } from "lucide-react";
 import { Header } from "@/components/header";
@@ -46,10 +46,70 @@ const contactIconMap = { Phone, Mail, Send, MessageSquare };
 
 export default function ContactsPage() {
   const { openContact } = useModalStore();
+  
+  const [visibleMethods, setVisibleMethods] = useState<Set<number>>(new Set());
+  const methodsContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!methodsContainerRef.current) return;
+    const cards = methodsContainerRef.current.querySelectorAll("[data-method-id]");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute("data-method-id");
+            if (id) {
+              setVisibleMethods((prev) => new Set([...prev, parseInt(id)]));
+              observer.unobserve(entry.target);
+            }
+          }
+        });
+      },
+      { rootMargin: "-50px" }
+    );
+    cards.forEach((card) => observer.observe(card));
+    return () => cards.forEach((card) => observer.unobserve(card));
+  }, []);
 
   const [formData, setFormData] = useState({ name: "", phone: "", message: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDone, setIsDone] = useState(false);
+
+  const formatPhoneNumber = (value: string): string => {
+    // Оставляем только цифры
+    const digits = value.replace(/\D/g, "");
+    
+    // Если пусто, возвращаем пусто
+    if (!digits) return "";
+    
+    // Если цифры начинаются на 8, заменяем на 7
+    let cleanDigits = digits;
+    if (cleanDigits.startsWith("8")) {
+      cleanDigits = "7" + cleanDigits.slice(1);
+    }
+    
+    // Если не начинается на 7, добавляем его
+    if (!cleanDigits.startsWith("7")) {
+      cleanDigits = "7" + cleanDigits;
+    }
+    
+    // Ограничиваем до 11 цифр (7 + 10 цифр)
+    cleanDigits = cleanDigits.slice(0, 11);
+    
+    // Форматируем в формат +7 (XXX) XXX-XX-XX
+    if (cleanDigits.length === 0) return "";
+    if (cleanDigits.length <= 1) return "+" + cleanDigits;
+    if (cleanDigits.length <= 4) return "+" + cleanDigits.slice(0, 1) + " (" + cleanDigits.slice(1);
+    if (cleanDigits.length <= 7) return "+" + cleanDigits.slice(0, 1) + " (" + cleanDigits.slice(1, 4) + ") " + cleanDigits.slice(4);
+    if (cleanDigits.length <= 9) return "+" + cleanDigits.slice(0, 1) + " (" + cleanDigits.slice(1, 4) + ") " + cleanDigits.slice(4, 7) + "-" + cleanDigits.slice(7);
+    
+    return "+" + cleanDigits.slice(0, 1) + " (" + cleanDigits.slice(1, 4) + ") " + cleanDigits.slice(4, 7) + "-" + cleanDigits.slice(7, 9) + "-" + cleanDigits.slice(9, 11);
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhoneNumber(e.target.value);
+    setFormData(p => ({ ...p, phone: formatted }));
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -96,7 +156,7 @@ export default function ContactsPage() {
                 Свяжитесь с нами
               </h1>
               <p className="text-xl text-muted-foreground leading-relaxed">
-                Расскажите о вашем проекте — мы подготовим предложение и ответим на все вопросы
+                Расскажите о вашем проекте 
               </p>
             </motion.div>
           </div>
@@ -104,19 +164,22 @@ export default function ContactsPage() {
 
         <section className="py-16 bg-background">
           <div className="max-w-[1400px] mx-auto px-6 lg:px-8">
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+            <div ref={methodsContainerRef} className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
               {contactMethods.map((method, index) => {
                 const Icon = contactIconMap[method.iconName];
+                const isVisible = visibleMethods.has(index);
                 return (
-                  <motion.a
+                  <a
                     key={method.label}
                     href={method.href}
                     target={method.href.startsWith("http") ? "_blank" : undefined}
                     rel={method.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
+                    data-method-id={index}
                     className="group p-6 rounded-[1.5rem] border border-transparent bg-[#549AF2] text-white shadow-[0_20px_60px_rgba(84,154,242,0.22)] transition-all hover:-translate-y-1"
+                    style={{
+                      opacity: isVisible ? 1 : 0,
+                      animation: isVisible ? "fade-in 0.5s ease-out" : "none",
+                    }}
                   >
                     <div className="w-12 h-12 rounded-xl bg-white/15 flex items-center justify-center mb-4">
                       <Icon className="w-6 h-6 text-white" />
@@ -124,19 +187,14 @@ export default function ContactsPage() {
                     <p className="text-sm text-white/80 mb-1">{method.label}</p>
                     <p className="text-lg font-semibold mb-2 text-white">{method.value}</p>
                     <p className="text-sm text-white/85">{method.description}</p>
-                  </motion.a>
+                  </a>
                 );
               })}
             </div>
 
             <div className="grid lg:grid-cols-2 gap-12">
               <div className="rounded-[2rem] bg-[#d0ef4c] p-4 sm:p-6">
-                <motion.div
-                  initial={{ opacity: 0, x: -30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.2 }}
-                  className="rounded-[1.75rem] bg-transparent p-6 sm:p-8"
-                >
+                <div className="rounded-[1.75rem] bg-transparent p-6 sm:p-8">
                   <h2
                     className="heading-3 mb-6"
                     style={{ fontFamily: "var(--font-display)" }}
@@ -157,9 +215,10 @@ export default function ContactsPage() {
                         <label className="block text-sm font-medium mb-2">Телефон</label>
                         <Input
                           type="tel"
-                          placeholder="+7 (___) ___-__-__"
+                          placeholder="+7 (900) 000-00-00"
                           value={formData.phone}
-                          onChange={(e) => setFormData(p => ({ ...p, phone: e.target.value }))}
+                          onChange={handlePhoneChange}
+                          maxLength={18}
                           required
                         />
                       </div>
@@ -167,7 +226,7 @@ export default function ContactsPage() {
                     <div>
                       <label className="block text-sm font-medium mb-2">Сообщение</label>
                       <Textarea
-                        placeholder="Расскажите о вашем проекте: что нужно сделать, какие цели, какой бюджет..."
+                        placeholder="Расскажите о вашем проекте   "
                         rows={5}
                         value={formData.message}
                         onChange={(e) => setFormData(p => ({ ...p, message: e.target.value }))}
@@ -191,15 +250,10 @@ export default function ContactsPage() {
                       </a>
                     </p>
                   </form>
-                </motion.div>
+                </div>
               </div>
 
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.3 }}
-                className="space-y-8"
-              >
+              <div className="space-y-8">
                 <div className="p-8 bg-card rounded-2xl border border-border">
                   <h3
                     className="text-xl font-semibold mb-4 flex items-center gap-3"
@@ -219,6 +273,12 @@ export default function ContactsPage() {
                         Отвечаем в мессенджерах 24/7
                       </p>
                     </div>
+
+                    <div className="pt-3 border-t border-border">
+                      <p className="text-sm text-muted-foreground">
+                        Находимся в городе Сочи, работаем по всей России и странам СНГ
+                      </p>
+                    </div>
                   </div>
                 </div>
 
@@ -236,7 +296,7 @@ export default function ContactsPage() {
                    
                   </div>
                 </div>
-              </motion.div>
+              </div>
             </div>
           </div>
         </section>

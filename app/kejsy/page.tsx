@@ -53,7 +53,7 @@ const cases = [
   {
     id: "kochevniki-restaurant",
     title: "Ресторан",
-    category: "Комплексное продвижение",
+    category: "Комплексное",
     client: "Кочевники",
     description: "Продвижение в гео. сервисах, разработка сайта и комплексная реклама - увеличение заявок и бронирований",
     metrics: [
@@ -220,15 +220,15 @@ export default function CasesPage() {
                           style={{ 
                             top: "clamp(12px, 3vw, 24px)",
                             right: "clamp(12px, 3vw, 24px)",
-                            width: "clamp(80px, 15vw, 150px)",
-                            height: "clamp(80px, 15vw, 150px)",
+                            width: caseItem.id === "rosa-hotor-tubing" ? "clamp(110px, 18vw, 180px)" : caseItem.id === "trikoni-restaurant" ? "clamp(50px, 8vw, 80px)" : "clamp(80px, 15vw, 150px)",
+                            height: caseItem.id === "rosa-hotor-tubing" ? "clamp(110px, 18vw, 180px)" : caseItem.id === "trikoni-restaurant" ? "clamp(50px, 8vw, 80px)" : "clamp(80px, 15vw, 150px)",
                           }}
                         >
                           <Image
                             src={caseItem.logo}
                             alt=""
                             fill
-                            sizes="(max-width: 768px) 80px, 150px"
+                            sizes={caseItem.id === "rosa-hotor-tubing" ? "(max-width: 768px) 110px, 180px" : caseItem.id === "trikoni-restaurant" ? "(max-width: 768px) 50px, 80px" : "(max-width: 768px) 80px, 150px"}
                             className="object-contain"
                             style={{ objectPosition: "top right" }}
                           />

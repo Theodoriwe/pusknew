@@ -175,7 +175,8 @@ export default function PricesPage() {
     <TooltipProvider>
       <Header />
       <main className="bg-background text-foreground">
-        <section className="pt-24 pb-10 lg:pb-14">
+        {/* Desktop Hero Section */}
+        <section className="hidden lg:block pt-24 pb-10 lg:pb-14">
           <div className="max-w-6xl mx-auto px-6 lg:px-8">
             <Breadcrumbs items={[{ label: "Цены" }]} />
 
@@ -308,6 +309,25 @@ export default function PricesPage() {
                 </div>
               </div>
             </motion.div>
+          </div>
+        </section>
+
+        {/* Mobile Header Section */}
+        <section className="lg:hidden pt-25 pb-6">
+          <div className="max-w-6xl mx-auto px-6 text-center">
+            <Breadcrumbs items={[{ label: "Цены" }]} />
+            <motion.h1
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="mt-6 text-3xl font-black tracking-[-0.05em]"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              <span className="block" style={{ color: "var(--primary)" }}>Честные цены</span>
+              <span className="block text-foreground">
+                на услуги маркетинга
+              </span>
+            </motion.h1>
           </div>
         </section>
 

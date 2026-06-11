@@ -31,8 +31,8 @@ export function CasePageClient({ caseData }: CasePageClientProps) {
     style={{ 
       top: "clamp(12px, 3vw, 24px)",
       right: "clamp(12px, 3vw, 24px)",
-      width: "clamp(120px, 20vw, 220px)",
-      height: "clamp(120px, 20vw, 220px)",
+      width: caseData.client === "Трикони" ? "clamp(60px, 6vw, 100px)" : "clamp(120px, 20vw, 220px)",
+      height: caseData.client === "Трикони" ? "clamp(60px, 6vw, 100px)" : "clamp(120px, 20vw, 220px)",
     
     }}
   >
@@ -40,7 +40,7 @@ export function CasePageClient({ caseData }: CasePageClientProps) {
       src={caseData.logo}
       alt=""
       fill
-      sizes="(max-width: 768px) 120px, 220px"
+      sizes={caseData.client === "Трикони" ? "(max-width: 768px) 40px, 60px" : "(max-width: 768px) 120px, 220px"}
       className="object-contain"
       style={{ objectPosition: "top right" }}
     />
