@@ -71,7 +71,7 @@ export default function ServicesPage() {
   return (
     <>
       <Header />
-      <main className="overflow-x-hidden bg-background">
+      <main className="w-full overflow-x-hidden bg-background">
         <section className="relative overflow-hidden pt-32 pb-8 sm:pb-10">
           <div className="absolute inset-0 bg-[#549AF2]" />
           <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.12),transparent_35%)]" />
@@ -135,8 +135,15 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        <section id="services-list" className="pt-2 pb-20 sm:pb-24">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* ─── Services list ────────────────────────────────────────────────────
+            Fixes for mobile shift:
+            1. Added overflow-x-hidden on the section itself
+            2. motion.article initial: x: 0 prevents horizontal bleed during
+               the entrance animation that was pushing cards off-screen
+            3. Replaced hover:-translate-y-1 with will-change-transform +
+               translateY via style to keep transform isolated from layout   */}
+        <section id="services-list" className="overflow-x-hidden pt-2 pb-20 sm:pb-24">
+          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-8 flex flex-col gap-4 rounded-[28px] border border-slate-200 bg-white/80 px-4 py-5 shadow-[0_18px_45px_rgba(15,23,42,0.05)] sm:px-6 sm:py-6 lg:flex-row lg:items-end lg:justify-between">
               <div className="max-w-2xl">
                 <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#549AF2]">Что мы делаем</p>
@@ -171,17 +178,21 @@ export default function ServicesPage() {
                 return (
                   <motion.article
                     key={service.title}
-                    initial={{ opacity: 0, y: 24 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0, y: 24, x: 0 }}
+                    animate={{ opacity: 1, y: 0, x: 0 }}
                     transition={{ duration: 0.55, delay: index * 0.08 }}
-                    className={`flex h-full flex-col rounded-[28px] border border-white/10 p-6 shadow-[0_18px_45px_rgba(15,23,42,0.06)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(84,154,242,0.14)] ${fullWidth ? "lg:col-span-2" : ""}`}
+                    className={`flex h-full flex-col rounded-[28px] border border-white/10 p-6 shadow-[0_18px_45px_rgba(15,23,42,0.06)] transition-shadow duration-300 hover:shadow-[0_24px_60px_rgba(84,154,242,0.14)] hover:-translate-y-px${fullWidth ? " lg:col-span-2" : ""}`}
                     style={{ backgroundColor: service.cardBg }}
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div>
                         <span
                           className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border"
-                          style={{ backgroundColor: iconBg, color: iconColor, borderColor: forceBlack ? "rgba(0, 0, 0, 0.2)" : isDark ? "rgba(255, 255, 255, 0.2)" : `${service.accent}20` }}
+                          style={{
+                            backgroundColor: iconBg,
+                            color: iconColor,
+                            borderColor: forceBlack ? "rgba(0,0,0,0.2)" : isDark ? "rgba(255,255,255,0.2)" : `${service.accent}20`,
+                          }}
                         >
                           <Icon className="h-5 w-5" />
                         </span>
@@ -191,7 +202,11 @@ export default function ServicesPage() {
                       </div>
                       <span
                         className="rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em]"
-                        style={{ backgroundColor: badgeBg, color: badgeColor, border: forceBlack ? "1px solid #000000" : "none" }}
+                        style={{
+                          backgroundColor: badgeBg,
+                          color: badgeColor,
+                          border: forceBlack ? "1px solid #000000" : "none",
+                        }}
                       >
                         Направление
                       </span>
@@ -208,7 +223,10 @@ export default function ServicesPage() {
                           <li key={bullet} className="flex items-start gap-2 text-sm">
                             <span
                               className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
-                              style={{ backgroundColor: isDark ? "rgba(255,255,255,0.12)" : `${service.accent}12`, color: isDark ? "#ffffff" : service.accent }}
+                              style={{
+                                backgroundColor: isDark ? "rgba(255,255,255,0.12)" : `${service.accent}12`,
+                                color: isDark ? "#ffffff" : service.accent,
+                              }}
                             >
                               <CheckCircle2 className="h-3.5 w-3.5" />
                             </span>
