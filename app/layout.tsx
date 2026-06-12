@@ -259,6 +259,9 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="//mc.yandex.ru" />
         <link rel="preconnect" href="https://mc.yandex.ru" crossOrigin="anonymous" />
 
+        {/* LLM Information File */}
+        <link rel="alternate" href="/llms.txt" type="text/plain" />
+
         {/* JSON-LD Schema */}
         <script
           type="application/ld+json"

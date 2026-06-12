@@ -6,15 +6,15 @@ import { ArrowUpRight, ArrowRight } from "lucide-react";
 
 const MARQUEE_ITEMS = [
   "Яндекс.Директ",
-  "Google Ads",
+ 
   "VK Реклама",
   "Meta Ads",
   "Яндекс.Директ",
-  "Google Ads",
+ 
   "VK Реклама",
   "Meta Ads",
   "Яндекс.Директ",
-  "Google Ads",
+  
   "VK Реклама",
   "Meta Ads",
 ];
@@ -23,15 +23,15 @@ const MARQUEE_ITEMS_REVERSE = [
   "ROI до 450%",
   "CPL снизился на 45%",
   "Конверсия +340%",
-  "Опыт 7+ лет",
+  
   "ROI до 450%",
   "CPL снизился на 45%",
   "Конверсия +340%",
-  "Опыт 7+ лет",
+  
   "ROI до 450%",
   "CPL снизился на 45%",
   "Конверсия +340%",
-  "Опыт 7+ лет",
+  
 ];
 
 export function HeroContextAdsMarquee() {

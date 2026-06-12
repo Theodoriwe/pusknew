@@ -258,11 +258,12 @@ async function handleSubmit() {
   setPhoneError("");
   setDone(true); // ← сразу показываем успех
 
-  fetch("https://pusknew.theodoriwe.workers.dev/", {
+ fetch("https://chat.agencypusk.ru/submit", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       type: "quiz",
+      siteId: "agencypusk",
       phone: answers.phone,
       contactMethods: answers.contactMethods,
       answers: {

@@ -50,7 +50,7 @@ export const generateServiceSchema = (
   serviceType: serviceName,
   areaServed: {
     "@type": "City",
-    name: "Москва",
+    name: "Сочи",
   },
   priceRange: "₽₽",
   image: "https://agencypusk.ru/og-image.jpg",

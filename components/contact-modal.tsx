@@ -113,12 +113,13 @@ export function ContactModal() {
   if (!validate()) return;
   setFormState("success");
 
-  fetch("https://pusknew.theodoriwe.workers.dev/", {
+  fetch("https://chat.agencypusk.ru/submit", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       type: "contact",
       name: formData.name,
+      siteId: "agencypusk",
       contact: formData.contact,
       service: services.find(s => s.value === formData.service)?.label || formData.service,
       comment: formData.comment,

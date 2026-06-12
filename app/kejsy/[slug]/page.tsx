@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const canonicalUrl = `${baseUrl}/kejsy/${slug}`;
 
   return {
-    title: `${caseData.title} - Кейсы | Direktolog`,
+    title: `${caseData.title} - Кейсы | ПУСК`,
     description: caseData.description,
     alternates: {
       canonical: canonicalUrl,
@@ -73,10 +73,10 @@ export default async function CasePage({ params }: PageProps) {
     headline: String(caseData.title),
     description: String(caseData.description),
     image: `${baseUrl}/og-image.jpg`,
-    datePublished: new Date().toISOString().split("T")[0],
+    datePublished: new Date().toISOString(),
     author: {
       "@type": "Organization",
-      name: "Direktolog",
+      name: "ПУСК",
       url: baseUrl,
     },
     about: {

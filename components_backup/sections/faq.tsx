@@ -315,7 +315,7 @@ export function FAQSection({ faqs: customFaqs }: { faqs?: Array<{ question: stri
                     className="text-2xl sm:text-3xl font-bold text-primary"
                     style={{ fontFamily: "var(--font-display)" }}
                   >
-                    5 лет
+                    4 года 
                   </div>
                   <div className="text-xs sm:text-sm text-white/40 mt-1">опыта</div>
                 </div>
@@ -383,7 +383,7 @@ export function FAQSection({ faqs: customFaqs }: { faqs?: Array<{ question: stri
                     className="text-2xl sm:text-3xl font-bold text-primary"
                     style={{ fontFamily: "var(--font-display)" }}
                   >
-                    5 лет
+                    4 года
                   </div>
                   <div className="text-xs sm:text-sm text-white/40 mt-1">опыта</div>
                 </div>

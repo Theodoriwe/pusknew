@@ -116,11 +116,12 @@ export default function ContactsPage() {
     setIsSubmitting(true);
 
     try {
-      await fetch("https://pusknew.theodoriwe.workers.dev/", {
+      await fetch("https://chat.agencypusk.ru/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           type: "contact",
+          siteId: "agencypusk",
           name: formData.name,
           contact: formData.phone,
           service: "Страница контактов",
